@@ -1,51 +1,90 @@
 package academy.pocu.comp2500.assignment1;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class Comment {
-    private String commentId;
-    private String text;
-    private ArrayList<Comment> subComments;
-    private int upVote;
-    private int downVote;
+    private OffsetDateTime commentId;
+    private ArrayList<Comment> subcommentList;
+    private String author;
+    private String content;
+    private int upvote = 0;
+    private int downvote = 0;
 
-    public Comment(String commentId, String text) {
-        this.text = text;
-        this.commentId = commentId;
-        subComments = new ArrayList<>();
+    //생성자 매개변수로 post 없애고 포스트에서 addComment 에서 코멘트 아이디 설정해주는 걸로함
+    public Comment(User author, String content) {
+        //commentId = post.getPostId();
+        this.author = author.getNickname();
+        this.content = content;
+        subcommentList = new ArrayList<Comment>();
     }
 
-    public void renameComment(String commentId, String text) {
-        if (this.commentId.equals(commentId)) {
-            this.text = text;
+    public ArrayList<Comment> getSubCommentList() {
+        subcommentList.sort((subcomment1, subcomment2) -> {
+            if ((subcomment1.getUpvote() - subcomment1.getDownvote()) - (subcomment2.getUpvote() - subcomment2.getDownvote()) > 0) {
+                return -1;
+            } else if ((subcomment1.getUpvote() - subcomment1.getDownvote()) - (subcomment2.getUpvote() - subcomment2.getDownvote()) < 0) {
+                return 1;
+            }
+            return 0;
+        });
+        return subcommentList;
+    }
+
+    public void upVote() {
+        this.upvote++;
+    }
+
+    public void downVote() {
+        this.downvote++;
+    }
+
+    public int getUpvote() {
+        return upvote;
+    }
+
+    public int getDownvote() {
+        return downvote;
+    }
+
+    public void updateComment(User author, String content) {
+        if (author.getUserId().compareTo(commentId) == 0) {
+            this.content = content;
+        } else {
+            System.out.println("Author only update comment.");
         }
     }
 
-    public void addSubComment(String subCommentId, String text) {
-        subComments.add(new Comment(subCommentId, text));
+    public void addSubcomment(Comment comment) {
+        comment.setCommentId(commentId);
+        this.subcommentList.add(comment);
     }
 
-    public void addUpVote() {
-        this.upVote++;
+    public OffsetDateTime getCommentId() {
+        return commentId;
     }
 
-    public void addDownVote() {
-        this.downVote++;
+    public void setCommentId(OffsetDateTime commentId) {
+        this.commentId = commentId;
     }
 
-    public ArrayList<Comment> getSubComments() {
-        ArrayList<Comment> comments = new ArrayList<>(this.subComments);
-
-        comments.sort((Comparator.comparingInt(o -> (o.getUpVote() - o.getDownVote()))));
-        return comments;
+    public String getContent() {
+        return content;
     }
 
-    public int getUpVote() {
-        return upVote;
+    public String getAuthor() {
+        return author;
     }
 
-    public int getDownVote() {
-        return downVote;
+    public ArrayList<Comment> getSubcommentList() {
+        subcommentList.sort((subcomment1, subcomment2) -> {
+            if ((subcomment1.getUpvote() - subcomment1.getDownvote()) - (subcomment2.getUpvote() - subcomment2.getDownvote()) > 0) {
+                return -1;
+            } else if ((subcomment1.getUpvote() - subcomment1.getDownvote()) - (subcomment2.getUpvote() - subcomment2.getDownvote()) < 0) {
+                return 1;
+            }
+            return 0;
+        });
+        return subcommentList;
     }
 }
