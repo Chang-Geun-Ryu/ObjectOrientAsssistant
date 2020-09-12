@@ -1,90 +1,62 @@
 package academy.pocu.comp2500.assignment1;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Comment {
-    private OffsetDateTime commentId;
-    private ArrayList<Comment> subcommentList;
-    private String author;
-    private String content;
-    private int upvote = 0;
-    private int downvote = 0;
+    private String sComment;
+    private String userId;
+    private ArrayList<String> likes;
+    private ArrayList<String> hates;
+    private final ArrayList<Comment> subcomment;
 
-    //생성자 매개변수로 post 없애고 포스트에서 addComment 에서 코멘트 아이디 설정해주는 걸로함
-    public Comment(User author, String content) {
-        //commentId = post.getPostId();
-        this.author = author.getNickname();
-        this.content = content;
-        subcommentList = new ArrayList<Comment>();
+    public Comment(String comment, String userId) {
+        this.likes = new ArrayList<>();
+        this.hates = new ArrayList<>();
+        this.sComment = comment;
+        this.userId = userId;
+        this.subcomment = new ArrayList<>();
     }
 
-    public ArrayList<Comment> getSubCommentList() {
-        subcommentList.sort((subcomment1, subcomment2) -> {
-            if ((subcomment1.getUpvote() - subcomment1.getDownvote()) - (subcomment2.getUpvote() - subcomment2.getDownvote()) > 0) {
-                return -1;
-            } else if ((subcomment1.getUpvote() - subcomment1.getDownvote()) - (subcomment2.getUpvote() - subcomment2.getDownvote()) < 0) {
-                return 1;
-            }
-            return 0;
-        });
-        return subcommentList;
-    }
-
-    public void upVote() {
-        this.upvote++;
-    }
-
-    public void downVote() {
-        this.downvote++;
-    }
-
-    public int getUpvote() {
-        return upvote;
-    }
-
-    public int getDownvote() {
-        return downvote;
-    }
-
-    public void updateComment(User author, String content) {
-        if (author.getUserId().compareTo(commentId) == 0) {
-            this.content = content;
-        } else {
-            System.out.println("Author only update comment.");
+    public final void addLike(String userId) {
+        if (this.likes.contains(userId) == false) {
+            this.likes.add(userId);
         }
     }
 
-    public void addSubcomment(Comment comment) {
-        comment.setCommentId(commentId);
-        this.subcommentList.add(comment);
+    public final void addHate(String userId) {
+        if (this.hates.contains(userId) == false) {
+            this.hates.add(userId);
+        }
     }
 
-    public OffsetDateTime getCommentId() {
-        return commentId;
+    public final int getScore() {
+        return this.likes.size() - this.hates.size();
     }
 
-    public void setCommentId(OffsetDateTime commentId) {
-        this.commentId = commentId;
+    public final void setComment(String comment, String userId) {
+        if (userId == this.userId) {
+            this.sComment = comment;
+        }
     }
 
-    public String getContent() {
-        return content;
+    public final void addSubcomment(Comment comment) {
+        this.subcomment.add(comment);
     }
 
-    public String getAuthor() {
-        return author;
+    private final ArrayList<Comment> getSubcomment() {
+        return this.subcomment;
     }
 
-    public ArrayList<Comment> getSubcommentList() {
-        subcommentList.sort((subcomment1, subcomment2) -> {
-            if ((subcomment1.getUpvote() - subcomment1.getDownvote()) - (subcomment2.getUpvote() - subcomment2.getDownvote()) > 0) {
-                return -1;
-            } else if ((subcomment1.getUpvote() - subcomment1.getDownvote()) - (subcomment2.getUpvote() - subcomment2.getDownvote()) < 0) {
-                return 1;
-            }
-            return 0;
-        });
-        return subcommentList;
+    public final ArrayList<Comment> getSortedSubcomments() {
+        ArrayList<Comment> sortComment = getSubcomment();
+
+        Collections.sort(sortComment, (lhs, rhs) -> Integer.compare(rhs.getScore(), lhs.getScore()));
+
+        return sortComment;
+    }
+
+    public final String getComment() {
+        return sComment;
     }
 }
