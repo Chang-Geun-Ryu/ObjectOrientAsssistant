@@ -185,7 +185,7 @@ public class Post {
         return this.createdDateTime;
     }
 
-    public OffsetDateTime getModifiedDateTime() {
+    public OffsetDateTime getModifyTime() {
         return this.modifiedDateTime;
     }
 

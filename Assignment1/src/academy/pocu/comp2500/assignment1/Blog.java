@@ -160,9 +160,9 @@ public class Blog {
                 break;
             case ORDER_REVISION_INCREASING:
                 posts.sort((post1, post2) -> {
-                    if (post1.getModifiedDateTime().compareTo(post2.getModifiedDateTime()) < 0) {
+                    if (post1.getModifyTime().compareTo(post2.getModifyTime()) < 0) {
                         return -1;
-                    } else if (post1.getModifiedDateTime().compareTo(post2.getModifiedDateTime()) > 0) {
+                    } else if (post1.getModifyTime().compareTo(post2.getModifyTime()) > 0) {
                         return 1;
                     }
                     return 0;
@@ -170,9 +170,9 @@ public class Blog {
                 break;
             case ORDER_REVISION_DECREASING:
                 posts.sort((post1, post2) -> {
-                    if (post1.getModifiedDateTime().compareTo(post2.getModifiedDateTime()) < 0) {
+                    if (post1.getModifyTime().compareTo(post2.getModifyTime()) < 0) {
                         return 1;
-                    } else if (post1.getModifiedDateTime().compareTo(post2.getModifiedDateTime()) > 0) {
+                    } else if (post1.getModifyTime().compareTo(post2.getModifyTime()) > 0) {
                         return -1;
                     }
                     return 0;
