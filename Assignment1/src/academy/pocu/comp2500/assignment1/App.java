@@ -5,25 +5,25 @@ import academy.pocu.comp2500.assignment1.registry.Registry;
 public class App {
     public App(Registry registry) {
         registry.registerBlogCreator("Blog");
-        registry.registerTagFilterSetter("Blog", "setTagFilter");
-        registry.registerAuthorFilterSetter("Blog", "setAuthorFilter");
-        registry.registerPostOrderSetter("Blog", "setPostOrder");
-        registry.registerPostListGetter("Blog", "getPostList");
+        registry.registerTagFilterSetter("Blog", "setTagFilters");
+        registry.registerAuthorFilterSetter("Blog", "setAuthorFilters");
+        registry.registerPostOrderSetter("Blog", "setSortingType");
+        registry.registerPostListGetter("Blog", "getPosts");
         registry.registerPostAdder("Blog", "addPost");
-        registry.registerPostTitleUpdater("Post", "updatePostTitle");
-        registry.registerPostBodyUpdater("Post", "updatePostBody");
+        registry.registerPostTitleUpdater("Post", "setTitle");
+        registry.registerPostBodyUpdater("Post", "setText");
         registry.registerPostTagAdder("Post", "addTag");
         registry.registerCommentAdder("Post", "addComment");
         registry.registerSubcommentAdder("Comment", "addSubcomment");
-        registry.registerCommentUpdater("Comment", "updateComment");
-        registry.registerSubcommentUpdater("Comment", "updateComment");
+        registry.registerCommentUpdater("Comment", "setText");
+        registry.registerSubcommentUpdater("Comment", "setText");
         registry.registerReactionAdder("Post", "addReaction");
         registry.registerReactionRemover("Post", "removeReaction");
-        registry.registerCommentUpvoter("Comment", "upVote");
-        registry.registerCommentDownvoter("Comment", "downVote");
-        registry.registerCommentListGetter("Post", "getCommentList");
-        registry.registerSubcommentListGetter("Comment", "getSubCommentList");
-        registry.registerSubcommentUpvoter("Comment", "upVote");
-        registry.registerSubcommentDownvoter("Comment", "downVote");
+        registry.registerCommentUpvoter("Comment", "addUpvote");
+        registry.registerCommentDownvoter("Comment", "addDownvote");
+        registry.registerCommentListGetter("Post", "getComments");
+        registry.registerSubcommentListGetter("Comment", "getSubcomments");
+        registry.registerSubcommentUpvoter("Comment", "addUpvote");
+        registry.registerSubcommentDownvoter("Comment", "addDownvote");
     }
 }

@@ -3,194 +3,118 @@ package academy.pocu.comp2500.assignment1;
 import java.util.ArrayList;
 
 public class Blog {
-    private SortingType sortingType = SortingType.ORDER_DATE_DECREASING;
-    private boolean tagFilter = false;
-    private boolean authorFilter = false;
-    private ArrayList<String> tagListToFilter;
-    private ArrayList<String> authorListToFilter;
     private ArrayList<Post> posts;
-    private ArrayList<Post> filteredPosts;
+    private ArrayList<String> tagFilters;
+    private ArrayList<String> authorFilters;
+    private SortingType sortingType;
+
 
     public Blog() {
-        posts = new ArrayList<Post>();
-        tagListToFilter = new ArrayList<String>();
-        authorListToFilter = new ArrayList<String>();
-        filteredPosts = new ArrayList<Post>();
+        this.posts = new ArrayList<Post>();
+        this.tagFilters = new ArrayList<String>();
+        this.authorFilters = new ArrayList<String>();
+        this.sortingType = SortingType.POST_DATE_DECREASING;
     }
 
-    public void addPost(Post post) {
-        posts.add(post);
+
+    public ArrayList<Post> getPosts() {
+
+        ArrayList<Post> tagFilterPost = new ArrayList<Post>();
+        if (!this.tagFilters.isEmpty()) {
+            for (String tag : this.tagFilters) {
+                for (Post post : this.posts) {
+                    if (post.getTags().contains(tag)) {
+                        if (!tagFilterPost.contains(post)) {
+                            tagFilterPost.add(post);
+                        }
+                    }
+                }
+            }
+        } else {
+            tagFilterPost = this.posts;
+        }
+
+        ArrayList<Post> authorFilterPost = new ArrayList<Post>();
+        if (!this.authorFilters.isEmpty()) {
+            for (String author : this.authorFilters) {
+                for (Post post : this.posts) {
+                    if (post.getAuthor().equals(author)) {
+                        if (!authorFilterPost.contains(post)) {
+                            authorFilterPost.add(post);
+                        }
+                    }
+                }
+            }
+        } else {
+            authorFilterPost = this.posts;
+        }
+
+        ArrayList<Post> settingPosts = new ArrayList<Post>();
+        for (Post post : tagFilterPost) {
+            if (authorFilterPost.contains(post)) {
+                if (!settingPosts.contains(post)) {
+                    settingPosts.add(post);
+                }
+            }
+        }
+
+        if (this.tagFilters.isEmpty() && this.authorFilters.isEmpty()) {
+            settingPosts = this.posts;
+        }
+
+
+        switch (this.sortingType) {
+            case POST_DATE_DECREASING:
+                settingPosts.sort((o1, o2) -> o2.getPostTime().compareTo(o1.getPostTime()));
+                break;
+            case POST_DATE_INCREASING:
+                settingPosts.sort((o1, o2) -> o1.getPostTime().compareTo(o2.getPostTime()));
+                break;
+            case MODIFY_DATE_DECREASING:
+                settingPosts.sort((o1, o2) -> o2.getModifyTime().compareTo(o1.getModifyTime()));
+                break;
+            case MODIFY_DATE_INCREASING:
+                settingPosts.sort((o1, o2) -> o1.getModifyTime().compareTo(o2.getModifyTime()));
+                break;
+            case TITLE_INCREASING:
+                settingPosts.sort((o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));
+                break;
+            default:
+                assert (false) : "Unrecognized sorting type: " + this.sortingType;
+                break;
+        }
+
+        return settingPosts;
     }
 
-    public void setPostOrder(SortingType sortingType) {
+    public ArrayList<String> getTagFilter() {
+        return this.tagFilters;
+    }
+
+    public ArrayList<String> getAuthorFilters() {
+        return this.authorFilters;
+    }
+
+    public SortingType getSortingType() {
+        return this.sortingType;
+    }
+
+    public void setTagFilters(ArrayList<String> tags) {
+        this.tagFilters = tags;
+    }
+
+    public void setAuthorFilters(ArrayList<String> authors) {
+        this.authorFilters = authors;
+    }
+
+    public void setSortingType(SortingType sortingType) {
         this.sortingType = sortingType;
     }
 
-    public ArrayList<Post> getPostList() {
-        filteredPosts.clear();
-        if (tagFilter && authorFilter) {
-            changePostOrder(this.sortingType);
-            getPostListByAuthorWithTag(authorListToFilter, tagListToFilter);
-        } else if (tagFilter) {
-            changePostOrder(this.sortingType);
-            getPostListByTag(tagListToFilter);
-        } else if (authorFilter) {
-            changePostOrder(this.sortingType);
-            getPostListByAuthor(authorListToFilter);
-        } else {
-            changePostOrder(this.sortingType);
-            for (Post post : posts
-            ) {
-                filteredPosts.add(post);
-            }
-        }
-        return filteredPosts;
+
+    public void addPost(Post post) {
+        this.posts.add(post);
     }
 
-    private void getPostListByTag(ArrayList<String> tags) {
-        for (Post post : posts
-        ) {
-            if (post.matchTag(tags)) {
-                filteredPosts.add(post);
-            }
-        }
-    }
 
-    public void getPostListByAuthor(ArrayList<String> authors) {
-        for (Post post : posts
-        ) {
-            if (authors.contains(post.getAuthor())) {
-                filteredPosts.add(post);
-            }
-        }
-    }
-
-    public void getPostListByAuthorWithTag(ArrayList<String> authors, ArrayList<String> tags) {
-        for (Post post : posts
-        ) {
-            if (authors.contains(post.getAuthor()) && post.matchTag(tags)) {
-                filteredPosts.add(post);
-            }
-        }
-    }
-
-    //이거 밑에 지워야할 수도 있음
-    public void setTagFilter(ArrayList<String> tags) {
-        if (tags == null) {
-            System.out.println("You have to write tag. And I will reset tag filter.");
-            tagFilter = false;
-            tagListToFilter.clear();
-        } else {
-            for (String t : tags
-            ) {
-                tagFilter = true;
-                tagListToFilter.add(t);
-            }
-        }
-    }
-
-    public void setTagFilter(String... tags) {
-        for (String tag : tags
-        ) {
-            if (tag.isBlank()) {
-                System.out.println("You have to write tag. And I will reset tag filter.");
-                tagFilter = false;
-                tagListToFilter.clear();
-            } else {
-                tagFilter = true;
-                tagListToFilter.add(tag);
-            }
-        }
-
-    }
-    /*
-    public void setTagFilter(String tag) {
-        if (tag.isBlank()) {
-            System.out.println("You have to write tag. And I will reset tag filter.");
-            tagFilter = false;
-            tagListToFilter.clear();
-        } else {
-            tagFilter = true;
-            tagListToFilter.add(tag);
-        }
-    }
-    */
-
-    public void clearTagFilter() {
-        tagFilter = false;
-        tagListToFilter.clear();
-    }
-
-    public void setAuthorFilter(User author) {
-        if (author.getNickname().isBlank()) {
-            authorFilter = false;
-            authorListToFilter.clear();
-        } else {
-            authorFilter = true;
-            authorListToFilter.add(author.getNickname());
-        }
-    }
-
-    public void clearAuthorFilter() {
-        authorFilter = false;
-        authorListToFilter.clear();
-    }
-
-    public void changePostOrder(SortingType sortingType) {
-        switch (sortingType) {
-            case ORDER_DATE_INCREASING:
-                posts.sort((post1, post2) -> {
-                    if (post1.getPostTime().compareTo(post2.getPostTime()) < 0) {
-                        return -1;
-                    } else if (post1.getPostTime().compareTo(post2.getPostTime()) > 0) {
-                        return 1;
-                    }
-                    return 0;
-                });
-                break;
-            case ORDER_DATE_DECREASING:
-                posts.sort((post1, post2) -> {
-                    if (post1.getPostTime().compareTo(post2.getPostTime()) < 0) {
-                        return 1;
-                    } else if (post1.getPostTime().compareTo(post2.getPostTime()) > 0) {
-                        return -1;
-                    }
-                    return 0;
-                });
-                break;
-            case ORDER_REVISION_INCREASING:
-                posts.sort((post1, post2) -> {
-                    if (post1.getModifyTime().compareTo(post2.getModifyTime()) < 0) {
-                        return -1;
-                    } else if (post1.getModifyTime().compareTo(post2.getModifyTime()) > 0) {
-                        return 1;
-                    }
-                    return 0;
-                });
-                break;
-            case ORDER_REVISION_DECREASING:
-                posts.sort((post1, post2) -> {
-                    if (post1.getModifyTime().compareTo(post2.getModifyTime()) < 0) {
-                        return 1;
-                    } else if (post1.getModifyTime().compareTo(post2.getModifyTime()) > 0) {
-                        return -1;
-                    }
-                    return 0;
-                });
-                break;
-            case ORDER_DIC_INCREASING:
-                posts.sort((post1, post2) -> {
-                    if (post1.getTitle().compareTo(post2.getTitle()) > 0) {
-                        return 1;
-                    } else if (post1.getTitle().compareTo(post2.getTitle()) < 0) {
-                        return -1;
-                    }
-                    return 0;
-                });
-                break;
-            default:
-                assert (false) : "Unrecognized sorting type: " + sortingType;
-                break;
-        }
-    }
 }

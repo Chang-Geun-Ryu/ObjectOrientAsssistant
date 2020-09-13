@@ -3,19 +3,20 @@ package academy.pocu.comp2500.assignment1;
 import java.time.OffsetDateTime;
 
 public class User {
-    private String nickname;
     private OffsetDateTime userId;
+    private String name;
 
     public User(String name) {
-        this.nickname = name;
+        this.name = name;
         this.userId = OffsetDateTime.now();
     }
 
-    public String getNickname() {
-        return nickname;
+    public OffsetDateTime getUserId() {
+        return this.userId;
     }
 
-    public OffsetDateTime getUserId() {
-        return userId;
+    public String getName() {
+        return this.name;
     }
+
 }
