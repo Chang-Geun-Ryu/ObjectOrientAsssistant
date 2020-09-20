@@ -23,7 +23,7 @@ public final class ComplexNumber {
         return this.imaginary == 0.0;
     }
 
-    public boolean getImaginary() {
+    public boolean isImaginary() {
         return this.real == 0.0;
     }
 
