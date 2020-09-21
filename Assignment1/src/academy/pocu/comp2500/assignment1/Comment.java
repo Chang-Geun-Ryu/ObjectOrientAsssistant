@@ -65,12 +65,20 @@ public class Comment {
     }
 
     public void addUpvoteComment(String userId) {
-        this.up.add(userId);
+        if (this.up.contains(userId)) {
+            this.up.remove(userId);
+        } else {
+            this.up.add(userId);
+        }
         this.upvote += 1;
     }      // 오류
 
     public void addDownvoteComment(String userId) {
-        this.down.add(userId);
+        if (this.down.contains(userId)) {
+            this.down.remove(userId);
+        } else {
+            this.down.add(userId);
+        }
         this.downvote += 1;
     }     //오류
 
