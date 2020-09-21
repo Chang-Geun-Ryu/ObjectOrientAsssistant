@@ -16,7 +16,7 @@ public class App {
         registry.registerCommentAdder("Post", "addComment"); // 블로그 글에 댓글을 추가하는 메서드를 등록한다.
         registry.registerSubcommentAdder("Comment", "addSubcomment"); // 댓글에 하위 댓글을 추가하는 메서드를 등록한다.
         registry.registerCommentUpdater("Comment", "updateComment"); // 댓글의 내용을 바꾸는 메서드를 등록한다.
-        registry.registerSubcommentUpdater("Comment", "updateSubcomment"); // 하위 댓글의 내용을 바꾸는 메서드를 등록한다.
+        registry.registerSubcommentUpdater("Comment", "updateComment"); // 하위 댓글의 내용을 바꾸는 메서드를 등록한다.
         registry.registerReactionAdder("Post", "addReaction"); // 블로그 글에 리액션을 추가하는 메서드를 등록한다.
         registry.registerReactionRemover("Post", "removeReaction"); // 블로그 글로부터 리액션을 제거하는 메서드를 등록한다.
         registry.registerCommentUpvoter("Comment", "addUpvoteComment"); // 댓글을 추천하는 메서드를 등록한다.

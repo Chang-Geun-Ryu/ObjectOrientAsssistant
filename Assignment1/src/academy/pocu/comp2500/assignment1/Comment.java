@@ -87,7 +87,9 @@ public class Comment {
     }
 
     public void updateSubcomment(Comment comment, User user, String body) {
-        comment.updateComment(user, body);
+        if (authorName == user.getAuthorName()) {
+            comment.updateComment(user, body);
+        }
     }
 
 //    public void upVoteSubcomment(Comment comment) {
