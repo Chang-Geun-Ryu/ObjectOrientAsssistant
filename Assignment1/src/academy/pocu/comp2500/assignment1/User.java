@@ -1,22 +1,15 @@
 package academy.pocu.comp2500.assignment1;
 
-import java.time.OffsetDateTime;
+import java.util.ArrayList;
 
 public class User {
-    private OffsetDateTime userId;
-    private String name;
+    private String authorName;
 
-    public User(String name) {
-        this.name = name;
-        this.userId = OffsetDateTime.now();
+    public User(String authorName) {
+        this.authorName = authorName;
     }
 
-    public OffsetDateTime getUserId() {
-        return this.userId;
+    public String getAuthorName() {
+        return this.authorName;
     }
-
-    public String getName() {
-        return this.name;
-    }
-
 }

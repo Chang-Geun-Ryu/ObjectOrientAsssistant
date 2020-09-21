@@ -3,118 +3,101 @@ package academy.pocu.comp2500.assignment1;
 import java.util.ArrayList;
 
 public class Blog {
-    private ArrayList<Post> posts;
-    private ArrayList<String> tagFilters;
-    private ArrayList<String> authorFilters;
     private SortingType sortingType;
-
+    private ArrayList<Post> posts;
+    private ArrayList<String> authorFilters;
+    private ArrayList<String> tagFilters;
 
     public Blog() {
+        this.sortingType = SortingType.A;
         this.posts = new ArrayList<Post>();
-        this.tagFilters = new ArrayList<String>();
         this.authorFilters = new ArrayList<String>();
-        this.sortingType = SortingType.POST_DATE_DECREASING;
+        this.tagFilters = new ArrayList<String>();
     }
-
 
     public ArrayList<Post> getPosts() {
+        ArrayList<Post> list = new ArrayList<Post>();
 
-        ArrayList<Post> tagFilterPost = new ArrayList<Post>();
-        if (!this.tagFilters.isEmpty()) {
-            for (String tag : this.tagFilters) {
-                for (Post post : this.posts) {
-                    if (post.getTags().contains(tag)) {
-                        if (!tagFilterPost.contains(post)) {
-                            tagFilterPost.add(post);
+        if (authorFilters.size() > 0 && tagFilters.size() > 0) {
+            for (Post post : this.posts) {
+                for (String t : post.getTags()) {
+                    for (String i : this.tagFilters) {
+                        for (String s : this.authorFilters) {
+                            if (t.equals(i) && s.equals(post.getAuthorName())) {
+                                list.add(post);
+                            }
                         }
                     }
                 }
             }
-        } else {
-            tagFilterPost = this.posts;
-        }
-
-        ArrayList<Post> authorFilterPost = new ArrayList<Post>();
-        if (!this.authorFilters.isEmpty()) {
-            for (String author : this.authorFilters) {
-                for (Post post : this.posts) {
-                    if (post.getAuthor().equals(author)) {
-                        if (!authorFilterPost.contains(post)) {
-                            authorFilterPost.add(post);
+        } else if (tagFilters.size() > 0) {
+            for (Post post : this.posts) {
+                for (String t : post.getTags()) {
+                    for (String i : this.tagFilters) {
+                        if (t.equals(i) && !list.contains(post)) {
+                            list.add(post);
                         }
                     }
                 }
             }
-        } else {
-            authorFilterPost = this.posts;
-        }
-
-        ArrayList<Post> settingPosts = new ArrayList<Post>();
-        for (Post post : tagFilterPost) {
-            if (authorFilterPost.contains(post)) {
-                if (!settingPosts.contains(post)) {
-                    settingPosts.add(post);
+        } else if (authorFilters.size() > 0) {
+            for (Post post : this.posts) {
+                for (String t : this.authorFilters) {
+                    if (post.getAuthorName().equals(t) && !list.contains(post)) {
+                        list.add(post);
+                    }
                 }
             }
+        } else {
+            list = this.posts;
         }
-
-        if (this.tagFilters.isEmpty() && this.authorFilters.isEmpty()) {
-            settingPosts = this.posts;
-        }
-
-
-        switch (this.sortingType) {
-            case POST_DATE_DECREASING:
-                settingPosts.sort((o1, o2) -> o2.getPostTime().compareTo(o1.getPostTime()));
+        switch (sortingType) {
+            case A:
+                list.sort((a, b) -> b.getCreatedDateTime().compareTo(a.getCreatedDateTime()));
                 break;
-            case POST_DATE_INCREASING:
-                settingPosts.sort((o1, o2) -> o1.getPostTime().compareTo(o2.getPostTime()));
+            case B:
+                list.sort((a, b) -> a.getCreatedDateTime().compareTo(b.getCreatedDateTime()));
                 break;
-            case MODIFY_DATE_DECREASING:
-                settingPosts.sort((o1, o2) -> o2.getModifyTime().compareTo(o1.getModifyTime()));
+            case C:
+                list.sort((a, b) -> b.getModifiedDateTime().compareTo(a.getModifiedDateTime()));
                 break;
-            case MODIFY_DATE_INCREASING:
-                settingPosts.sort((o1, o2) -> o1.getModifyTime().compareTo(o2.getModifyTime()));
+            case D:
+                list.sort((a, b) -> a.getModifiedDateTime().compareTo(b.getModifiedDateTime()));
                 break;
-            case TITLE_INCREASING:
-                settingPosts.sort((o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));
+            case E:
+                list.sort((a, b) -> a.getTitle().compareTo(b.getTitle()));
                 break;
             default:
-                assert (false) : "Unrecognized sorting type: " + this.sortingType;
                 break;
         }
-
-        return settingPosts;
-    }
-
-    public ArrayList<String> getTagFilter() {
-        return this.tagFilters;
-    }
-
-    public ArrayList<String> getAuthorFilters() {
-        return this.authorFilters;
+        return list;
     }
 
     public SortingType getSortingType() {
         return this.sortingType;
     }
 
-    public void setTagFilters(ArrayList<String> tags) {
-        this.tagFilters = tags;
+    public ArrayList<String> getAuthorFilters() {
+        return this.authorFilters;
     }
 
-    public void setAuthorFilters(ArrayList<String> authors) {
-        this.authorFilters = authors;
+    public ArrayList<String> getTagFilters() {
+        return this.tagFilters;
     }
 
     public void setSortingType(SortingType sortingType) {
         this.sortingType = sortingType;
     }
 
-
     public void addPost(Post post) {
-        this.posts.add(post);
+        posts.add(post);
     }
 
+    public void authorFilter(ArrayList<String> authors) {
+        this.authorFilters = authors;
+    }
 
+    public void tagFilter(ArrayList<String> tags) {
+        this.tagFilters = tags;
+    }
 }

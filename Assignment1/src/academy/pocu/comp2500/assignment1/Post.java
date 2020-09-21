@@ -4,89 +4,98 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
 public class Post {
-    private String text;
+    private String authorName;
     private String title;
-    private String author;
+    private String body;
+    private OffsetDateTime createdDateTime;
+    private OffsetDateTime modifiedDateTime;
     private ArrayList<String> tags;
-    private OffsetDateTime postTime;
-    private OffsetDateTime modifyTime;
+    private ArrayList<Reaction> reactions;
     private ArrayList<Comment> comments;
-    private ArrayList<ReactionType> reactionTypes;
 
-    public Post(User user, String title, String text) {
+    public Post(User user, String title, String body) {
+        this.authorName = user.getAuthorName();
         this.title = title;
-        this.text = text;
-        this.author = user.getName();
+        this.body = body;
+        this.createdDateTime = OffsetDateTime.now();
+        this.modifiedDateTime = OffsetDateTime.now();
         this.tags = new ArrayList<String>();
-        this.postTime = OffsetDateTime.now();
-        this.modifyTime = OffsetDateTime.now();
+        this.reactions = new ArrayList<Reaction>();
         this.comments = new ArrayList<Comment>();
-        this.reactionTypes = new ArrayList<ReactionType>();
     }
 
-
-    public String getText() {
-        return this.text;
+    public String getAuthorName() {
+        return this.authorName;
     }
 
     public String getTitle() {
         return this.title;
     }
 
-    public String getAuthor() {
-        return this.author;
+    public String getBody() {
+        return this.body;
+    }
+
+    public OffsetDateTime getCreatedDateTime() {
+        return this.createdDateTime;
+    }
+
+    public OffsetDateTime getModifiedDateTime() {
+        return this.modifiedDateTime;
     }
 
     public ArrayList<String> getTags() {
         return this.tags;
     }
 
-    public OffsetDateTime getPostTime() {
-        return this.postTime;
-    }
-
-    public OffsetDateTime getModifyTime() {
-        return this.modifyTime;
+    public ArrayList<Reaction> getReactions() {
+        return this.reactions;
     }
 
     public ArrayList<Comment> getComments() {
-        this.comments.sort((o1, o2) -> (o2.getUpvote() - o2.getDownvote()) - (o1.getUpvote() - o1.getDownvote()));
+        this.comments.sort((a, b) -> {
+            if (b.getVote() > a.getVote()) {
+                return 1;
+            } else if (b.getVote() < a.getVote()) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
         return this.comments;
-    }
-
-    public ArrayList<ReactionType> getReactionTypes() {
-        return this.reactionTypes;
     }
 
     public void setTitle(String title) {
         this.title = title;
-        this.modifyTime = OffsetDateTime.now();
+        this.modifiedDateTime = OffsetDateTime.now();
     }
 
-    public void setText(String text) {
-        this.text = text;
-        this.modifyTime = OffsetDateTime.now();
+    public void setBody(String body) {
+        this.body = body;
+        this.modifiedDateTime = OffsetDateTime.now();
     }
-
 
     public void addTag(String tag) {
-        if (this.tags.contains(tag)) {
-            return;
+        boolean duplicateChecker = false;
+        for (String t : this.tags) {
+            if (tag.equals(t)) {
+                duplicateChecker = true;
+            }
         }
-        this.tags.add(tag);
+        if (!duplicateChecker) {
+            this.tags.add(tag);
+        }
+    }
+
+    public void addReaction(Reaction reactionType) {
+        this.reactions.add(reactionType);
+    }
+
+    public void removeReaction(Reaction reactionType) {
+        this.reactions.remove(reactionType);
     }
 
     public void addComment(Comment comment) {
         this.comments.add(comment);
     }
-
-    public void addReaction(ReactionType reactionType) {
-        this.reactionTypes.add(reactionType);
-    }
-
-    public void removeReaction(ReactionType reactionType) {
-        this.reactionTypes.remove(reactionType);
-    }
-
-
 }
