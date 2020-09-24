@@ -69,7 +69,7 @@ public class JeComment {
     // 12. 댓글의 내용을 바꾸는 메서드를 등록한다.
     // 13. 하위 댓글의 내용을 바꾸는 메서드를 등록한다.
     public void modifyComment(JeAuthor author, String content) {
-        if (author.getName() == this.author.getName()) {
+        if (author.getName().equals(this.author.getName())) {
             this.content = content;
             modifiedDateTime = OffsetDateTime.now();
         }
