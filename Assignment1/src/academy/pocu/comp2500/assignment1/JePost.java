@@ -17,6 +17,7 @@ public class JePost {
     private HashSet<Integer> recommendList;
     private HashSet<Integer> notRecommendList;
     private HashMap<Integer, EReaction> reactions;
+    private ArrayList<EReaction> reactionsTest;
     private int great;
     private int sad;
     private int angry;
@@ -123,53 +124,60 @@ public class JePost {
     }
 
     // 14. 블로그 글에 리액션을 추가하는 메서드를 등록한다.
-    public void addReaction(JeAuthor author, EReaction emoji) {
-        if (reactions.containsKey(author.getId())) {
-            removeReaction(author, reactions.get(author.getId()));
-        }
-        reactions.put(author.getId(), emoji);
-        switch (emoji) {
-            case GREAT:
-                great++;
-                break;
-            case SAD:
-                sad++;
-                break;
-            case ANGRY:
-                angry++;
-                break;
-            case FUN:
-                fun++;
-                break;
-            case LOVE:
-                love++;
-                break;
-        }
+//    public void addReaction(JeAuthor author, EReaction emoji) {
+//        if (reactions.containsKey(author.getId())) {
+//            removeReaction(author, reactions.get(author.getId()));
+//        }
+//        reactions.put(author.getId(), emoji);
+//        switch (emoji) {
+//            case GREAT:
+//                great++;
+//                break;
+//            case SAD:
+//                sad++;
+//                break;
+//            case ANGRY:
+//                angry++;
+//                break;
+//            case FUN:
+//                fun++;
+//                break;
+//            case LOVE:
+//                love++;
+//                break;
+//        }
+//    }
+    public void addReaction(EReaction emoji) {
+        reactionsTest.add(emoji);
+    }
+
+    public void removeReaction(EReaction emoji) {
+        reactionsTest.remove(emoji);
     }
 
     // 15. 블로그 글로부터 리액션을 제거하는 메서드를 등록한다.
-    public void removeReaction(JeAuthor author, EReaction emoji) {
-        if (reactions.containsKey(author.getId())) {
-            reactions.remove(author.getId());
-            switch (emoji) {
-                case GREAT:
-                    great--;
-                    break;
-                case SAD:
-                    sad--;
-                    break;
-                case ANGRY:
-                    angry--;
-                    break;
-                case FUN:
-                    fun--;
-                    break;
-                case LOVE:
-                    love--;
-                    break;
-            }
-        }
-    }
+//    public void removeReaction(JeAuthor author, EReaction emoji) {
+//        if (reactions.containsKey(author.getId())) {
+//            reactions.remove(author.getId());
+//            switch (emoji) {
+//                case GREAT:
+//                    great--;
+//                    break;
+//                case SAD:
+//                    sad--;
+//                    break;
+//                case ANGRY:
+//                    angry--;
+//                    break;
+//                case FUN:
+//                    fun--;
+//                    break;
+//                case LOVE:
+//                    love--;
+//                    break;
+//            }
+//        }
+//    }
 
     public int getReaction(EReaction emoji) {
         switch (emoji) {
