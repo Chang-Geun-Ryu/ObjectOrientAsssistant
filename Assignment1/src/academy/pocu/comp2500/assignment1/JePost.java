@@ -17,7 +17,7 @@ public class JePost {
     private HashSet<Integer> recommendList;
     private HashSet<Integer> notRecommendList;
     private HashMap<Integer, EReaction> reactions;
-    private ArrayList<EReaction> reactionsTest;
+    private ArrayList<EReaction> reactionsTest;//HashMap<EReaction, ArrayList<String>>reactionsTest;
     private int great;
     private int sad;
     private int angry;
@@ -36,6 +36,7 @@ public class JePost {
         recommendList = new HashSet<>();
         notRecommendList = new HashSet<>();
         reactions = new HashMap<>();
+        reactionsTest = new ArrayList<>();
     }
 
     public JeAuthor getAuthor() {
@@ -149,9 +150,17 @@ public class JePost {
 //    }
     public void addReaction(EReaction emoji) {
         reactionsTest.add(emoji);
+//        reactionsTest.add(emoji);
+//        if (this.reactions.containsKey(emoji)) {
+//            this.reactions.get(emoji).add(userId);
+//        } else {
+//            ArrayList<String> array = new ArrayList<>();
+//            array.add(userId);
+//            this.reactions.put(emoji, array);
+//        }
     }
 
-    public void removeReaction(EReaction emoji) {
+    public void removeReaction(EReaction emoji, String userId) {
         reactionsTest.remove(emoji);
     }
 
