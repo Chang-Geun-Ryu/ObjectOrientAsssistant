@@ -58,8 +58,8 @@ public class JePost {
         return tags;
     }
 
-    public HashMap<Integer, EReaction> getReactions() {
-        return reactions;
+    public ArrayList<EReaction> getReactions() {
+        return reactionsTest;
     }
 
     public OffsetDateTime getCreatedDateTime() {
