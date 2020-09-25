@@ -6,7 +6,8 @@ public class JeAuthor {
 
     public JeAuthor(String name) {
         this.name = name;
-        userId = (name + this).hashCode();
+//        userId = (name + this).hashCode();
+        userId = name.hashCode();
     }
 
     public String getName() {
