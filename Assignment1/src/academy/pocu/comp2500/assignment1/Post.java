@@ -4,11 +4,12 @@ import java.awt.image.AreaAveragingScaleFilter;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Post {
-    private ArrayList<String> tags;
+    private HashSet<String> tags;
     private String title;
     private String body;
     private ArrayList<Comment> comments;
@@ -21,8 +22,8 @@ public class Post {
     private int loveCount = 0;
     private int angryCount = 0;
     private int greatCount = 0;
-    private HashMap<User, ReactionType> reactionMap;
-
+    private HashMap<String, ReactionType> reactionMap;
+    private ArrayList<ReactionType> reactions;
     public User getAuthor() {
         return author;
     }
@@ -37,36 +38,35 @@ public class Post {
         });
         return result;
     }
-    public ArrayList<String> getTags() {
+    public HashSet<String> getTags() {
         return tags;
     }
     public String getBody() {
         return body;
     }
 
-    public void setBody(String body) {
-//        if (this.author != user) {
-//            return;
-//        }
-//        if (body == null) {
-//            return;
-//        }
-        this.body = body;
-        modified();
-    }
     public void setTitle(User user, String title) {
-//        if (this.author != user) {
-//            return;
-//        }
-//        if (title == null) {
-//            return;
-//        }
-//        if (title.length() == 0) {
-//            return;
-//        }
+        if (!this.author.getNickname().equals(user.getNickname())) {
+            return;
+        }
+        if (title == null) {
+            return;
+        }
         this.title = title;
         modified();
     }
+
+    public void setBody(User user, String body) {
+        if (!this.author.getNickname().equals(user.getNickname())) {
+            return;
+        }
+        if (body == null) {
+            return;
+        }
+        this.body = body;
+        modified();
+    }
+
     public String getTitle() {
         return title;
     }
@@ -86,7 +86,7 @@ public class Post {
         createdDateTime = OffsetDateTime.now();
         modifiedDateTime = OffsetDateTime.now();
         comments = new ArrayList<>();
-        tags = new ArrayList<>();
+        tags = new HashSet<>();
         reactionMap = new HashMap<>();
     }
 
@@ -97,16 +97,15 @@ public class Post {
         this.body = body;
     }
 
-    public void tagAdder(String tag) {
-        if (tags.contains(tag)) {
+    public void tagAdder(User user, String tag) {
+        if (!user.getNickname().equals(this.author.getNickname())) {
             return;
         }
         if (tag == null) {
             return;
         }
-        if (tag.length() == 0) {
-            return;
-        }
+
+
         tags.add(tag);
     }
 
@@ -122,81 +121,91 @@ public class Post {
     }
 
 
-    public void reactionAdder(User user, ReactionType reactionType) {
-        if (user == null) {
-            return;
-        }
-        if (reactionMap.containsKey(user)) {
-            if (reactionMap.get(user) == reactionType) {
-                return;
-            } else {
-
-                switch (reactionMap.get(user)) {
-                    case FUN:
-                        funCount--;
-                        break;
-                    case SAD:
-                        sadCount--;
-                        break;
-                    case LOVE:
-                        loveCount--;
-                        break;
-                    case ANGRY:
-                        angryCount--;
-                        break;
-                    case GREAT:
-                        greatCount--;
-                        break;
-                }
-                reactionMap.replace(user, reactionType);
-            }
-        } else {
-            reactionMap.put(user, reactionType);
-        }
-        switch (reactionType) {
-            case FUN:
-                funCount++;
-                break;
-            case SAD:
-                sadCount++;
-                break;
-            case LOVE:
-                loveCount++;
-                break;
-            case ANGRY:
-                angryCount++;
-                break;
-            case GREAT:
-                greatCount++;
-                break;
-        }
+    public void reactionAdder(ReactionType reactionType) {
+        reactions.add(reactionType);
+//        if (user == null) {
+//            return;
+//        }
+//        if (user.getNickname().equals(author.getNickname())) {
+//            return;
+//        }
+//        String name = user.getNickname();
+//        if (reactionMap.containsKey(name)) {
+//            if (reactionMap.get(name).equals(reactionType)) {
+//                return;
+//            } else {
+//
+//                switch (reactionMap.get(name)) {
+//                    case FUN:
+//                        funCount--;
+//                        break;
+//                    case SAD:
+//                        sadCount--;
+//                        break;
+//                    case LOVE:
+//                        loveCount--;
+//                        break;
+//                    case ANGRY:
+//                        angryCount--;
+//                        break;
+//                    case GREAT:
+//                        greatCount--;
+//                        break;
+//                }
+//                reactionMap.replace(name, reactionType);
+//            }
+//        } else {
+//            reactionMap.put(name, reactionType);
+//        }
+//        switch (reactionType) {
+//            case FUN:
+//                funCount++;
+//                break;
+//            case SAD:
+//                sadCount++;
+//                break;
+//            case LOVE:
+//                loveCount++;
+//                break;
+//            case ANGRY:
+//                angryCount++;
+//                break;
+//            case GREAT:
+//                greatCount++;
+//                break;
+//        }
     }
 
-    public void reactionRemover(User user) {
-        if (user == null) {
-            return;
-        }
-
-        if (reactionMap.containsKey(user)) {
-            switch (reactionMap.get(user)) {
-                case FUN:
-                    funCount--;
-                    break;
-                case SAD:
-                    sadCount--;
-                    break;
-                case LOVE:
-                    loveCount--;
-                    break;
-                case ANGRY:
-                    angryCount--;
-                    break;
-                case GREAT:
-                    greatCount--;
-                    break;
-            }
-            reactionMap.remove(user);
-        }
+    public void reactionRemover(ReactionType reactionType) {
+        reactions.remove(reactionType);
+//        if (user == null) {
+//            return;
+//        }
+//        if (user.getNickname().equals(author.getNickname())) {
+//            return;
+//        }
+//        String name = user.getNickname();
+//
+//        if (reactionMap.containsKey(name)) {
+//            switch (reactionMap.get(name)) {
+//                case FUN:
+//                    funCount--;
+//                    break;
+//                case SAD:
+//                    sadCount--;
+//                    break;
+//                case LOVE:
+//                    loveCount--;
+//                    break;
+//                case ANGRY:
+//                    angryCount--;
+//                    break;
+//                case GREAT:
+//                    greatCount--;
+//                    break;
+//            }
+//            reactionMap.remove(name);
+//        }
     }
 
     public int getReactionCount(ReactionType reactionType) {
@@ -221,4 +230,10 @@ public class Post {
         return result;
     }
 
+
+    HashSet<String> getAllTags() {
+        HashSet<String> temp = new HashSet<String>(tags);
+        temp.add(author.getNickname());
+        return temp;
+    }
 }

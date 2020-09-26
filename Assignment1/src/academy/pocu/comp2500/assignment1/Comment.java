@@ -23,12 +23,12 @@ public class Comment {
     }
 
     public void setBody(User user, String body) {
-        if (this.user.getFullName().contentEquals(user.getFullName()) == false) {
+        if (!this.user.getNickname().equals(user.getNickname())) {
             return;
         }
-//        if (body == null) {
-//            return;
-//        }
+        if (body == null) {
+            return;
+        }
         this.body = body;
         modified();
     }

@@ -1,17 +1,16 @@
 package academy.pocu.comp2500.assignment1;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class Blog {
     private User host;
     private ArrayList<Post> posts;
     private SortingType sortingType;
-    private ArrayList<String> tagFilter;
-    private String authorFilter;
+    private HashSet<String> tagFilter;
+    private User authorFilter;
 
     public void setSortingType(SortingType sortingType) {
         this.sortingType = sortingType;
@@ -22,7 +21,7 @@ public class Blog {
         posts = new ArrayList<Post>();
         sortingType = SortingType.CREATELOWER;
         authorFilter = null;
-        tagFilter = new ArrayList<>();
+        tagFilter = new HashSet<String>();
     }
 
     public Blog(User user) {
@@ -88,9 +87,24 @@ public class Blog {
     }
 
     private boolean filterFunc(Post post) {
-        boolean isTagPass = true;
-        boolean isAuthorPass = true;
+        if (this.authorFilter != null) {
+            if (!this.authorFilter.getNickname().equals(post.getAuthor().getNickname())) {
+                return false;
+            }
+        }
+
         if (tagFilter.size() > 0) {
+            if (post.getTags().size() == 0) {
+                return false;
+            }
+
+//            for (String t : tagFilter) {
+//                for (String tag : post.getTags()) {
+//                    if (!tag.equals(t)) {
+//                        return false;
+//                    }
+//                }
+//            }
 
             boolean temp = false;
             for (String t : tagFilter) {
@@ -99,45 +113,52 @@ public class Blog {
                     break;
                 }
             }
-            if (!temp) {
-                isTagPass = false;
-            }
+            return temp;
         }
 
-        if (this.authorFilter != null) {
-            if (this.authorFilter != post.getAuthor().getNickname()) {
-                isAuthorPass = false;
-            }
-        }
-
-        return isTagPass && isAuthorPass;
+        return true;
     }
 
-    public void authorFilterSetter(String nickname) {
-        if (nickname == null) {
+    public void authorFilterSetter(User user) {
+//        if (user == null) {
+//            return;
+//        }
+        if (user == null) {
+            authorFilterClear();
             return;
         }
-        this.authorFilter = nickname;
+        this.authorFilter = user;
     }
 
     public void tagFilterSetter(String tag) {
-        if (this.tagFilter.contains(tag)) {
-            return;
-        }
+
+//        if (tag == null) {
+//            return;
+//        }
         if (tag == null) {
+            tagFilterClear();
             return;
         }
-        if (tag.length() == 0) {
-            return;
-        }
+
         this.tagFilter.add(tag);
+
     }
 
     public void tagFilterClear() {
         this.tagFilter.clear();
     }
 
+
     public void authorFilterClear() {
         this.authorFilter = null;
+    }
+
+    public void tagFilterRemove(String tag) {
+        this.tagFilter.remove(tag);
+    }
+    public void authorFilterRemove(User author) {
+        if (this.authorFilter.equals(author)) {
+            this.authorFilter = null;
+        }
     }
 }
