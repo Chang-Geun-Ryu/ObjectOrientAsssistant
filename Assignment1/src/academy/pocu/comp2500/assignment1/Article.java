@@ -47,7 +47,7 @@ public class Article {
                 }
             }
             this.tags.add(tag);
-            this.modifiedAt = OffsetDateTime.now();
+//            this.modifiedAt = OffsetDateTime.now();
         }
     }
 
