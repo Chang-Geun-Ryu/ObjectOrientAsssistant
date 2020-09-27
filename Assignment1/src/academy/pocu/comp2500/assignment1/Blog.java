@@ -1,164 +1,105 @@
 package academy.pocu.comp2500.assignment1;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.stream.Collectors;
 
 public class Blog {
-    private User host;
-    private ArrayList<Post> posts;
+    private String userId;
+    private ArrayList<Article> articles;
     private SortingType sortingType;
-    private HashSet<String> tagFilter;
-    private User authorFilter;
+    private ArrayList<String> tagFilter;
+    private ArrayList<String> authorFilter;
 
-    public void setSortingType(SortingType sortingType) {
-        this.sortingType = sortingType;
+    public enum SortingType {
+        CREATED_AT_DESCENDING,
+        CREATED_AT_ASCENDING,
+        UPDATED_AT_DESCENDING,
+        UPDATED_AT_ASCENDING,
+        TITLE_AT_ASCENDING;
     }
 
-    private Blog() {
-        super();
-        posts = new ArrayList<Post>();
-        sortingType = SortingType.CREATELOWER;
-        authorFilter = null;
-        tagFilter = new HashSet<String>();
+    public Blog(String userId) {
+        this.userId = userId;
+        this.articles = new ArrayList<Article>();
+        this.tagFilter = new ArrayList<String>();
+        this.authorFilter =  new ArrayList<String>();
     }
 
-    public Blog(User user) {
-        this();
-        host = user;
+    public void createArticle(Article article) {
+        this.articles.add(article);
     }
 
-    public void postAdder(Post post) {
-        posts.add(post);
-    }
+    public ArrayList<Article> getArticles() {
+        int numTagsInFilter = this.tagFilter.size();
+        int numAuthorsInFilter = this.authorFilter.size();
 
-    public ArrayList<Post> postListGetter() {
-        ArrayList<Post> result = getList();
-        switch (sortingType) {
-            case CREATELOWER:
-                result.sort((o1, o2) -> {
-                    if (o1.getCreatedDateTime().isBefore(o2.getCreatedDateTime())) {
-                        return 1;
-                    } else {
-                        return 0;
+        ArrayList<Article> filteredArticles = new ArrayList<Article>();
+        ArrayList<Article> filteredArticlesByAuthor = new ArrayList<Article>();
+
+        if (numAuthorsInFilter == 0 && numTagsInFilter == 0) {
+            filteredArticles = this.articles;
+        } else {
+            if (numAuthorsInFilter > 0) {
+                for (int i = 0; i < numAuthorsInFilter; ++i) {
+                    String author = this.authorFilter.get(i);
+                    for (int j = 0; j < this.articles.size(); ++i) {
+                        Article article = this.articles.get(i);
+                        if (author.equals(article.getUserId())) {
+                            filteredArticlesByAuthor.add(article);
+                        }
                     }
-                });
-                break;
-            case CREATEUPPER:
-                result.sort((o1, o2) -> {
-                    if (o1.getCreatedDateTime().isAfter(o2.getCreatedDateTime())) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                });
-                break;
-            case MODIFIEDLOWER:
-                result.sort((o1, o2) -> {
-                    if (o1.getModifiedDateTime().isBefore(o2.getModifiedDateTime())) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                });
-                break;
-            case MODIFIEDUPPER:
-                result.sort((o1, o2) -> {
-                    if (o1.getModifiedDateTime().isAfter(o2.getModifiedDateTime())) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                });
-                break;
-            case TITLE:
-                result.sort(Comparator.comparing(o -> o.getTitle()));
-                break;
-            default:
-                break;
-        }
-        return result;
-    }
-
-    public ArrayList<Post> getList() {
-        ArrayList<Post> result = posts.stream().filter(post -> filterFunc(post)).collect(Collectors.toCollection(ArrayList::new));
-        return result;
-    }
-
-    private boolean filterFunc(Post post) {
-        if (this.authorFilter != null) {
-            if (!this.authorFilter.getNickname().equals(post.getAuthor().getNickname())) {
-                return false;
-            }
-        }
-
-        if (tagFilter.size() > 0) {
-            if (post.getTags().size() == 0) {
-                return false;
+                }
+            } else {
+                filteredArticlesByAuthor = this.articles;
             }
 
-//            for (String t : tagFilter) {
-//                for (String tag : post.getTags()) {
-//                    if (!tag.equals(t)) {
-//                        return false;
+//            if (numTagsInFilter > 0) {
+//                for (int i = 0; i < numTagsInFilter; ++i) {
+//                    String tag = this.tagFilter.get(i);
+//                    for (int j = 0; j < this.tags.size(); ++i) {
+//                        Article article = this.articles.get(i);
+//                        if (tag.equals(article.getUserId())) {
+//                            filteredArticles.add(article);
+//                        }
 //                    }
 //                }
 //            }
+            filteredArticles = filteredArticlesByAuthor;
+        }
 
-            boolean temp = false;
-            for (String t : tagFilter) {
-                if (post.getTags().contains(t)) {
-                    temp = true;
+        return filteredArticles;
+    }
+
+    // Set arrangement order
+    public void setArticleOrder(SortingType sortingType) {
+        this.sortingType = sortingType;
+    }
+
+    public void setAuthorsFilter(String author) {
+        for (int i = 0; i < this.authorFilter.size(); ++i) {
+            if (author.equals(authorFilter.get(i))) {
+                return;
+            }
+        }
+
+        this.authorFilter.add(author);
+    }
+
+    public void setTagsFilter(ArrayList<String> tags) {
+        ArrayList<String> newTags = new ArrayList<String>();
+        for (int i = 0; i < tags.size(); ++i) {
+            String currentTag = tags.get(i);
+            for (int j = 0; j < this.tagFilter.size(); ++i) {
+                if (currentTag.equals(this.tagFilter.get(i))) {
                     break;
                 }
+                if (j == this.tagFilter.size() - 1) {
+                    newTags.add(currentTag);
+                }
             }
-            return temp;
         }
 
-        return true;
-    }
-
-    public void authorFilterSetter(User user) {
-//        if (user == null) {
-//            return;
-//        }
-        if (user == null) {
-            authorFilterClear();
-            return;
-        }
-        this.authorFilter = user;
-    }
-
-    public void tagFilterSetter(String tag) {
-
-//        if (tag == null) {
-//            return;
-//        }
-        if (tag == null) {
-            tagFilterClear();
-            return;
-        }
-
-        this.tagFilter.add(tag);
-
-    }
-
-    public void tagFilterClear() {
-        this.tagFilter.clear();
-    }
-
-
-    public void authorFilterClear() {
-        this.authorFilter = null;
-    }
-
-    public void tagFilterRemove(String tag) {
-        this.tagFilter.remove(tag);
-    }
-    public void authorFilterRemove(User author) {
-        if (this.authorFilter.equals(author)) {
-            this.authorFilter = null;
+        for (int i = 0; i < newTags.size(); ++i) {
+            this.tagFilter.add(newTags.get(i));
         }
     }
 }

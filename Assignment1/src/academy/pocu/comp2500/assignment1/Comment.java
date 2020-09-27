@@ -1,89 +1,55 @@
 package academy.pocu.comp2500.assignment1;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Comment {
-    private User user;
-    private String body;
-    private Map<User, Voter> voters;
-    private ArrayList<Comment> subcomment;
-    private OffsetDateTime createdDateTime;
-    private OffsetDateTime modifiedDateTime;
-    public OffsetDateTime getCreatedDateTime() {
-        return createdDateTime;
-    }
-    public OffsetDateTime getModifiedDateTime() {
-        return modifiedDateTime;
-    }
-    private void modified() {
-        modifiedDateTime = OffsetDateTime.now();
+    private String userId;
+    private ArrayList<Comment> subcomments;
+    private String text;
+    private ArrayList<String> upvotes;
+    private ArrayList<String> downvotes;
+
+    public Comment(String userId, String text) {
+        this.userId = userId;
+        this.text = text;
+        this.subcomments = new ArrayList<Comment>();
+        this.upvotes = new ArrayList<String>();
+        this.downvotes = new ArrayList<String>();
     }
 
-    public void setBody(User user, String body) {
-        if (!this.user.getNickname().equals(user.getNickname())) {
-            return;
+    public void addSubcomment(Comment comment) {
+        this.subcomments.add(comment);
+    }
+
+    public void setComment(String userId, String text) {
+        if (this.userId == userId) {
+            this.text = text;
         }
-        if (body == null) {
-            return;
-        }
-        this.body = body;
-        modified();
     }
 
-    public ArrayList<Comment> getSubcomment() {
-        return subcomment;
+    public ArrayList<Comment> getSubcomments() {
+        return this.subcomments;
     }
 
-    private Comment() {
-        super();
-        createdDateTime = OffsetDateTime.now();
-        modifiedDateTime = OffsetDateTime.now();
-        subcomment = new ArrayList<Comment>();
-        voters = new HashMap<>();
-    }
+    public void addUpvote(String userId) {
+        ArrayList<String> upvotes = this.upvotes;
 
-    public Comment(User user, String body) {
-        this();
-        this.user = user;
-        this.setBody(user, body);
-    }
-
-    public void subcommentAdder(Comment comment) {
-        subcomment.add(comment);
-    }
-
-    public int getVoteCount() {
-        int count = 0;
-        for (Voter v : voters.values()) {
-            switch (v) {
-                case UP:
-                    count++;
-                    break;
-                case DOWN:
-                    count--;
-                    break;
-                default:
-                    break;
+        for (int i = 0; i < upvotes.size(); ++i) {
+            if (userId.equals(upvotes.get(i))) {
+                return;
             }
         }
-        return count;
+        this.upvotes.add(userId);
     }
 
-    public void commentUpvoter(User user) {
-        if (voters.containsKey(user)) {
-            voters.replace(user, Voter.UP);
-        } else {
-            voters.put(user, Voter.UP);
+    public void addDownvote(String userId) {
+        ArrayList<String> downvotes = this.downvotes;
+
+        for (int i = 0; i < downvotes.size(); ++i) {
+            if (userId.equals(downvotes.get(i))) {
+                return;
+            }
         }
-    }
-    public void commentDownvoter(User user) {
-        if (voters.containsKey(user)) {
-            voters.replace(user, Voter.DOWN);
-        } else {
-            voters.put(user, Voter.DOWN);
-        }
+        this.downvotes.add(userId);
     }
 }
