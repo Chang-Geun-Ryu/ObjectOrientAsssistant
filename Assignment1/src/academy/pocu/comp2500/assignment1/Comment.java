@@ -3,6 +3,7 @@ package academy.pocu.comp2500.assignment1;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class Comment {
@@ -26,9 +27,9 @@ public class Comment {
         this.downvote = new ArrayList<>();
     }
 
-    public int getCommentId() {
-        return this.commentId;
-    }
+//    public int getCommentId() {
+//        return this.commentId;
+//    }
 
     public String getAuthor() {
         return author;
@@ -47,8 +48,11 @@ public class Comment {
     }
 
     public ArrayList<Comment> getSubcomments() {
-        subcomments.sort((c1, c2) -> (c2.getUpvote() - c2.getDownvote()) - (c1.getUpvote() - c1.getDownvote()));
-        return subcomments;
+        ArrayList<Comment> sortComment = subcomments;
+
+        Collections.sort(sortComment, (lhs, rhs) -> Integer.compare(rhs.getDifferenceVoteCount(), lhs.getDifferenceVoteCount()));
+
+        return sortComment;
 //        Comment[] commentArray = subcomments.values().toArray(new Comment[0]);
 //        Comment tempComment;
 //        int max = 0;

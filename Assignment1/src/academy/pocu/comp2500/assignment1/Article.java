@@ -3,6 +3,7 @@ package academy.pocu.comp2500.assignment1;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class Article {
@@ -13,7 +14,7 @@ public class Article {
     private final OffsetDateTime createdDateTime;
     private OffsetDateTime modifiedDateTime;
     private final ArrayList<String> tags;
-    private final HashMap<Integer, Comment> comments;
+    private final ArrayList<Comment> comments;
     private final HashMap<Reaction, Integer> reactions;
 
     public Article(String author, String title, String content) {
@@ -24,7 +25,7 @@ public class Article {
         this.createdDateTime = OffsetDateTime.now();
         this.modifiedDateTime = OffsetDateTime.now();
         this.tags = new ArrayList<>();
-        this.comments = new HashMap<>();
+        this.comments = new ArrayList<>();
         this.reactions = new HashMap<>();
         this.reactions.put(Reaction.GREAT, 0);
         this.reactions.put(Reaction.SAD, 0);
@@ -62,22 +63,27 @@ public class Article {
     }
 
     public ArrayList<Comment> getComments() {
-        Comment[] commentArray = comments.values().toArray(new Comment[0]);
-        Comment tempComment;
-        int max = 0;
-        for (int i = 0; i < commentArray.length - 1; i++) {
-            max = i;
-            for (int j = i + 1; j < commentArray.length; j++) {
-                if (commentArray[j].getDifferenceVoteCount() > commentArray[max].getDifferenceVoteCount()) {
-                    max = j;
-                }
-            }
-            tempComment = commentArray[i];
-            commentArray[i] = commentArray[max];
-            commentArray[max] = tempComment;
-        }
+        ArrayList<Comment> sortComment = comments;
 
-        return new ArrayList<>(Arrays.asList(commentArray));
+        Collections.sort(sortComment, (lhs, rhs) -> Integer.compare(rhs.getDifferenceVoteCount(), lhs.getDifferenceVoteCount()));
+
+        return sortComment;
+//        Comment[] commentArray = comments.values().toArray(new Comment[0]);
+//        Comment tempComment;
+//        int max = 0;
+//        for (int i = 0; i < commentArray.length - 1; i++) {
+//            max = i;
+//            for (int j = i + 1; j < commentArray.length; j++) {
+//                if (commentArray[j].getDifferenceVoteCount() > commentArray[max].getDifferenceVoteCount()) {
+//                    max = j;
+//                }
+//            }
+//            tempComment = commentArray[i];
+//            commentArray[i] = commentArray[max];
+//            commentArray[max] = tempComment;
+//        }
+//
+//        return new ArrayList<>(Arrays.asList(commentArray));
     }
 
     public int getReactionCountByType(Reaction reactionType) {
@@ -105,8 +111,9 @@ public class Article {
     }
 
     public void addComment(Comment comment) {
-        int commentId = comment.getCommentId();
-        comments.put(commentId, comment);
+//        int commentId = comment.getCommentId();
+//        comments.put(commentId, comment);
+        comments.add(comment);
     }
 
     public void addReaction(Reaction reactionType) {
