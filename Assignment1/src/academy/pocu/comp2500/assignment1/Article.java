@@ -21,6 +21,7 @@ public class Article {
         this.comments = new ArrayList<Comment>();
         this.reactions = new ArrayList<Reaction>();
         this.createdAt = OffsetDateTime.now();
+        this.modifiedAt = OffsetDateTime.now();
     }
 
     public void setTitle(String userId, String title) {
