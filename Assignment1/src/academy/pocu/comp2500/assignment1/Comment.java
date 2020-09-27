@@ -9,7 +9,7 @@ public class Comment {
     private final int commentId;
     private final String author;
     private final OffsetDateTime createdDateTime;
-    private final HashMap<Integer, Comment> subcomments;
+    private final ArrayList<Comment> subcomments;
     private final ArrayList<String> upvote;
     private final ArrayList<String> downvote;
     private OffsetDateTime modifiedDateTime;
@@ -21,7 +21,7 @@ public class Comment {
         this.createdDateTime = OffsetDateTime.now();
         this.modifiedDateTime = OffsetDateTime.now();
         this.content = content;
-        this.subcomments = new HashMap<>();
+        this.subcomments = new ArrayList<>();
         this.upvote = new ArrayList<>();
         this.downvote = new ArrayList<>();
     }
@@ -47,22 +47,24 @@ public class Comment {
     }
 
     public ArrayList<Comment> getSubcomments() {
-        Comment[] commentArray = subcomments.values().toArray(new Comment[0]);
-        Comment tempComment;
-        int max = 0;
-        for (int i = 0; i < commentArray.length - 1; i++) {
-            max = i;
-            for (int j = i + 1; j < commentArray.length; j++) {
-                if (commentArray[j].getDifferenceVoteCount() > commentArray[max].getDifferenceVoteCount()) {
-                    max = j;
-                }
-            }
-            tempComment = commentArray[i];
-            commentArray[i] = commentArray[max];
-            commentArray[max] = tempComment;
-        }
-
-        return new ArrayList<>(Arrays.asList(commentArray));
+        subcomments.sort((c1, c2) -> (c2.getUpvote() - c2.getDownvote()) - (c1.getUpvote() - c1.getDownvote()));
+        return subcomments;
+//        Comment[] commentArray = subcomments.values().toArray(new Comment[0]);
+//        Comment tempComment;
+//        int max = 0;
+//        for (int i = 0; i < commentArray.length - 1; i++) {
+//            max = i;
+//            for (int j = i + 1; j < commentArray.length; j++) {
+//                if (commentArray[j].getDifferenceVoteCount() > commentArray[max].getDifferenceVoteCount()) {
+//                    max = j;
+//                }
+//            }
+//            tempComment = commentArray[i];
+//            commentArray[i] = commentArray[max];
+//            commentArray[max] = tempComment;
+//        }
+//
+//        return new ArrayList<>(Arrays.asList(commentArray));
     }
 
     public int getUpvote() {
@@ -81,21 +83,22 @@ public class Comment {
         setModifiedDateTime(OffsetDateTime.now());
     }
 
-    public void upvote(String name) {
-        if (!upvote.contains(name)) {
-            this.upvote.add(name);
+    public void upvote(String author) {
+        if (!upvote.contains(author)) {
+            this.upvote.add(author);
         }
     }
 
-    public void downvote(String name) {
-        if (!downvote.contains(name)) {
-            this.downvote.add(name);
+    public void downvote(String author) {
+        if (!downvote.contains(author)) {
+            this.downvote.add(author);
         }
     }
 
     public void addSubcomment(Comment comment) {
-        int subcommentId = comment.getCommentId();
-        subcomments.put(subcommentId, comment);
+//        int subcommentId = comment.getCommentId();
+//        subcomments.put(subcommentId, comment);
+        subcomments.add(comment);
     }
 
     public void updateComment(String author, String content) {
