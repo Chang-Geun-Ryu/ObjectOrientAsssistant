@@ -82,13 +82,13 @@ public class Comment {
     }
 
     public void upvote(String name) {
-        if (!upvote.equals(name)) {
+        if (!upvote.contains(name)) {
             this.upvote.add(name);
         }
     }
 
     public void downvote(String name) {
-        if (!downvote.equals(name)) {
+        if (!downvote.contains(name)) {
             this.downvote.add(name);
         }
     }
