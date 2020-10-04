@@ -52,7 +52,7 @@ public class MemoryCache {
 
         for(int i = 0; i < repeatCount; i++) {
             String deleteKey = "";
-            for (String key: MemoryCache.instances.keySet()) {
+            for (String key : MemoryCache.instances.keySet()) {
                 if (deleteKey == "") {
                     deleteKey = key;
                     continue;
@@ -82,7 +82,7 @@ public class MemoryCache {
     }
 
     static final private void updateUsingOrders() {
-        for (String key: MemoryCache.instances.keySet()) {
+        for (String key : MemoryCache.instances.keySet()) {
             MemoryCache.instances.get(key).usingOrder++;
         }
     }
@@ -157,7 +157,7 @@ public class MemoryCache {
     }
 
     final private void updateUsingOrder() {
-        for (String key: this.memory.keySet()) {
+        for (String key : this.memory.keySet()) {
             this.memory.get(key).updateOrder();
         }
     }
@@ -166,7 +166,7 @@ public class MemoryCache {
         String deleteKey = "";
 
         if (delete) {
-            for (String key: this.memory.keySet()) {
+            for (String key : this.memory.keySet()) {
                 if (shift) {
                     if (this.memory.get(key).getCreateOrder() + 1 > this.memorySize - addSize) {
                         deleteKey = key;
@@ -181,12 +181,12 @@ public class MemoryCache {
             this.memory.remove(deleteKey);
 
             if (shift == false) {
-                for (String key: this.memory.keySet()) {
+                for (String key : this.memory.keySet()) {
                     this.memory.get(key).downShiftCreateOrder();
                 }
             }
         } else {
-            for (String key: this.memory.keySet()) {
+            for (String key : this.memory.keySet()) {
                 if (shift) {
                     if (this.memory.get(key).upShiftCreateOrder() > this.memorySize) {
                         deleteKey = key;
@@ -201,7 +201,7 @@ public class MemoryCache {
     }
 
     final private void shiftCreateOrderAt(int at) {
-        for (String key: this.memory.keySet()) {
+        for (String key : this.memory.keySet()) {
             if (this.memory.get(key).getCreateOrder() > at) {
                 this.memory.get(key).downShiftCreateOrder();
             }
