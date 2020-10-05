@@ -66,4 +66,32 @@ public class Product {
         return shippingMethod;
     }
 
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public int getPrice() {
+//        return this.price;
+//    }
+//
+//    public int getColor() {
+//        return this.rgb.getIntRGB();
+//    }
+//
+//    public RGB getRgb() {
+//        return this.rgb;
+//    }
+//
+//    public int getWidth() {
+//        return this.width;
+//    }
+//
+//    public int getHeight() {
+//        return this.height;
+//    }
+//
+//    public ShippingMethod getShippingMethod() {
+//        return this.shippingMethod;
+//    }
+
 }
