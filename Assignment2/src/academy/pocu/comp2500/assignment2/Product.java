@@ -6,6 +6,8 @@ public class Product {
     private Color color;
     private int price;
     private ShippingMethod shippingMethod;
+    private int width;
+    private int height;
 
     protected Product(Size size, Color color, ShippingMethod shippingMethod) {
         this.size = size;
@@ -13,23 +15,25 @@ public class Product {
         this.shippingMethod = shippingMethod;
     }
 
-    public void setSize(Size size) {
+    protected void setSize(Size size) {
         this.size = size;
+        width = size.getWidth();
+        height = size.getHeight();
     }
 
-    public void setName(String name) {
+    protected void setName(String name) {
         this.name = name;
     }
 
-    public void setColor(Color color) {
+    protected void setColor(Color color) {
         this.color = color;
     }
 
-    public void setPrice(int price) {
+    protected void setPrice(int price) {
         this.price = price;
     }
 
-    public void setShippingMethod(ShippingMethod shippingMethod) {
+    protected void setShippingMethod(ShippingMethod shippingMethod) {
         this.shippingMethod = shippingMethod;
     }
 
