@@ -17,8 +17,8 @@ public class Product {
 
     protected void setSize(Size size) {
         this.size = size;
-        width = size.getWidth();
-        height = size.getHeight();
+        this.width = size.getWidth();
+        this.height = size.getHeight();
     }
 
     protected void setName(String name) {
@@ -42,11 +42,11 @@ public class Product {
     }
 
     public int getWidth() {
-        return size.getWidth();
+        return this.width;
     }
 
     public int getHeight() {
-        return size.getHeight();
+        return this.height;
     }
 
     public String getName() {
