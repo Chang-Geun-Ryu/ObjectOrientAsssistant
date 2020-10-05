@@ -1,6 +1,7 @@
 package academy.pocu.comp2500.assignment2;
 
 public class Product {
+    private Size size;
     private String name;
     private Color color;
     private int price;
@@ -9,7 +10,7 @@ public class Product {
     private int height;
 
     protected Product(Size size, Color color, ShippingMethod shippingMethod) {
-//        this.size = size;
+        this.size = size;
         this.width = size.getWidth();
         this.height = size.getHeight();
         this.color = color;
@@ -17,7 +18,7 @@ public class Product {
     }
 
     protected void setSize(Size size) {
-//        this.size = size;
+        this.size = size;
         this.width = size.getWidth();
         this.height = size.getHeight();
     }
@@ -52,6 +53,10 @@ public class Product {
 
     public Color getColorInstance() {
         return color;
+    }
+
+    public Size getSize() {
+        return size;
     }
 
     public int getColor() {
