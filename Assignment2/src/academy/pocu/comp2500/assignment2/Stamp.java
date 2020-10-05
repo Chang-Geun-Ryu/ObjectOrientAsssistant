@@ -2,15 +2,15 @@ package academy.pocu.comp2500.assignment2;
 
 public class Stamp extends Product {
 
-    private StampColor stampColor;
-    private StampSize stampSize;
+//    private StampColor stampColor;
+//    private StampSize stampSize;
     private String text;
 
     public Stamp(StampColor stampColor, StampSize stampSize, String textOrNull) {
         super(new Size(), new Color(0, 0, 0), ShippingMethod.PICK_UP);
 
-        this.stampColor = stampColor;
-        this.stampSize = stampSize;
+//        this.stampColor = stampColor;
+//        this.stampSize = stampSize;
         if (textOrNull == null) {
             this.text = "";
         } else {
@@ -40,13 +40,13 @@ public class Stamp extends Product {
         this.setName(String.format("Stamp (%d mm x %d mm)", this.getWidth(), this.getHeight()));
     }
 
-    public StampColor getStampColor() {
-        return stampColor;
-    }
+//    public StampColor getStampColor() {
+//        return stampColor;
+//    }
 
-    public StampSize getStampSize() {
-        return stampSize;
-    }
+//    public StampSize getStampSize() {
+//        return stampSize;
+//    }
 
     public String getText() {
         return text;
