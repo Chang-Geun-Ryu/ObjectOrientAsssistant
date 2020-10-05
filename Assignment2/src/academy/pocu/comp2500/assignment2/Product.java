@@ -54,8 +54,9 @@ public class Product {
 //        return colorInstance;
 //    }
 
-    public int getColor() {
-        return color.getIntColor();
+    public Color getColor() {
+        return color;
+//        return color.getIntColor();
     }
 
     public int getPrice() {
