@@ -3,13 +3,15 @@ package academy.pocu.comp2500.assignment2;
 public class Banner extends ApertureProduct {
     private BannerMaterial bannerMaterial;
     private BannerSize bannerSize;
-    private Orientation orientation;
+//    private Orientation orientation;
 
     public Banner(BannerMaterial bannerMaterial, BannerSize bannerSize, Color color, Orientation orientation) {
         super(new Size(), color);
         this.bannerMaterial = bannerMaterial;
-        this.orientation = orientation;
+//        this.orientation = orientation;
         this.bannerSize = bannerSize;
+
+        setOrientation(orientation);
 
         if (bannerSize == BannerSize.SIZE_1_05) {
             this.setSize(new Size(1000, 500));
@@ -45,7 +47,7 @@ public class Banner extends ApertureProduct {
         return bannerSize;
     }
 
-    public Orientation getOrientation() {
-        return orientation;
-    }
+//    public Orientation getOrientation() {
+//        return orientation;
+//    }
 }
