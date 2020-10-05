@@ -39,9 +39,9 @@ public class Product {
         this.shippingMethod = shippingMethod;
     }
 
-//    protected Size getSize() {
-//        return size;
-//    }
+    protected Size getSize() {
+        return new Size(width, height);
+    }
 
     public int getWidth() {
         return this.width;
