@@ -1,68 +1,58 @@
 package academy.pocu.comp2500.assignment2;
 
-public class BusinessCard extends Option {
-    protected Type type;
-    protected BusinessCardColor color;
-    protected BusinessCardSide side;
+import java.util.ArrayList;
 
-    public BusinessCard(Type type, BusinessCardSide sides, OrientationType orientation, BusinessCardColor color, ShippingOptionsType deliveryMethod) {
-        super(orientation);
-        this.side = sides;
+public class BusinessCard extends ApertureProduct {
+    private BusinessCardType type;
+    private CardColor cardColor;
+    private CardSide sides;
+    private Orientation orientation;
+
+
+    public BusinessCard(BusinessCardType type, CardSide sides, Orientation orientation, CardColor cardColor) {
+        super(new Size(90, 50), new Color());
         this.type = type;
-        this.color = color;
-        setName(type.getNameCard());
-        setPrice(type.getPrice() + sides.getAddPrice());
-        setDeliveryMethod(deliveryMethod);
-        setWidth(type.getWidth());
-        setHeight(type.getHeight());
+        this.sides = sides;
+        this.orientation = orientation;
+        this.cardColor = cardColor;
 
-//        setColor(color.getColor());
+        if (cardColor == CardColor.GRAY) {
+            this.setColor(new Color(0xE6, 0xE6, 0xE6));
+        } else if (cardColor == CardColor.IVORY) {
+            this.setColor(new Color(0xFF, 0xFF, 0xF0));
+        } else if (cardColor == CardColor.WHITE) {
+            this.setColor(new Color(0xFF, 0xFF, 0xFF));
+        }
+
+        if (type == BusinessCardType.LINEN) {
+            this.setName("Linen Business Card");
+            this.setPrice(110);
+        } else if (type == BusinessCardType.LAID) {
+            this.setName("Laid Business Card");
+            this.setPrice(120);
+        } else if (type == BusinessCardType.SMOOTH) {
+            this.setName("Smooth Business Card");
+            this.setPrice(100);
+        }
+
+        if (sides == CardSide.DOUBLE_SIDE) {
+            this.setPrice(this.getPrice() + 30);
+        }
     }
 
-//    public BusinessCardSide getSide() {
-//        return this.side;
-//    }
-
-    public Type getType() {
+    public BusinessCardType getType() {
         return type;
     }
 
-    public BusinessCardSide getSide() {
-        return this.side;
+    public CardColor getCardColor() {
+        return cardColor;
     }
 
-    public BusinessCardColor getCardColor() {
-        return this.color;
+    public CardSide getSides() {
+        return sides;
     }
-    protected void setSide(BusinessCardSide side) {
-        this.side = side;
+
+    public Orientation getOrientation() {
+        return orientation;
     }
-//    public BusinessCardSide getSide() {
-//        return this.side;
-//    }
-
-//    public Type getType() {
-//        return this.type;
-//    }
-
-//    public BusinessCardColor getColor() {
-//        return this.color;
-//    }
-
-//    public int getWidth() {
-//        return 90;
-//    }
-//
-//    public int getHeight() {
-//        return 50;
-//    }
-
-//    protected void setType(BusinessCardType type) {
-//        this.type = type;
-//    }
-//
-//    protected void setColor(BusinessCardColor color) {
-//        this.color = color;
-//    }
-
 }

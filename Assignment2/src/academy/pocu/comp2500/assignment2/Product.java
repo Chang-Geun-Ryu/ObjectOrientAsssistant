@@ -1,66 +1,55 @@
 package academy.pocu.comp2500.assignment2;
 
 public class Product {
+    private Size size;
     private String name;
+    private Color color;
     private int price;
-    private ShippingOptionsType deliveryMethod;
-    protected int width;
-    protected int height;
-//    private int color;
+    private ShippingMethod shippingMethod;
 
-    protected Product() {
-        this.name = "";
-        this.price = 0;
-        this.deliveryMethod = ShippingOptionsType.PICKUP;
-        this.width = 0;
-        this.height = 0;
+    protected Product(Size size, Color color, ShippingMethod shippingMethod) {
+        this.size = size;
+        this.color = color;
+        this.shippingMethod = shippingMethod;
     }
 
-//    protected void setColor(int color) {
-//        this.color = color;
-//    }
-
-    protected void setWidth(int width) {
-        this.width = width;
+    public Size getSize() {
+        return size;
     }
 
-    protected  void setHeight(int height) {
-        this.height = height;
-    }
-
-//    public int getColor() {
-//        return this.color;
-//    }
-
-    public int getWidth() {
-        return this.width;
-    }
-
-    public int getHeight() {
-        return this.height;
+    protected void setSize(Size size) {
+        this.size = size;
     }
 
     public String getName() {
-        return this.name;
-    }
-
-    public int getPrice() {
-        return this.price;// + (this.texts.size() + this.imagePaths.size()) * 5;
-    }
-
-    public ShippingOptionsType getDeliveryMethod() {
-        return this.deliveryMethod;
-    }
-
-    protected void setPrice(int price) {
-        this.price = price;
+        return name;
     }
 
     protected void setName(String name) {
         this.name = name;
     }
 
-    public void setDeliveryMethod(ShippingOptionsType deliveryMethod) {
-        this.deliveryMethod = deliveryMethod;
+    public Color getColor() {
+        return color;
+    }
+
+    protected void setColor(Color color) {
+        this.color = color;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    protected void setPrice(int price) {
+        this.price = price;
+    }
+
+    public ShippingMethod getShippingMethod() {
+        return shippingMethod;
+    }
+
+    protected void setShippingMethod(ShippingMethod shippingMethod) {
+        this.shippingMethod = shippingMethod;
     }
 }
