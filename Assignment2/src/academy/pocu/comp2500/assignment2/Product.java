@@ -50,7 +50,7 @@ public class Product {
         return name;
     }
 
-    public Color getColorIns() {
+    public Color getColorInstance() {
         return colorInstance;
     }
 
