@@ -10,7 +10,7 @@ public class BusinessCard extends ApertureProduct {
 
 
     public BusinessCard(BusinessCardType type, CardSide sides, Orientation orientation, CardColor cardColor) {
-        super(new Size(90, 50), new Color());
+        super(new Size(90, 50), new Color(0, 0, 0));
         this.type = type;
         this.sides = sides;
 //        this.orientation = orientation;

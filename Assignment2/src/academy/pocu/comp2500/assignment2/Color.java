@@ -5,8 +5,8 @@ public class Color {
     private int g;
     private int b;
 
-    public Color() {
-    }
+//    protected Color() {
+//    }
 
     public Color(int r, int g, int b) {
         this.r = r;//Math.min(Math.max(0, r), 0xFF);
