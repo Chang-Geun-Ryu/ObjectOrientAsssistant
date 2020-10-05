@@ -50,9 +50,9 @@ public class Product {
         return name;
     }
 
-    public Color getColorInstance() {
-        return color;
-    }
+//    public Color getColorInstance() {
+//        return color;
+//    }
 
     public int getColor() {
         return color.getIntColor();
