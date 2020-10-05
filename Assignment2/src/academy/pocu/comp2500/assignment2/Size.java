@@ -9,7 +9,7 @@ public class Size {
 //    public Size() {
 //    }
 
-    protected Size(int width, int height) {
+    public Size(int width, int height) {
         this.width = Math.min(Math.max(0, width), width);
         this.height = Math.min(Math.max(0, height), height);
     }
