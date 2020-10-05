@@ -50,13 +50,12 @@ public class Product {
         return name;
     }
 
-//    public Color getColorInstance() {
-//        return colorInstance;
-//    }
-
-    public Color getColor() {
+    public Color getColorInstance() {
         return color;
-//        return color.getIntColor();
+    }
+
+    public int getColor() {
+        return color.getIntColor();
     }
 
     public int getPrice() {
