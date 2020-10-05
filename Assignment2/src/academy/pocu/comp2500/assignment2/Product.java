@@ -17,7 +17,7 @@ public class Product {
         return size;
     }
 
-    protected void setSize(Size size) {
+    public void setSize(Size size) {
         this.size = size;
     }
 
@@ -25,7 +25,7 @@ public class Product {
         return name;
     }
 
-    protected void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -33,7 +33,7 @@ public class Product {
         return color;
     }
 
-    protected void setColor(Color color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 
@@ -41,7 +41,7 @@ public class Product {
         return price;
     }
 
-    protected void setPrice(int price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -49,7 +49,7 @@ public class Product {
         return shippingMethod;
     }
 
-    protected void setShippingMethod(ShippingMethod shippingMethod) {
+    public void setShippingMethod(ShippingMethod shippingMethod) {
         this.shippingMethod = shippingMethod;
     }
 }
