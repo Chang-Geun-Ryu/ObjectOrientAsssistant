@@ -34,7 +34,7 @@ public class Product {
         this.price = price;
     }
 
-    protected void setShippingMethod(ShippingMethod shippingMethod) {
+    public void setShippingMethod(ShippingMethod shippingMethod) {
         this.shippingMethod = shippingMethod;
     }
 
