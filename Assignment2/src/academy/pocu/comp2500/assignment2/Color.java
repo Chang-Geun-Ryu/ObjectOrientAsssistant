@@ -9,9 +9,9 @@ public class Color {
     }
 
     public Color(int r, int g, int b) {
-        this.r = Math.min(Math.max(0, r), 0xFF);
-        this.g = Math.min(Math.max(0, g), 0xFF);
-        this.b = Math.min(Math.max(0, b), 0xFF);
+        this.r = r;//Math.min(Math.max(0, r), 0xFF);
+        this.g = g;//Math.min(Math.max(0, g), 0xFF);
+        this.b = b;//Math.min(Math.max(0, b), 0xFF);
     }
 
 //    public int getR() {
