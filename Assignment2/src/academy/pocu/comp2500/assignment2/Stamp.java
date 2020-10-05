@@ -6,15 +6,15 @@ public class Stamp extends Product {
     private StampSize stampSize;
     private String text;
 
-    public Stamp(StampColor stampColor, StampSize stampSize, String text) {
+    public Stamp(StampColor stampColor, StampSize stampSize, String textOrNull) {
         super(new Size(), new Color(0, 0, 0), ShippingMethod.PICK_UP);
 
         this.stampColor = stampColor;
         this.stampSize = stampSize;
-        if (text == null) {
+        if (textOrNull == null) {
             this.text = "";
         } else {
-            this.text = text;
+            this.text = textOrNull;
         }
 
         if (stampColor == StampColor.RED) {
@@ -23,8 +23,6 @@ public class Stamp extends Product {
             this.setColor(new Color(0, 80, 0));
         } else if (stampColor == StampColor.BLUE) {
             this.setColor(new Color(0, 0, 0xFF));
-        } else {
-            assert (false) : "stampColor is invalid";
         }
 
         if (stampSize == StampSize.SIZE_4_3 || stampSize == StampSize.SIZE_5_2) {
@@ -37,8 +35,6 @@ public class Stamp extends Product {
         } else if (stampSize == StampSize.SIZE_7_4) {
             this.setSize(new Size(70, 40));
             this.setPrice(2600);
-        } else {
-            assert (false) : "stampSize is invalid";
         }
 
         this.setName(String.format("Stamp (%d mm x %d mm)", this.getWidth(), this.getHeight()));
