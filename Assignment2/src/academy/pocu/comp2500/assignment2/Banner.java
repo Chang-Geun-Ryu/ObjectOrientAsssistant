@@ -1,17 +1,15 @@
 package academy.pocu.comp2500.assignment2;
 
 public class Banner extends ApertureProduct {
-    private BannerMaterial bannerMaterial;
+    private BannerType type;
     private BannerSize bannerSize;
-//    private Orientation orientation;
+    private Orientation orientation;
 
-    public Banner(BannerMaterial bannerMaterial, BannerSize bannerSize, Color color, Orientation orientation) {
+    public Banner(BannerType type, BannerSize bannerSize, Color color, Orientation orientation) {
         super(new Size(), color);
-        this.bannerMaterial = bannerMaterial;
-//        this.orientation = orientation;
+        this.type = type;
+        this.orientation = orientation;
         this.bannerSize = bannerSize;
-
-        setOrientation(orientation);
 
         if (bannerSize == BannerSize.SIZE_1_05) {
             this.setSize(new Size(1000, 500));
@@ -26,28 +24,28 @@ public class Banner extends ApertureProduct {
             this.setPrice(1000);
         }
 
-        if (bannerMaterial == BannerMaterial.GLOSS) {
-            this.setName(String.format("Gloss Banner (%d mm x %d mm)", this.getWidth(), this.getHeight()));
+        if (type == BannerType.GLOSS) {
+            this.setName(String.format("Gloss Banner (%d mm x %d mm)", this.getSize().getWidth(), this.getSize().getHeight()));
             this.setPrice(this.getPrice() + 5000);
-        } else if (bannerMaterial == BannerMaterial.SCRIM || bannerMaterial == BannerMaterial.MESH) {
-            if (bannerMaterial == BannerMaterial.SCRIM) {
-                this.setName(String.format("Scrim Banner (%d mm x %d mm)", this.getWidth(), this.getHeight()));
+        } else if (type == BannerType.SCRIM || type == BannerType.MESH) {
+            if (type == BannerType.SCRIM) {
+                this.setName(String.format("Scrim Banner (%d mm x %d mm)", this.getSize().getWidth(), this.getSize().getHeight()));
             } else {
-                this.setName(String.format("Mesh Banner (%d mm x %d mm)", this.getWidth(), this.getHeight()));
+                this.setName(String.format("Mesh Banner (%d mm x %d mm)", this.getSize().getWidth(), this.getSize().getHeight()));
             }
             this.setPrice(this.getPrice() + 5100);
         }
     }
 
-    public BannerMaterial getBannerMaterial() {
-        return bannerMaterial;
+    public BannerType getType() {
+        return type;
     }
 
     public BannerSize getBannerSize() {
         return bannerSize;
     }
 
-//    public Orientation getOrientation() {
-//        return orientation;
-//    }
+    public Orientation getOrientation() {
+        return orientation;
+    }
 }

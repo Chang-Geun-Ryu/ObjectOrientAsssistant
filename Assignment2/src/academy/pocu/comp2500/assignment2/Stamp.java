@@ -6,17 +6,16 @@ public class Stamp extends Product {
     private StampSize stampSize;
     private String text;
 
-    public Stamp(StampColor stampColor, StampSize stampSize, String text) {
-        super(new Size(), new Color(0, 0, 0), ShippingMethod.PICK_UP);
+    public Stamp(StampColor stampColor, StampSize stampSize, String textOrNull) {
+        super(new Size(), new Color(), ShippingMethod.PICK_UP);
 
         this.stampColor = stampColor;
         this.stampSize = stampSize;
-        this.text = text;
-//        if (textOrNull == null) {
-//            this.text = "";
-//        } else {
-//            this.text = textOrNull;
-//        }
+        if (textOrNull == null) {
+            this.text = "";
+        } else {
+            this.text = textOrNull;
+        }
 
         if (stampColor == StampColor.RED) {
             this.setColor(new Color(0xFF, 0, 0));
@@ -38,7 +37,7 @@ public class Stamp extends Product {
             this.setPrice(2600);
         }
 
-        this.setName(String.format("Stamp (%d mm x %d mm)", this.getWidth(), this.getHeight()));
+        this.setName(String.format("Stamp (%d mm x %d mm)", this.getSize().getWidth(), this.getSize().getHeight()));
     }
 
     public StampColor getStampColor() {

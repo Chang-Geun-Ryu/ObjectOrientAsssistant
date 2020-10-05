@@ -6,17 +6,15 @@ public class BusinessCard extends ApertureProduct {
     private BusinessCardType type;
     private CardColor cardColor;
     private CardSide sides;
-//    private Orientation orientation;
+    private Orientation orientation;
 
 
     public BusinessCard(BusinessCardType type, CardSide sides, Orientation orientation, CardColor cardColor) {
-        super(new Size(90, 50), new Color(0, 0, 0));
+        super(new Size(90, 50), new Color());
         this.type = type;
         this.sides = sides;
-//        this.orientation = orientation;
+        this.orientation = orientation;
         this.cardColor = cardColor;
-
-        setOrientation(orientation);
 
         if (cardColor == CardColor.GRAY) {
             this.setColor(new Color(0xE6, 0xE6, 0xE6));
@@ -54,7 +52,7 @@ public class BusinessCard extends ApertureProduct {
         return sides;
     }
 
-//    public Orientation getOrientation() {
-//        return orientation;
-//    }
+    public Orientation getOrientation() {
+        return orientation;
+    }
 }
