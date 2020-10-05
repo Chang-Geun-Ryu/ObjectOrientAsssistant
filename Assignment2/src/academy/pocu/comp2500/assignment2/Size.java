@@ -6,8 +6,8 @@ public class Size {
     private int width;
     private int height;
 
-    public Size() {
-    }
+//    public Size() {
+//    }
 
     public Size(int width, int height) {
         this.width = Math.min(Math.max(0, width), width);

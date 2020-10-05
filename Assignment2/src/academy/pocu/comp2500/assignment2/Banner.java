@@ -6,7 +6,7 @@ public class Banner extends ApertureProduct {
     private Orientation orientation;
 
     public Banner(BannerType type, BannerSize bannerSize, Color color, Orientation orientation) {
-        super(new Size(), color);
+        super(new Size(0, 0), color);
         this.type = type;
         this.orientation = orientation;
         this.bannerSize = bannerSize;

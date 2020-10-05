@@ -7,15 +7,11 @@ public class Stamp extends Product {
     private String text;
 
     public Stamp(StampColor stampColor, StampSize stampSize, String textOrNull) {
-        super(new Size(), new Color(0, 0, 0), ShippingMethod.PICK_UP);
+        super(new Size(0, 0), new Color(0, 0, 0), ShippingMethod.PICK_UP);
 
         this.stampColor = stampColor;
         this.stampSize = stampSize;
-        if (textOrNull == null) {
-            this.text = "";
-        } else {
-            this.text = textOrNull;
-        }
+        this.text = textOrNull;
 
         if (stampColor == StampColor.RED) {
             this.setColor(new Color(0xFF, 0, 0));
