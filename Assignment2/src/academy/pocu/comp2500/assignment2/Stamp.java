@@ -33,7 +33,8 @@ public class Stamp extends Product {
             this.setPrice(2600);
         }
 
-        this.setName(String.format("Stamp (%d mm x %d mm)", this.getSize().getWidth(), this.getSize().getHeight()));
+        super.setName(String.format("Stamp (%d mm x %d mm)", super.getSize().getWidth(), super.getSize().getHeight()));
+//        this.setName(String.format("Stamp (%d mm x %d mm)", this.getSize().getWidth(), this.getSize().getHeight()));
     }
 
     public StampColor getStampColor() {
