@@ -37,4 +37,8 @@ public class Color {
     public void setB(int b) {
         this.b = b;
     }
+
+    public int getIntColor() {
+        return (r << 16) + (g << 8) + b;
+    }
 }
