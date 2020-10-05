@@ -7,7 +7,7 @@ public class Stamp extends Product {
     private String text;
 
     public Stamp(StampColor stampColor, StampSize stampSize, String textOrNull) {
-        super(new Size(), new Color(), ShippingMethod.PICK_UP);
+        super(new Size(), new Color(0, 0, 0), ShippingMethod.PICK_UP);
 
         this.stampColor = stampColor;
         this.stampSize = stampSize;
