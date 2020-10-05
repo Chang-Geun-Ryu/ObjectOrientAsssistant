@@ -1,7 +1,6 @@
 package academy.pocu.comp2500.assignment2;
 
 public class Product {
-//    private Size size;
     private String name;
     private Color colorInstance;
     private int price;
@@ -37,10 +36,6 @@ public class Product {
 
     protected void setShippingMethod(ShippingMethod shippingMethod) {
         this.shippingMethod = shippingMethod;
-    }
-
-    protected Size getSize() {
-        return new Size(width, height);
     }
 
     public int getWidth() {

@@ -25,13 +25,13 @@ public class Banner extends ApertureProduct {
         }
 
         if (bannerMaterial == BannerMaterial.GLOSS) {
-            this.setName(String.format("Gloss Banner (%d mm x %d mm)", this.getSize().getWidth(), this.getSize().getHeight()));
+            this.setName(String.format("Gloss Banner (%d mm x %d mm)", this.getWidth(), this.getHeight()));
             this.setPrice(this.getPrice() + 5000);
         } else if (bannerMaterial == BannerMaterial.SCRIM || bannerMaterial == BannerMaterial.MESH) {
             if (bannerMaterial == BannerMaterial.SCRIM) {
-                this.setName(String.format("Scrim Banner (%d mm x %d mm)", this.getSize().getWidth(), this.getSize().getHeight()));
+                this.setName(String.format("Scrim Banner (%d mm x %d mm)", this.getWidth(), this.getHeight()));
             } else {
-                this.setName(String.format("Mesh Banner (%d mm x %d mm)", this.getSize().getWidth(), this.getSize().getHeight()));
+                this.setName(String.format("Mesh Banner (%d mm x %d mm)", this.getWidth(), this.getHeight()));
             }
             this.setPrice(this.getPrice() + 5100);
         }
