@@ -11,7 +11,7 @@ public class ApertureProduct extends Product {
     }
 
     public void addAperture(Aperture aperture) {
-        if (aperture.getX() >= 0 && aperture.getY() >= 0 && this.getWidth() >= aperture.getX() + aperture.getSize().getWidth() && this.getHeight() >= aperture.getY() + aperture.getSize().getHeight()) {
+        if (aperture.getX() >= 0 && aperture.getY() >= 0 && this.getSize().getWidth() >= aperture.getX() + aperture.getSize().getWidth() && this.getSize().getHeight() >= aperture.getY() + aperture.getSize().getHeight()) {
             this.apertures.add(aperture);
             this.setPrice(this.getPrice() + 5);
         }

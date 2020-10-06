@@ -5,9 +5,6 @@ public class Color {
     private int g;
     private int b;
 
-    public Color() {
-    }
-
     public Color(int r, int g, int b) {
         this.r = Math.min(Math.max(0, r), 0xFF);
         this.g = Math.min(Math.max(0, g), 0xFF);
@@ -18,27 +15,11 @@ public class Color {
         return r;
     }
 
-    public void setR(int r) {
-        this.r = r;
-    }
-
     public int getG() {
         return g;
     }
 
-    public void setG(int g) {
-        this.g = g;
-    }
-
     public int getB() {
         return b;
-    }
-
-    public void setB(int b) {
-        this.b = b;
-    }
-
-    public int getIntColor() {
-        return (r << 16) + (g << 8) + b;
     }
 }

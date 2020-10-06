@@ -4,7 +4,7 @@ public class Calendar extends Product {
     private CalendarType type;
 
     public Calendar(CalendarType type) {
-        super(new Size(), new Color(0xFF, 0xFF, 0xFF), ShippingMethod.PICK_UP);
+        super(new Size(0, 0), new Color(0xFF, 0xFF, 0xFF), ShippingMethod.PICK_UP);
         this.type = type;
 
         if (type == CalendarType.WALL) {
