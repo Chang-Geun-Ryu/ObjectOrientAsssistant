@@ -1,7 +1,7 @@
 package academy.pocu.comp2500.assignment2;
 
-public enum BannerType {
+public enum EBannerType {
     GLOSS,
     SCRIM,
-    MESH
+    MESH,
 }

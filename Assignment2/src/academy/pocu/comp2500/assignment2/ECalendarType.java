@@ -1,7 +1,7 @@
 package academy.pocu.comp2500.assignment2;
 
-public enum CalendarType {
+public enum ECalendarType {
     WALL,
     DESK,
-    MAGNET
+    MAGNET,
 }

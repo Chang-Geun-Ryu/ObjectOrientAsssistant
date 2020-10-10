@@ -3,56 +3,63 @@ package academy.pocu.comp2500.assignment2;
 import java.util.ArrayList;
 
 public class BusinessCard extends ApertureProduct {
-    private BusinessCardType type;
-    private CardColor cardColor;
-    private CardSide sides;
-    private Orientation orientation;
+
+    private EBusinessCardType businessCardType;
+    private EBusinessCardColor businessCardColor;
+    private ESides businessCardSides;
 
 
-    public BusinessCard(BusinessCardType type, CardSide sides, Orientation orientation, CardColor cardColor) {
-        super(new Size(90, 50), new Color(0, 0, 0));
-        this.type = type;
-        this.sides = sides;
-        this.orientation = orientation;
-        this.cardColor = cardColor;
-
-        if (cardColor == CardColor.GRAY) {
-            this.setColor(new Color(0xE6, 0xE6, 0xE6));
-        } else if (cardColor == CardColor.IVORY) {
-            this.setColor(new Color(0xFF, 0xFF, 0xF0));
-        } else if (cardColor == CardColor.WHITE) {
-            this.setColor(new Color(0xFF, 0xFF, 0xFF));
+    public BusinessCard(EBusinessCardType businessCardType, EBusinessCardColor businessCardColor, EOrientation orientation, ESides businessCardSides, EShippingMethod shippingMethod) {
+        super(orientation, shippingMethod);
+        imageApertures = new ArrayList<>();
+        textApertures = new ArrayList<>();
+        this.businessCardType = businessCardType;
+        switch (businessCardColor) {
+            case GRAY:
+                color = new Color(0xe6, 0xe6, 0xe6);
+                break;
+            case IVORY:
+                color = new Color(0xff, 0xff, 0xf0);
+                break;
+            case WHITE:
+                color = new Color(0xff, 0xff, 0xff);
+                break;
+            default:
+                assert false;
         }
-
-        if (type == BusinessCardType.LINEN) {
-            this.setName("Linen Business Card");
-            this.setPrice(110);
-        } else if (type == BusinessCardType.LAID) {
-            this.setName("Laid Business Card");
-            this.setPrice(120);
-        } else if (type == BusinessCardType.SMOOTH) {
-            this.setName("Smooth Business Card");
-            this.setPrice(100);
+        this.businessCardSides = businessCardSides;
+        if (orientation == EOrientation.PORTRAIT) {
+            demension = new Demension(50, 90);
+        } else {
+            demension = new Demension(50, 90);
         }
-
-        if (sides == CardSide.DOUBLE_SIDE) {
-            this.setPrice(this.getPrice() + 30);
+        switch (businessCardType) {
+            case LINEN:
+                price = 110;
+                break;
+            case LAID:
+                price = 120;
+                break;
+            case SMOOTH:
+                price = 100;
+                break;
+            default:
+                assert false;
+        }
+        if (businessCardSides == ESides.DOUBLE) {
+            price += 30;
         }
     }
 
-    public BusinessCardType getType() {
-        return type;
+    public EBusinessCardType getBusinessCardType() {
+        return businessCardType;
     }
 
-    public CardColor getCardColor() {
-        return cardColor;
+    public EBusinessCardColor getBusinessCardColor() {
+        return businessCardColor;
     }
 
-    public CardSide getSides() {
-        return sides;
-    }
-
-    public Orientation getOrientation() {
-        return orientation;
+    public ESides getBusinessCardSides() {
+        return businessCardSides;
     }
 }

@@ -1,28 +1,31 @@
 package academy.pocu.comp2500.assignment2;
 
-public class Calendar extends Product {
-    private CalendarType type;
+public class Calendar extends BaseProduct {
+    ECalendarType calendarType;
 
-    public Calendar(CalendarType type) {
-        super(new Size(0, 0), new Color(0xFF, 0xFF, 0xFF), ShippingMethod.PICK_UP);
-        this.type = type;
-
-        if (type == CalendarType.WALL) {
-            this.setName("Wall Calendar");
-            this.setSize(new Size(400, 400));
-            this.setPrice(1000);
-        } else if (type == CalendarType.DESK) {
-            this.setName("Desk Calendar");
-            this.setSize(new Size(200, 150));
-            this.setPrice(1000);
-        } else if (type == CalendarType.MAGNET) {
-            this.setName("Magnet Calendar");
-            this.setSize(new Size(100, 200));
-            this.setPrice(1500);
+    public Calendar(ECalendarType calendarType, EShippingMethod shippingMethod) {
+        super(shippingMethod);
+        this.calendarType = calendarType;
+        switch (calendarType) {
+            case WALL:
+                demension = new Demension(400, 400);
+                price = 1000;
+                break;
+            case DESK:
+                demension = new Demension(200, 150);
+                price = 1000;
+                break;
+            case MAGNET:
+                demension = new Demension(100, 200);
+                price = 1500;
+                break;
+            default:
+                assert false;
         }
+        color = new Color(0xff, 0xff, 0xff);
     }
 
-    public CalendarType getType() {
-        return type;
+    public ECalendarType getCalendarType() {
+        return calendarType;
     }
 }

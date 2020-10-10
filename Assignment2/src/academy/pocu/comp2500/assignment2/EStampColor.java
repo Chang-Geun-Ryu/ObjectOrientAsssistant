@@ -1,7 +1,7 @@
 package academy.pocu.comp2500.assignment2;
 
-public enum StampColor {
+public enum EStampColor {
     RED,
     BLUE,
-    GREEN
+    GREEN,
 }
