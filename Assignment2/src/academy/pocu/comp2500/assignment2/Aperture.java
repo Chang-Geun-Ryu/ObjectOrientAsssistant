@@ -1,29 +1,16 @@
 package academy.pocu.comp2500.assignment2;
 
 public class Aperture {
-    protected String text;
-    protected int x;
-    protected int y;
-    protected Demension demension;
+    private int x;
+    private int y;
+    private Size size;
 
-    protected Aperture(String text, int x, int y, Demension size) {
-        this.text = text;
+    public Aperture(int x, int y, Size size) {
         this.x = x;
         this.y = y;
-        demension = size;
+        this.size = size;
     }
 
-    //getter,setter
-    //setter
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    //getter
     public int getX() {
         return x;
     }
@@ -32,7 +19,7 @@ public class Aperture {
         return y;
     }
 
-    public Demension getDemension() {
-        return demension;
+    public Size getSize() {
+        return size;
     }
 }

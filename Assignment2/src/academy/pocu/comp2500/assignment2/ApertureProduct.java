@@ -2,38 +2,57 @@ package academy.pocu.comp2500.assignment2;
 
 import java.util.ArrayList;
 
-public class ApertureProduct extends BaseProduct {
+public class ApertureProduct extends Product {
+    private Orientation orientation;
+    private ArrayList<ImageAperture> imageApertures;
+    private ArrayList<TextAperture> textApertures;
 
-    protected EOrientation orientation;
-    protected ArrayList<ImageAperture> imageApertures = new ArrayList<>();
-    protected ArrayList<TextAperture> textApertures = new ArrayList<>();
-
-    ApertureProduct(EOrientation orientation, EShippingMethod shippingMethod) {
-        super(shippingMethod);
+    public ApertureProduct(Size size, int price, Color color, Orientation orientation, DeliveryMethod deliveryMethod) {
+        super(size, price, color, deliveryMethod);
         this.orientation = orientation;
+        imageApertures = new ArrayList<>();
+        textApertures = new ArrayList<>();
     }
 
-    public void addImageAperture(ImageAperture imageAperture) {
-        if (0 < imageAperture.getX()
-                && imageAperture.getX() + imageAperture.getDemension().getWidth() < demension.getWidth()
-                && 0 < imageAperture.getY()
-                && imageAperture.getY() + imageAperture.getDemension().getHeight() < demension.getHeight()) {
-            imageApertures.add(imageAperture);
-            price += 5;
+    public void addImage(ImageAperture imageAperture) {
+        if (imageAperture.getX() + imageAperture.getSize().getWidth() <= 0 ||
+                imageAperture.getX() >= super.size.getWidth()) {
+            return;
         }
-    }
 
-    public void addTextAperture(TextAperture textAperture) {
-        if (0 < textAperture.getX()
-                && textAperture.getX() + textAperture.getDemension().getWidth() < demension.getWidth()
-                && 0 < textAperture.getY()
-                && textAperture.getY() + textAperture.getDemension().getHeight() < demension.getHeight()) {
-            textApertures.add(textAperture);
-            price += 5;
+        if (imageAperture.getY() + imageAperture.getSize().getHeigth() <= 0 ||
+                imageAperture.getY() >= super.size.getHeigth()) {
+            return;
         }
+
+        super.price += 5;
+        imageApertures.add(imageAperture);
     }
 
-    public EOrientation getOrientation() {
+    public void addText(TextAperture textAperture) {
+        if (textAperture.getX() + textAperture.getSize().getWidth() <= 0 ||
+                textAperture.getX() >= super.size.getWidth()) {
+            return;
+        }
+
+        if (textAperture.getY() + textAperture.getSize().getHeigth() <= 0 ||
+                textAperture.getY() >= super.size.getHeigth()) {
+            return;
+        }
+
+        super.price += 5;
+        textApertures.add(textAperture);
+    }
+
+    public Orientation getOrientation() {
         return orientation;
+    }
+
+    public ArrayList<ImageAperture> getImageApertures() {
+        return imageApertures;
+    }
+
+    public ArrayList<TextAperture> getTextApertures() {
+        return textApertures;
     }
 }

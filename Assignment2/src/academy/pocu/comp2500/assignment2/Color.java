@@ -15,11 +15,16 @@ public class Color {
         return r;
     }
 
+    public int getB() {
+        return b;
+    }
+
     public int getG() {
         return g;
     }
 
-    public int getB() {
-        return b;
+    public boolean isEquals(Color color) {
+        return this.r == color.r && this.g == color.g && this.b == color.b;
     }
+
 }
