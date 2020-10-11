@@ -15,7 +15,7 @@ public class Gladiator extends Barbarian {
 
     public boolean addMove(Move skill) {
         for (int i = 0; i < this.list.size(); i++) {
-            if (this.list.get(i) == skill) {
+            if (this.list.get(i).getName().contains(skill.getName())) {
                 return false;
             }
         }
@@ -28,7 +28,7 @@ public class Gladiator extends Barbarian {
 
     public boolean removeMove(String name) {
         for (int i = 0; i < list.size(); i++) {
-            if (this.list.get(i).getName() == name) {
+            if (this.list.get(i).getName().contains(name)) {
                 this.list.remove(this.list.get(i));
                 return true;
             }
@@ -38,10 +38,10 @@ public class Gladiator extends Barbarian {
 
     public void attack(String skill, Barbarian enemy) {
         for (int i = 0; i < list.size(); i++) {
-            if (this.list.get(i).getCount() == 0 || this.Hp == 0 || this == enemy || this.list.get(i).getName() != skill) {
+            if (this.list.get(i).getCount() == 0 || this.Hp == 0 || this == enemy || this.list.get(i).getName().contains(skill) == false) {
                 int real = 0;
                 enemy.Hp = enemy.Hp - real;
-            } else if (this.list.get(i).getName() == skill) {
+            } else if (this.list.get(i).getName().contains(skill)) {
                 this.list.get(i).downCount();
                 double damage = ((double) this.attack / (double) enemy.defense * (double) this.list.get(i).getPower()) / 2;
                 int real = (int) damage;
