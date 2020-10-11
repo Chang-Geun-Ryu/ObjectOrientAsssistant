@@ -10,12 +10,14 @@ public class Move {
     private String name;
     private int power;
     private int count;
+    private int max;
 
 
     public Move(String name, int power, int count) {
         this.name = name;
         this.power = power;
         this.count = count;
+        this.max = count;
     }
 
     public String getName() {
@@ -38,7 +40,9 @@ public class Move {
     }
 
     public void upCount() {
-        this.count += 1;
+        if (max > count) {
+            this.count += 1;
+        }
     }
 
 }
