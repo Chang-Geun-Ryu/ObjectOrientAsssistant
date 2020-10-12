@@ -1,54 +1,49 @@
 package academy.pocu.comp2500.lab4;
 
-import java.time.OffsetDateTime;
+import java.util.HashMap;
 
 public class Entry {
-    private int usingOrder;
-    private int createOrder;
-    private String value;
 
+    public static int entryCallStack = 0;
 
-    public Entry(String value) {
-        this.value = value;
-        this.usingOrder = 0;
-        this.createOrder = 0;
+    private String entryKey;
+    private String entryValue;
+    private int entryCallNumber;
+
+    public Entry(String entryKey, String entryValue) {
+
+        updateCallNumber();
+
+        this.entryKey = entryKey;
+        this.entryValue = entryValue;
+
     }
 
-    public int getCreateOrder() {
-        return this.createOrder;
+    public String getEntryKey() {
+        updateCallNumber();
+        return this.entryKey;
     }
 
-    public void setCreateOrder(int order) {
-        this.createOrder = order;
+    public String getEntryKeyNoUpdate() {
+        return this.entryKey;
     }
 
-    public int upShiftCreateOrder() {
-        return ++this.createOrder;
+    public String getEntryValue() {
+        updateCallNumber();
+        return this.entryValue;
     }
 
-    public int downShiftCreateOrder() {
-        return --this.createOrder;
+    public void setEntryValue(String value) {
+        updateCallNumber();
+        this.entryValue = value;
     }
 
-    public int getUsingOrder() {
-        return this.usingOrder;
+    public int getEntryCallNumber() {
+        return entryCallNumber;
     }
 
-    public void setZeroUsingOrder() {
-        this.usingOrder = 0;
-    }
-
-    public void updateOrder() {
-        this.usingOrder++;
-    }
-
-    public String getValue() {
-        this.usingOrder = 0;
-        return this.value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-        this.usingOrder = 0;
+    private void updateCallNumber() {
+        entryCallStack++;
+        this.entryCallNumber = entryCallStack;
     }
 }
