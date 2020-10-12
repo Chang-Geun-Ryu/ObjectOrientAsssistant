@@ -3,26 +3,60 @@ package academy.pocu.comp2500.assignment2;
 public class Calendar extends Product {
     private CalendarType type;
 
-    public Calendar(CalendarType type) {
-        super(new Size(0, 0), new Color(0xFF, 0xFF, 0xFF), ShippingMethod.PICK_UP);
-        this.type = type;
-
-        if (type == CalendarType.WALL) {
-            this.setName("Wall Calendar");
-            this.setSize(new Size(400, 400));
-            this.setPrice(1000);
-        } else if (type == CalendarType.DESK) {
-            this.setName("Desk Calendar");
-            this.setSize(new Size(200, 150));
-            this.setPrice(1000);
-        } else if (type == CalendarType.MAGNET) {
-            this.setName("Magnet Calendar");
-            this.setSize(new Size(100, 200));
-            this.setPrice(1500);
-        }
+    public Calendar(CalendarType calendarType, DeliveryMethod deliveryMethod) {
+        super(getSize(calendarType), getPrice(calendarType), new Color(0xFF, 0xFF, 0xFF), deliveryMethod);
+        this.type = calendarType;
     }
 
     public CalendarType getType() {
         return type;
     }
+
+    static private Size getSize(CalendarType calendarType) {
+        Size size = null;
+        switch (calendarType) {
+            case WALL:
+                size = new Size(400, 400);
+                break;
+
+            case DESK:
+                size = new Size(200, 150);
+                break;
+
+            case MAGNET:
+                size = new Size(100, 200);
+                break;
+        }
+        return size;
+    }
+
+    static private int getPrice(CalendarType calendarType) {
+        int price = 0;
+        switch (calendarType) {
+            case WALL:
+            case DESK:
+                price = 1000;
+                break;
+            case MAGNET:
+                price = 1500;
+                break;
+        }
+        return price;
+    }
+
+    /*static private String getDisplayName(CalendarType calendarType) {
+        String name = "";
+        switch (calendarType) {
+            case WALL:
+                name = "Wall Calendar";
+                break;
+            case DESK:
+                name = "Desk Calendar";
+                break;
+            case MAGNET:
+                name = "Magnet Calendar";
+                break;
+        }
+        return name;
+    }*/
 }

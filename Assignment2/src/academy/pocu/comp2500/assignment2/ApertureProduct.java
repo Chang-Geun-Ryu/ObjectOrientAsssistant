@@ -3,21 +3,56 @@ package academy.pocu.comp2500.assignment2;
 import java.util.ArrayList;
 
 public class ApertureProduct extends Product {
+    private Orientation orientation;
+    private ArrayList<ImageAperture> imageApertures;
+    private ArrayList<TextAperture> textApertures;
 
-    private ArrayList<Aperture> apertures = new ArrayList<>();
-
-    protected ApertureProduct(Size size, Color color) {
-        super(size, color, ShippingMethod.PICK_UP);
+    public ApertureProduct(Size size, int price, Color color, Orientation orientation, DeliveryMethod deliveryMethod) {
+        super(size, price, color, deliveryMethod);
+        this.orientation = orientation;
+        imageApertures = new ArrayList<>();
+        textApertures = new ArrayList<>();
     }
 
-    public void addAperture(Aperture aperture) {
-        if (aperture.getX() >= 0 && aperture.getY() >= 0 && this.getSize().getWidth() >= aperture.getX() + aperture.getSize().getWidth() && this.getSize().getHeight() >= aperture.getY() + aperture.getSize().getHeight()) {
-            this.apertures.add(aperture);
-            this.setPrice(this.getPrice() + 5);
+    public void addImage(ImageAperture imageAperture) {
+        if (imageAperture.getX() + imageAperture.getSize().getWidth() <= 0 ||
+                imageAperture.getX() >= super.size.getWidth()) {
+            return;
         }
+
+        if (imageAperture.getY() + imageAperture.getSize().getHeigth() <= 0 ||
+                imageAperture.getY() >= super.size.getHeigth()) {
+            return;
+        }
+
+        super.price += 5;
+        imageApertures.add(imageAperture);
     }
 
-    public ArrayList<Aperture> getApertures() {
-        return apertures;
+    public void addText(TextAperture textAperture) {
+        if (textAperture.getX() + textAperture.getSize().getWidth() <= 0 ||
+                textAperture.getX() >= super.size.getWidth()) {
+            return;
+        }
+
+        if (textAperture.getY() + textAperture.getSize().getHeigth() <= 0 ||
+                textAperture.getY() >= super.size.getHeigth()) {
+            return;
+        }
+
+        super.price += 5;
+        textApertures.add(textAperture);
+    }
+
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
+    public ArrayList<ImageAperture> getImageApertures() {
+        return imageApertures;
+    }
+
+    public ArrayList<TextAperture> getTextApertures() {
+        return textApertures;
     }
 }

@@ -2,50 +2,67 @@ package academy.pocu.comp2500.assignment2;
 
 public class Banner extends ApertureProduct {
     private BannerType type;
-    private BannerSize bannerSize;
-    private Orientation orientation;
 
-    public Banner(BannerType type, BannerSize bannerSize, Color color, Orientation orientation) {
-        super(new Size(0, 0), color);
+    public Banner(BannerType type, BannerSize bannerSize, Color color, Orientation orientation, DeliveryMethod deliveryMethod) {
+        super(getSize(bannerSize), getPrice(bannerSize), color, orientation, deliveryMethod);
         this.type = type;
-        this.orientation = orientation;
-        this.bannerSize = bannerSize;
-
-        if (bannerSize == BannerSize.SIZE_1_05) {
-            this.setSize(new Size(1000, 500));
-        } else if (bannerSize == BannerSize.SIZE_1_1) {
-            this.setSize(new Size(1000, 1000));
-            this.setPrice(200);
-        } else if (bannerSize == BannerSize.SIZE_2_05) {
-            this.setSize(new Size(2000, 500));
-            this.setPrice(300);
-        } else if (bannerSize == BannerSize.SIZE_3_1) {
-            this.setSize(new Size(3000, 1000));
-            this.setPrice(1000);
-        }
-
-        if (type == BannerType.GLOSS) {
-            this.setName(String.format("Gloss Banner (%d mm x %d mm)", this.getSize().getWidth(), this.getSize().getHeight()));
-            this.setPrice(this.getPrice() + 5000);
-        } else if (type == BannerType.SCRIM || type == BannerType.MESH) {
-            if (type == BannerType.SCRIM) {
-                this.setName(String.format("Scrim Banner (%d mm x %d mm)", this.getSize().getWidth(), this.getSize().getHeight()));
-            } else {
-                this.setName(String.format("Mesh Banner (%d mm x %d mm)", this.getSize().getWidth(), this.getSize().getHeight()));
-            }
-            this.setPrice(this.getPrice() + 5100);
-        }
     }
+
+    private static Size getSize(BannerSize bannerSize) {
+        Size size = null;
+        switch (bannerSize) {
+            case SMALL:
+                size = new Size(1000, 500);
+                break;
+            case MEDIUM:
+                size = new Size(1000, 1000);
+                break;
+            case LARGE:
+                size = new Size(2000, 500);
+                break;
+            case EXTRALARGE:
+                size = new Size(3000, 1000);
+                break;
+        }
+        return size;
+    }
+
+    static private int getPrice(BannerSize bannerSize) {
+        int price = 0;
+        switch (bannerSize) {
+            case SMALL:
+                price = 5000;
+                break;
+            case MEDIUM:
+                price = 5200;
+                break;
+            case LARGE:
+                price = 5300;
+                break;
+            case EXTRALARGE:
+                price = 6000;
+                break;
+        }
+        return price;
+    }
+
+    /*static private String getDisplayName(BannerType bannerType) {
+        String name = "";
+        switch (bannerType) {
+            case GLOSS:
+                name = "Gloss Banner";
+                break;
+            case SCRIM:
+                name = "Scrim Banner";
+                break;
+            case MESH:
+                name = "Mesh Banner";
+                break;
+        }
+        return name;
+    }*/
 
     public BannerType getType() {
         return type;
-    }
-
-    public BannerSize getBannerSize() {
-        return bannerSize;
-    }
-
-    public Orientation getOrientation() {
-        return orientation;
     }
 }

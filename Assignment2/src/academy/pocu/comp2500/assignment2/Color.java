@@ -6,20 +6,25 @@ public class Color {
     private int b;
 
     public Color(int r, int g, int b) {
-        this.r = Math.min(Math.max(0, r), 0xFF);
-        this.g = Math.min(Math.max(0, g), 0xFF);
-        this.b = Math.min(Math.max(0, b), 0xFF);
+        this.r = r;
+        this.g = g;
+        this.b = b;
     }
 
     public int getR() {
         return r;
     }
 
+    public int getB() {
+        return b;
+    }
+
     public int getG() {
         return g;
     }
 
-    public int getB() {
-        return b;
+    public boolean isEquals(Color color) {
+        return this.r == color.r && this.g == color.g && this.b == color.b;
     }
+
 }

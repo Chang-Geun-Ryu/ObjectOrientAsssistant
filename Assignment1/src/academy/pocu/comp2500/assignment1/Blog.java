@@ -1,166 +1,164 @@
 package academy.pocu.comp2500.assignment1;
-
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 public class Blog {
-    private final OffsetDateTime createdDateTime;
-    private final OffsetDateTime modifiedDateTime;
-    private final HashMap<Integer, Article> articles;
-    private SortingType sortingType;
-    private String[] tagFilter;
+    private final String author;
+    private final ArrayList<Post> posts;
+
+    private SortingTypes sortingType;
+
     private String authorFilter;
+    private ArrayList<String> tagFilters;
 
-    public Blog() {
-        this.createdDateTime = OffsetDateTime.now();
-        this.modifiedDateTime = OffsetDateTime.now();
-        this.sortingType = SortingType.CREATEDATE_DESC;
-        this.articles = new HashMap<>();
-        this.tagFilter = new String[0];
-        this.authorFilter = "";
+    public enum SortingTypes {
+        CREATED_DATE_TIME_DESCENDING,
+        CREATED_DATE_TIME_ASCENDING,
+        MODIFIED_DATE_TIME_DESCENDING,
+        MODIFIED_DATE_TIME_ASCENDING,
+        TITLE_ASCENDING
     }
 
-    public ArrayList<Article> getArticles() {
-        Article[] articleArray = articles.values().toArray(new Article[0]);
-        ArrayList<Article> orderedArticles;
-        Article tempArticle;
-        int max;
-        int min = 0;
 
-        switch (this.sortingType) {
-            case CREATEDATE_DESC:
-                for (int i = 0; i < articleArray.length - 1; i++) {
-                    max = i;
-                    for (int j = i + 1; j < articleArray.length; j++) {
-                        if (articleArray[j].getCreatedDateTime().isAfter(articleArray[max].getCreatedDateTime())) {
-                            max = j;
-                        }
-                    }
-                    tempArticle = articleArray[i];
-                    articleArray[i] = articleArray[max];
-                    articleArray[max] = tempArticle;
-                }
-
-                break;
-            case CREATEDATE_ASC:
-                for (int i = 0; i < articleArray.length - 1; i++) {
-                    min = i;
-                    for (int j = i + 1; j < articleArray.length; j++) {
-                        if (articleArray[j].getCreatedDateTime().isBefore(articleArray[min].getCreatedDateTime())) {
-                            min = j;
-                        }
-                    }
-                    tempArticle = articleArray[i];
-                    articleArray[i] = articleArray[min];
-                    articleArray[min] = tempArticle;
-                }
-                break;
-
-            case MODIFIEDDATE_DESC:
-                for (int i = 0; i < articleArray.length - 1; i++) {
-                    max = i;
-                    for (int j = i + 1; j < articleArray.length; j++) {
-                        if (articleArray[j].getModifiedDateTime().isAfter(articleArray[min].getModifiedDateTime())) {
-                            max = j;
-                        }
-                    }
-                    tempArticle = articleArray[i];
-                    articleArray[i] = articleArray[max];
-                    articleArray[max] = tempArticle;
-                }
-
-                break;
-
-            case MODIFIEDDATE_ASC:
-                for (int i = 0; i < articleArray.length - 1; i++) {
-                    min = i;
-                    for (int j = i + 1; j < articleArray.length; j++) {
-                        if (articleArray[j].getModifiedDateTime().isBefore(articleArray[min].getModifiedDateTime())) {
-                            min = j;
-                        }
-                    }
-                    tempArticle = articleArray[i];
-                    articleArray[i] = articleArray[min];
-                    articleArray[min] = tempArticle;
-                }
-                break;
-
-            case TITLE_ASC:
-                for (int i = 0; i < articleArray.length - 1; i++) {
-                    min = i;
-                    for (int j = i + 1; j < articleArray.length; j++) {
-                        if (articleArray[j].getTitle().compareTo(articleArray[min].getTitle()) < 0) {
-                            min = j;
-                        }
-                    }
-                    tempArticle = articleArray[i];
-                    articleArray[i] = articleArray[min];
-                    articleArray[min] = tempArticle;
-                }
-                break;
-
-            default:
-                break;
-        }
-
-        orderedArticles = new ArrayList<>(Arrays.asList(articleArray));
-        if (this.authorFilter != null && !this.authorFilter.equals("")) {
-            orderedArticles = filterArticleByAuthor(orderedArticles);
-        }
-        if (this.tagFilter != null && this.tagFilter.length != 0) {
-            orderedArticles = filterArticleByTag(orderedArticles);
-        }
-
-        return orderedArticles;
+    public Blog(String user) {
+        this.author = user;
+        posts = new ArrayList<>();
+        authorFilter = "";
+        tagFilters = new ArrayList<>();
+        sortingType = SortingTypes.CREATED_DATE_TIME_DESCENDING;
     }
 
-    public void setTagFilter(String... tags) {
-        this.tagFilter = tags;
+    public String getAuthor() {
+        return this.author;
+    }
+
+    public void addPost(Post post) {
+        this.posts.add(post);
+    }
+
+    public SortingTypes getSortingType() {
+        return this.sortingType;
+    }
+    public String getAuthorFilter() {
+        return this.authorFilter;
+    }
+    public ArrayList<String> getTagFilters() {
+        return this.tagFilters;
+    }
+
+
+    public void setTagFilters(String tag) {
+        this.tagFilters.add(tag);
+    }
+    public void setTagFilters(ArrayList<String> tags) {
+        for (String tag : tags) {
+            this.tagFilters.add(tag);
+        }
     }
 
     public void setAuthorFilter(String author) {
         this.authorFilter = author;
     }
 
-    public void setSortingType(SortingType sortingType) {
-        this.sortingType = sortingType;
+    public void unsetTagFilters() {
+        this.tagFilters = new ArrayList<>();
+    }
+    public void unsetAuthorFilters() {
+        this.authorFilter = "";
     }
 
-    public void addArticle(Article article) {
-        int articleId = article.getArticleId();
-        articles.put(articleId, article);
+    public ArrayList<Post> getPosts() {
+        if (this.tagFilters.isEmpty()) {
+            if (this.authorFilter.equals("")) {
+                return this.posts;
+            } else {
+                ArrayList<Post> authorFilteredPosts = new ArrayList<>();
+                for (Post item_post : this.posts) {
+                    if (this.authorFilter.equals(item_post.getAuthor())) {
+                        authorFilteredPosts.add(item_post);
+                    }
+                }
+                return authorFilteredPosts;
+            }
+        } else {
+            ArrayList<Post> tagFilteredPosts = new ArrayList<>();
+            for (Post item_post : this.posts) {
+                if (isNonEmptyInterSection(this.tagFilters, item_post.getTags())) {
+                    tagFilteredPosts.add(item_post);
+                }
+            }
+            if (this.authorFilter.equals("")) {
+                return tagFilteredPosts;
+            } else {
+                ArrayList<Post> multiFilteredPosts = new ArrayList<>();
+                for (Post item_post : tagFilteredPosts) {
+                    if (this.authorFilter.equals(item_post.getAuthor())) {
+                        multiFilteredPosts.add(item_post);
+                    }
+                }
+                return multiFilteredPosts;
+            }
+        }
     }
 
-    // 동작설명
-    // 1. 전체 아티클을 돌면서 수행
-    // 2. 아티클이 가지고 있는 tag가 모두 filter tag에 해당하는지 Check
-    // 3. filter tag에 모두 해당한다면 추가/
-    private ArrayList<Article> filterArticleByTag(ArrayList<Article> articles) {
-        ArrayList<Article> filteredArticleListByTag = new ArrayList<>();
-
-        for (Article article : articles) {
-            ArrayList<String> articleTags = article.getTags();
-            for (String tag : tagFilter) {
-                if (articleTags.contains(tag) && !filteredArticleListByTag.contains(article)) {
-                    filteredArticleListByTag.add(article);
+    private boolean isNonEmptyInterSection(ArrayList<String> Array1, ArrayList<String> Array2) {
+        for (String string1 : Array1) {
+            for (String string2 : Array2) {
+                if (string1.equals(string2)) {
+                    return true;
                 }
             }
         }
-
-        return filteredArticleListByTag;
+        return false;
     }
 
-    private ArrayList<Article> filterArticleByAuthor(ArrayList<Article> articles) {
-        ArrayList<Article> filteredArticleListByAuthor = new ArrayList<>();
+    public void sort(SortingTypes sortingType) {
+        this.sortingType = sortingType;
 
-        for (Article article : articles) {
-            if (article.getAuthor().equals(authorFilter)) {
-                filteredArticleListByAuthor.add(article);
+        Post tmpPost;
+        int iterIndex;
+        int comparedIndex;
+        int tmpIndex;
+
+        for (iterIndex = 0; iterIndex < this.posts.size(); iterIndex++) {
+            tmpPost = this.posts.get(iterIndex);
+            tmpIndex = iterIndex;
+            for (comparedIndex = iterIndex + 1; comparedIndex < this.posts.size(); comparedIndex++) {
+
+                switch (sortingType) {
+                    case CREATED_DATE_TIME_DESCENDING:
+                        if (tmpPost.isCreatedBefore(this.posts.get(comparedIndex))) {
+                            tmpPost = this.posts.get(comparedIndex);
+                            tmpIndex = comparedIndex;
+                        }
+                        break;
+                    case CREATED_DATE_TIME_ASCENDING:
+                        if (tmpPost.isCreatedAfter(this.posts.get(comparedIndex))) {
+                            tmpPost = this.posts.get(comparedIndex);
+                            tmpIndex = comparedIndex;
+                        }
+                        break;
+                    case MODIFIED_DATE_TIME_DESCENDING:
+                        if (tmpPost.isModifiedBefore(this.posts.get(comparedIndex))) {
+                            tmpPost = this.posts.get(comparedIndex);
+                            tmpIndex = comparedIndex;
+                        }
+                        break;
+                    case MODIFIED_DATE_TIME_ASCENDING:
+                        if (tmpPost.isModifiedAfter(this.posts.get(comparedIndex))) {
+                            tmpPost = this.posts.get(comparedIndex);
+                            tmpIndex = comparedIndex;
+                        }
+                        break;
+                    case TITLE_ASCENDING:
+                        if (tmpPost.compareTitle(this.posts.get(comparedIndex)) == 1) {
+                            tmpPost = this.posts.get(comparedIndex);
+                            tmpIndex = comparedIndex;
+                        }
+                        break;
+                }
             }
+            this.posts.set(tmpIndex, this.posts.get(iterIndex));
+            this.posts.set(iterIndex, tmpPost);
         }
-
-        return filteredArticleListByAuthor;
     }
 }

@@ -1,58 +1,87 @@
 package academy.pocu.comp2500.assignment2;
 
-import java.util.ArrayList;
-
 public class BusinessCard extends ApertureProduct {
+    private BusinessCardSides businessCardSides;
     private BusinessCardType type;
-    private CardColor cardColor;
-    private CardSide sides;
-    private Orientation orientation;
 
+    public BusinessCard(BusinessCardType businessCardType, BusinessCardColor businessCardColor,
+                        BusinessCardSides businessCardSides, Orientation orientation, DeliveryMethod deliveryMethod) {
+        super(new Size(90, 50), getPrice(businessCardType, businessCardSides),
+                getColor(businessCardColor), orientation, deliveryMethod);
+        this.businessCardSides = businessCardSides;
+        this.type = businessCardType;
+    }
 
-    public BusinessCard(BusinessCardType type, CardSide sides, Orientation orientation, CardColor cardColor) {
-        super(new Size(90, 50), new Color(0, 0, 0));
-        this.type = type;
-        this.sides = sides;
-        this.orientation = orientation;
-        this.cardColor = cardColor;
+    private static int getPrice(BusinessCardType businessCardType, BusinessCardSides businessCardSides) {
+        int price = 0;
+        switch (businessCardType) {
+            case LINEN:
+                if (businessCardSides == BusinessCardSides.SINGLE) {
+                    price = 110;
+                } else {
+                    price = 140;
+                }
+                break;
 
-        if (cardColor == CardColor.GRAY) {
-            this.setColor(new Color(0xE6, 0xE6, 0xE6));
-        } else if (cardColor == CardColor.IVORY) {
-            this.setColor(new Color(0xFF, 0xFF, 0xF0));
-        } else if (cardColor == CardColor.WHITE) {
-            this.setColor(new Color(0xFF, 0xFF, 0xFF));
+            case LAID:
+                if (businessCardSides == BusinessCardSides.SINGLE) {
+                    price = 120;
+                } else {
+                    price = 150;
+                }
+                break;
+
+            case SMOOTH:
+                if (businessCardSides == BusinessCardSides.SINGLE) {
+                    price = 100;
+                } else {
+                    price = 130;
+                }
+                break;
         }
+        return price;
+    }
 
-        if (type == BusinessCardType.LINEN) {
-            this.setName("Linen Business Card");
-            this.setPrice(110);
-        } else if (type == BusinessCardType.LAID) {
-            this.setName("Laid Business Card");
-            this.setPrice(120);
-        } else if (type == BusinessCardType.SMOOTH) {
-            this.setName("Smooth Business Card");
-            this.setPrice(100);
+    private static Color getColor(BusinessCardColor businessCardColor) {
+        Color color;
+        switch (businessCardColor) {
+            case GREY:
+                color = new Color(0xE6, 0xE6, 0xE6);
+                break;
+            case IVORY:
+                color = new Color(0xFF, 0xFF, 0xF0);
+                break;
+            case WHITE:
+                color = new Color(0xFF, 0xFF, 0xFF);
+                break;
+            default:
+                color = null;
+                break;
         }
+        return color;
+    }
 
-        if (sides == CardSide.DOUBLE_SIDE) {
-            this.setPrice(this.getPrice() + 30);
+    /*static private String getDisplayName(BusinessCardType businessCardType) {
+        String name = "";
+        switch (businessCardType) {
+            case LINEN:
+                name = "Linen Business Card";
+                break;
+            case LAID:
+                name = "Laid Business Card";
+                break;
+            case SMOOTH:
+                name = "Smooth Business Card";
+                break;
         }
+        return name;
+    }*/
+
+    public BusinessCardSides getBusinessCardSides() {
+        return businessCardSides;
     }
 
     public BusinessCardType getType() {
         return type;
-    }
-
-    public CardColor getCardColor() {
-        return cardColor;
-    }
-
-    public CardSide getSides() {
-        return sides;
-    }
-
-    public Orientation getOrientation() {
-        return orientation;
     }
 }

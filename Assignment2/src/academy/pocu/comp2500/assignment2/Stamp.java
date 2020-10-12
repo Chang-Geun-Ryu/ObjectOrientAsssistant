@@ -1,54 +1,89 @@
 package academy.pocu.comp2500.assignment2;
 
 public class Stamp extends Product {
-
-    private StampColor stampColor;
+    private TextAperture textAperture;
     private StampSize stampSize;
-    private String text;
+    private StampColor stampColor;
 
-    public Stamp(StampColor stampColor, StampSize stampSize, String textOrNull) {
-        super(new Size(0, 0), new Color(0, 0, 0), ShippingMethod.PICK_UP);
-
-        this.stampColor = stampColor;
+    public Stamp(StampSize stampSize, StampColor stampColor, DeliveryMethod deliveryMethod) {
+        super(getSize(stampSize), getPrice(stampSize), getColor(stampColor), deliveryMethod);
         this.stampSize = stampSize;
-        if (textOrNull == null) {
-            this.text = "";
-        } else {
-            this.text = textOrNull;
-        }
-
-        if (stampColor == StampColor.RED) {
-            this.setColor(new Color(0xFF, 0, 0));
-        } else if (stampColor == StampColor.GREEN) {
-            this.setColor(new Color(0, 0x80, 0));
-        } else if (stampColor == StampColor.BLUE) {
-            this.setColor(new Color(0, 0, 0xFF));
-        }
-
-        if (stampSize == StampSize.SIZE_4_3 || stampSize == StampSize.SIZE_5_2) {
-            if (stampSize == StampSize.SIZE_4_3) {
-                this.setSize(new Size(40, 30));
-            } else {
-                this.setSize(new Size(50, 20));
-            }
-            this.setPrice(2300);
-        } else if (stampSize == StampSize.SIZE_7_4) {
-            this.setSize(new Size(70, 40));
-            this.setPrice(2600);
-        }
-
-        this.setName(String.format("Stamp (%d mm x %d mm)", this.getSize().getWidth(), this.getSize().getHeight()));
+        this.stampColor = stampColor;
     }
 
-    public StampColor getStampColor() {
-        return stampColor;
+
+    static private Color getColor(StampColor stampColor) {
+        Color color;
+        switch (stampColor) {
+            case RED:
+                color = new Color(0xFF, 0x00, 0x00);
+                break;
+            case BLUE:
+                color = new Color(0x00, 0x00, 0xFF);
+                break;
+            case GREEN:
+                color = new Color(0x00, 0x80, 0x00);
+                break;
+            default:
+                color = null;
+                break;
+        }
+        return color;
+    }
+
+    static private int getPrice(StampSize stampSize) {
+        int price = 0;
+        switch (stampSize) {
+            case SMALL:
+            case MEDIUM:
+                price = 2300;
+                break;
+            case LARGE:
+                price = 2600;
+                break;
+        }
+        return price;
+    }
+
+    static private Size getSize(StampSize stampSize) {
+        Size size = null;
+        switch (stampSize) {
+            case SMALL:
+                size = new Size(40, 30);
+                break;
+            case MEDIUM:
+                size = new Size(50, 20);
+                break;
+            case LARGE:
+                size = new Size(70, 40);
+                break;
+        }
+        return size;
+    }
+
+
+    public void setTextAperture(TextAperture textAperture) {
+        if (textAperture.getX() + textAperture.getSize().getWidth() <= 0 ||
+                textAperture.getX() >= super.size.getWidth()) {
+            return;
+        }
+
+        if (textAperture.getY() + textAperture.getSize().getHeigth() <= 0 ||
+                textAperture.getY() >= super.size.getHeigth()) {
+            return;
+        }
+        this.textAperture = textAperture;
+    }
+
+    public TextAperture getTextAperture() {
+        return textAperture;
     }
 
     public StampSize getStampSize() {
         return stampSize;
     }
 
-    public String getText() {
-        return text;
+    public StampColor getStampColor() {
+        return stampColor;
     }
 }

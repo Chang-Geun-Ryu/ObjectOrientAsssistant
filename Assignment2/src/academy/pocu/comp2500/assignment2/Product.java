@@ -1,59 +1,48 @@
 package academy.pocu.comp2500.assignment2;
 
 public class Product {
-    private Size size;
-    private String name;
+    protected Size size;
+    protected int price;
     private Color color;
-    private int price;
-    private ShippingMethod shippingMethod;
+    private DeliveryMethod deliveryMethod;
 
-    protected Product(Size size, Color color, ShippingMethod shippingMethod) {
+    public Product(Size size, int price, Color color, DeliveryMethod deliveryMethod) {
         this.size = size;
+        this.price = price;
         this.color = color;
-        this.shippingMethod = shippingMethod;
-    }
-
-    public Size getSize() {
-        return size;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Color getColor() {
-        return color;
+        this.deliveryMethod = deliveryMethod;
     }
 
     public int getPrice() {
         return price;
     }
 
-    public ShippingMethod getShippingMethod() {
-        return shippingMethod;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
-    public void setShippingMethod(ShippingMethod shippingMethod) {
-        if (shippingMethod == null) {
-            this.shippingMethod = ShippingMethod.PICK_UP;
-        } else {
-            this.shippingMethod = shippingMethod;
-        }
+    public Color getColor() {
+        //System.out.printf("r = %02X , g = %02X b = %02X\n", color.getR(),color.getG(),color.getB());
+        return color;
     }
 
-    protected void setSize(Size size) {
-        this.size = size;
-    }
-
-    protected void setName(String name) {
-        this.name = name;
-    }
-
-    protected void setColor(Color color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 
-    protected void setPrice(int price) {
-        this.price = price;
+    public Size getSize() {
+        return size;
+    }
+
+    public DeliveryMethod getDeliveryMethod() {
+        return deliveryMethod;
+    }
+
+    public void setDeliveryMethod(DeliveryMethod deliveryMethod) {
+        this.deliveryMethod = deliveryMethod;
+    }
+
+    public boolean isEquals(Product product) {
+        return this.size.isEquals(product.size) && this.color.isEquals(product.color) && this.price == product.price;
     }
 }
