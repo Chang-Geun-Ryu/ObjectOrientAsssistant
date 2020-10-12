@@ -1,63 +1,61 @@
 package academy.pocu.comp2500.lab6;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
-public class SetMenu extends Manu {
-    protected SetMenu(MenuPrice price) {
+public class SetMenu extends Menu {
+    protected ArrayList<Appetizer> appetizers;
+    protected ArrayList<MainCourse> mainCourses;
+    protected ArrayList<Dessert> desserts;
+
+    private int appetizersCapacity;
+    private int mainCoursesCapacity;
+    private int dessertsCapacity;
+
+    protected SetMenu(int price, int appetizersCapacity, int mainCoursesCapacity, int dessertsCapacity) {
         super(price);
+        this.appetizers = new ArrayList<>(appetizersCapacity);
+        this.mainCourses = new ArrayList<>(mainCoursesCapacity);
+        this.desserts = new ArrayList<>(dessertsCapacity);
+        this.appetizersCapacity = appetizersCapacity;
+        this.mainCoursesCapacity = mainCoursesCapacity;
+        this.dessertsCapacity = dessertsCapacity;
     }
 
-    public ArrayList<MainCourse> getMainCourses() {
-        if (super.price == MenuPrice.DEATH_BY_DESSERTS) {
-            return new ArrayList<MainCourse>();
-
-        } else if (super.price == MenuPrice.NO_HEAVY_MEAL) {
-            return new ArrayList<MainCourse>();
-
-        } else if (super.price == MenuPrice.THREE_COURSE_MEAL){
-            if (this.mainCourse != null) {
-                return new ArrayList<MainCourse>(Collections.singleton(this.mainCourse));
-            } else {
-                return new ArrayList<MainCourse>();
-            }
-        } else {
-            return new ArrayList<MainCourse>();
-        }
+    public Appetizer getAppetizer() {
+        assert (this.appetizersCapacity == 1) : "This SetMenu contains appetizers more than 1.";
+        assert (this.appetizers.isEmpty() == false) : "This SetMenu has not set appertizer.";
+        return this.appetizers.get(0);
     }
 
-    public ArrayList<Dessert> getDesserts() {
-        if (super.price == MenuPrice.DEATH_BY_DESSERTS) {
-            return this.desserts;
+    public MainCourse getMainCourse() {
+        assert (this.mainCoursesCapacity == 1) : "This SetMenu contains mainCourses more than 1.";
+        assert (this.mainCourses.isEmpty() == false) : "This SetMenu has not set mainCourse.";
+        return this.mainCourses.get(0);
+    }
 
-        } else {//if (super.price == MenuPrice.NO_HEAVY_MEAL) {
-            if (this.dessert != null) {
-                return new ArrayList<Dessert>(Collections.singleton(this.dessert));
-            } else {
-                return new ArrayList<Dessert>();
-            }
-//        } else if (super.price == MenuPrice.THREE_COURSE_MEAL){
-//            return new ArrayList<Dessert>(Collections.singleton(this.dessert));
-//        } else {
-//            return new ArrayList<Dessert>();
-        }
+    public Dessert getDessert() {
+        assert (this.dessertsCapacity == 1) : "This SetMenu contains desserts more than 1.";
+        assert (this.desserts.isEmpty() == false) : "This SetMenu has not set dessert.";
+        return this.desserts.get(0);
     }
 
     public ArrayList<Appetizer> getAppetizers() {
-        if (super.price == MenuPrice.DEATH_BY_DESSERTS) {
-            return new ArrayList<Appetizer>();
+        return this.appetizers;
+    }
 
-        } else if (super.price == MenuPrice.NO_HEAVY_MEAL) {
-            return this.appetizers;
+    public ArrayList<MainCourse> getMainCourses() {
+        return this.mainCourses;
+    }
 
-        } else if (super.price == MenuPrice.THREE_COURSE_MEAL){
-            if (this.appetizer != null) {
-                return new ArrayList<Appetizer>(Collections.singleton(this.appetizer));
-            } else {
-                return new ArrayList<Appetizer>();
-            }
+    public ArrayList<Dessert> getDesserts() {
+        return this.desserts;
+    }
+
+    protected void checkValid() {
+        if (this.appetizers.size() == this.appetizersCapacity && this.mainCourses.size() == this.mainCoursesCapacity && this.desserts.size() == this.dessertsCapacity) {
+            super.valid = true;
         } else {
-            return new ArrayList<Appetizer>();
+            super.valid = false;
         }
     }
 }
