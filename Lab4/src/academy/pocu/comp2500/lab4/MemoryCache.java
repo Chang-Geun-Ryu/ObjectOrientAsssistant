@@ -1,217 +1,244 @@
 package academy.pocu.comp2500.lab4;
 
-import java.time.OffsetDateTime;
-import java.time.temporal.ChronoField;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MemoryCache {
-    static private HashMap<String, MemoryCache> instances = new HashMap<String, MemoryCache>();
-    static private int instancesSize = 0;
 
-    private int usingOrder;
-    private OffsetDateTime usingTime;
-    private HashMap<String, Entry> memory;
-    private int memorySize;
-    private EvictionPolicy policy = EvictionPolicy.LEAST_RECENTLY_USED;
+    private static ArrayList<MemoryCache> instances = new ArrayList<MemoryCache>();
+    private static int maxInstanceCount;
+    private static boolean maxInstanceSetting = false;
+    private static EvictionPolicy policyType;
+    private static int callStack = 0;
 
+    private String hardDiskName;
+    private ArrayList<Entry> entryList;
 
-    private MemoryCache() {
-        this.memory = new HashMap<String, Entry>();
-        this.usingTime = OffsetDateTime.now();
-        this.usingOrder = 0;
-        this.memorySize = 0;
-    }
+    private int maxEntryCount;
+    private boolean maxEntrySetting = false;
+    private int callNumber;
 
-    static final public MemoryCache getInstance(String name) {
-        if (MemoryCache.instances.containsKey(name)) {
-            MemoryCache instance = MemoryCache.instances.get(name);
+    private MemoryCache(String hardDiskName) {
 
-            MemoryCache.updateUsingOrders();
-            instance.usingOrder = 0;
-            instance.usingTime = OffsetDateTime.now();
-
-            return instance;
-        } else {
-            MemoryCache.updateUsingOrders();
-            MemoryCache.deleteInstance(1);
-            MemoryCache newInstance = new MemoryCache();
-            MemoryCache.instances.put(name, newInstance);
-
-            return newInstance;
+        if (policyType == null) {
+            policyType = EvictionPolicy.LEAST_RECENTLY_USED;
         }
+
+        this.hardDiskName = hardDiskName;
+        this.entryList = new ArrayList<Entry>();
+//        this.maxEntryCount = Integer.MAX_VALUE;
+        this.callNumber = callStack;
+
     }
 
+    public static MemoryCache getInstance(String hardDiskName) {
+
+        callStack++;
+
+        boolean isExist = false;
+        for (int i = 0; i < instances.size(); i++) {
+
+            if (instances.get(i).hardDiskName.equals(hardDiskName)) {
+                isExist = true;
+                break;
+            }
+        }
+
+        if (!isExist) {
+            if (maxInstanceSetting) {
+                if (maxInstanceCount == instances.size()) {
+                    removeInstance();
+                }
+            }
+
+            MemoryCache instance = new MemoryCache(hardDiskName);
+            instances.add(instance);
+        }
 
 
-    static final private void deleteInstance(int addSize) {
-        if (MemoryCache.instancesSize == 0 || MemoryCache.instancesSize > MemoryCache.instances.size() + addSize) {
+        int returnIndex = 0;
+        for (int i = 0; i < instances.size(); i++) {
+
+            if (instances.get(i).hardDiskName.equals(hardDiskName)) {
+                instances.get(i).callNumber = callStack;
+                returnIndex = i;
+            }
+
+        }
+
+        return instances.get(returnIndex);
+
+    }
+
+    private static void removeInstance() {
+
+        if (instances.size() <= 1) {
+            instances.clear();
             return;
         }
 
-        int repeatCount = MemoryCache.instances.size() + addSize - MemoryCache.instancesSize;
+        switch (policyType) {
 
-        for(int i = 0; i < repeatCount; i++) {
-            String deleteKey = "";
-            for (String key : MemoryCache.instances.keySet()) {
-                if (deleteKey == "") {
-                    deleteKey = key;
-                    continue;
+            case FIRST_IN_FIRST_OUT:
+                instances.remove(0);
+                return;
+
+            case LAST_IN_FIRST_OUT:
+                instances.remove(instances.size() - 1);
+                return;
+
+            default:
+                int oldedstIndex = 0;
+                for (int i = 0; i < instances.size(); i++) {
+
+                    if (instances.get(i).callNumber < instances.get(oldedstIndex).callNumber) {
+                        oldedstIndex = i;
+                    }
+
                 }
 
-                if (MemoryCache.instances.get(deleteKey).usingOrder < MemoryCache.instances.get(key).usingOrder) {
-                    deleteKey = key;
-                }
+                instances.get(oldedstIndex).entryList.clear();
+                instances.remove(oldedstIndex);
 
-//                if (MemoryCache.instances.get(deleteKey).usingTime.getLong(ChronoField.NANO_OF_DAY)
-//                        > MemoryCache.instances.get(key).usingTime.getLong(ChronoField.NANO_OF_DAY)) {
-//                    deleteKey = key;
-//                }
-            }
+                return;
 
-            MemoryCache.instances.remove(deleteKey);
         }
     }
 
-    static final public void clear() {
-        MemoryCache.instances.clear();
-    }
+    public static void setMaxInstanceCount(int maxCount) {
 
-    static final public void setMaxInstanceCount(int size) {
-        MemoryCache.instancesSize = size;
-        MemoryCache.deleteInstance(0);
-    }
-
-    static final private void updateUsingOrders() {
-        for (String key : MemoryCache.instances.keySet()) {
-            MemoryCache.instances.get(key).usingOrder++;
-        }
-    }
-
-
-    final private void deleteEntry(int addSize) {
-        if (this.memorySize == 0 || this.memorySize >= this.memory.size() + addSize) {
+        if (maxCount < 0) {
             return;
         }
 
-        int repeatCount = this.memory.size() + addSize - this.memorySize;
+        maxInstanceCount = maxCount;
+        maxInstanceSetting = true;
 
-        for(int i = 0; i < repeatCount; i++) {
+        while (instances.size() > maxInstanceCount) {
+            removeInstance();
+        }
 
-            if (this.policy == EvictionPolicy.FIRST_IN_FIRST_OUT) {
-                shiftCreateOrder(true, true, addSize);
-            } else if (this.policy == EvictionPolicy.LAST_IN_FIRST_OUT) {
-                shiftCreateOrder(false, true, addSize);
-            } else {
-                String deleteKey = "";
-                for (String key : this.memory.keySet()) {
-                    if (deleteKey == "") {
-                        deleteKey = key;
-                        continue;
+    }
+
+    public static void clear() {
+        instances = new ArrayList<MemoryCache>();
+    }
+
+//    public static int getMaxInstanceCount() {
+//        return maxInstanceCount;
+//    }
+
+
+    public void setEvictionPolicy(EvictionPolicy type) {
+        policyType = type;
+    }
+
+    public void setMaxEntryCount(int count) {
+
+        if (count < 0) {
+            return;
+        }
+
+        this.maxEntryCount = count;
+        maxEntrySetting = true;
+
+        while (entryList.size() > maxEntryCount) {
+            removeEntry();
+        }
+
+    }
+
+    public String getEntryOrNull(String key) {
+
+        for (int i = 0; i < entryList.size(); i++) {
+
+            if (entryList.get(i).getEntryKeyNoUpdate().equals(key)) {
+                return entryList.get(i).getEntryValue();
+            }
+        }
+
+        return null;
+    }
+
+    public void addEntry(String key, String value) {
+
+        //객체생성전 있는지없는지 엔트리 리스트에 있는지 없는지 판단
+        //있으면 value 업데이트, 없으면 그냥 추가가
+
+        for (int i = 0; i < entryList.size(); i++) {
+
+            if (entryList.get(i).getEntryKeyNoUpdate().equals(key)) {
+                entryList.get(i).setEntryValue(value);
+                return;
+            }
+
+        }
+
+        //리스트에 없는값만 아래 코드 적용
+        if (maxEntrySetting) {
+
+            if (maxEntryCount == entryList.size()) {
+                removeEntry();
+            }
+        }
+
+        Entry entry = new Entry(key, value);
+        this.entryList.add(entry);
+
+    }
+
+    private void removeEntry() {
+
+        if (entryList.size() <= 1) {
+            entryList.clear();
+            return;
+        }
+
+        switch (policyType) {
+
+            case FIRST_IN_FIRST_OUT:
+                entryList.remove(0);
+                return;
+
+            case LAST_IN_FIRST_OUT:
+                entryList.remove(entryList.size() - 1);
+                return;
+
+            default:
+                int oldedstIndex = 0;
+
+                for (int i = 0; i < entryList.size(); i++) {
+
+                    if (entryList.get(i).getEntryCallNumber() < entryList.get(oldedstIndex).getEntryCallNumber()) {
+                        oldedstIndex = i;
                     }
 
-                    if (this.memory.get(deleteKey).getUsingOrder() < this.memory.get(key).getUsingOrder()) {
-                        deleteKey = key;
-                    }
                 }
-                int deleteOrder = this.memory.get(deleteKey).getCreateOrder();
-                this.memory.remove(deleteKey);
-                shiftCreateOrderAt(deleteOrder);
-            }
+
+                entryList.remove(oldedstIndex);
+                return;
+
         }
     }
 
-    final public void setEvictionPolicy(EvictionPolicy policy) {
-        MemoryCache.updateUsingOrders();
-        this.usingOrder = 0;
-        this.policy = policy;
-    }
 
-    final public void addEntry(String key, String entry) {
-        MemoryCache.updateUsingOrders();
-        this.usingOrder = 0;
-        if (this.memory.containsKey(key)) {
-            updateUsingOrder();
-            this.memory.get(key).setZeroUsingOrder();
-            this.memory.get(key).setValue(entry);
-        } else {
-            updateUsingOrder();
-            deleteEntry(1);
-//            if (this.policy != EvictionPolicy.FIRST_IN_FIRST_OUT) {
-                shiftCreateOrder(true, false, 0);
-//            }
+//    public String getHardDisk() {
+//        return this.hardDiskName;
+//    }
+//
+//    public EvictionPolicy getEvictionPolicy() {
+//        return policyType;
+//    }
+//
+//    public int getMaxEntryCount() {
+//
+//        if (maxEntryCount != Integer.MAX_VALUE) {
+//            return this.entryList.size();
+//        } else {
+//            return this.maxEntryCount;
+//        }
+//
+//    }
 
-            this.memory.put(key, new Entry(entry));
-        }
-    }
-
-    final public String getEntryOrNull(String key) {
-        MemoryCache.updateUsingOrders();
-        this.usingOrder = 0;
-        if (this.memory.get(key) != null) {
-            updateUsingOrder();
-            this.memory.get(key).setZeroUsingOrder();
-            return this.memory.get(key).getValue();
-        } else {
-            return null;
-        }
-    }
-
-    final private void updateUsingOrder() {
-        for (String key : this.memory.keySet()) {
-            this.memory.get(key).updateOrder();
-        }
-    }
-
-    final private void shiftCreateOrder(boolean shift, boolean delete, int addSize) {
-        String deleteKey = "";
-
-        if (delete) {
-            for (String key : this.memory.keySet()) {
-                if (shift) {
-                    if (this.memory.get(key).getCreateOrder() + 1 > this.memorySize - addSize) {
-                        deleteKey = key;
-                    }
-                } else {
-                    if (this.memory.get(key).getCreateOrder() == 0) {
-                        deleteKey = key;
-                    }
-                }
-            }
-
-            this.memory.remove(deleteKey);
-
-            if (shift == false) {
-                for (String key : this.memory.keySet()) {
-                    this.memory.get(key).downShiftCreateOrder();
-                }
-            }
-        } else {
-            for (String key : this.memory.keySet()) {
-                if (shift) {
-                    if (this.memory.get(key).upShiftCreateOrder() > this.memorySize) {
-                        deleteKey = key;
-                    }
-                } else {
-                    if (this.memory.get(key).downShiftCreateOrder() < 0) {
-                        deleteKey = key;
-                    }
-                }
-            }
-        }
-    }
-
-    final private void shiftCreateOrderAt(int at) {
-        for (String key : this.memory.keySet()) {
-            if (this.memory.get(key).getCreateOrder() > at) {
-                this.memory.get(key).downShiftCreateOrder();
-            }
-        }
-    }
-
-    final public void setMaxEntryCount(int size) {
-        MemoryCache.updateUsingOrders();
-        this.usingOrder = 0;
-        this.memorySize = size;
-        deleteEntry(0);
-    }
 }
