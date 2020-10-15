@@ -3,13 +3,13 @@ package academy.pocu.comp2500.assignment2;
 public class Stamp extends Product {
     private String text;
 
-    public enum StampColor {
-        RED, GREEN, BLUE;
-    }
+//    public enum StampColor {
+//        RED, GREEN, BLUE;
+//    }
 
-    public enum StampSize {
-        W4_H3, W5_H2, W7_H4;
-    }
+//    public enum StampSize {
+//        W4_H3, W5_H2, W7_H4;
+//    }
 
     public Stamp(StampSize stampSize, StampColor stampColor, String text) {
         super();

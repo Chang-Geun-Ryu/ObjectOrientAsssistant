@@ -3,9 +3,9 @@ package academy.pocu.comp2500.assignment2;
 // 달력
 public class Calendar extends Product {
 
-    public enum CalendarType {
-        WALL_CALENDAR, MAGNET_CALENDAR, DESK_CALENDAR;
-    }
+//    public enum CalendarType {
+//        WALL_CALENDAR, MAGNET_CALENDAR, DESK_CALENDAR;
+//    }
 
     public Calendar(CalendarType calendarType) {
         super();

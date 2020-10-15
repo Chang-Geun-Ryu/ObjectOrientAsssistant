@@ -7,17 +7,17 @@ public class BusinnessCard extends ApertureProduct {
     private BusinessCardType businessCardType;
     private CardSides cardSides;
     private BusinessCardColor businessCardColor;
-    public enum BusinessCardType {
-        LINEN_CARD, LAID_CARD, SMOOTH_CARD;
-    }
+//    public enum BusinessCardType {
+//        LINEN_CARD, LAID_CARD, SMOOTH_CARD;
+//    }
 
-    public enum CardSides {
-        SINGLESIDED_BUSINESS_CARD, DOUBLESIDED_BUSINESS_CARD;
-    }
+//    public enum CardSides {
+//        SINGLESIDED_BUSINESS_CARD, DOUBLESIDED_BUSINESS_CARD;
+//    }
 
-    public enum BusinessCardColor {
-        IVORY_CARD, WHITE_CARD, GRAY_CARD;
-    }
+//    public enum BusinessCardColor {
+//        IVORY_CARD, WHITE_CARD, GRAY_CARD;
+//    }
 
     public BusinnessCard(BusinessCardType businessCardType, CardSides cardSides, BusinessCardColor businessCardColor, Orientation orientation) {
         super();

@@ -30,9 +30,13 @@ public class Product {
         return size;
     }
 
-//    public int getWidth() {
-//        return size.getWidth();
-//    }
+    public int getWidth() {
+        return size.getWidth();
+    }
+
+    public int getHeight() {
+        return size.getHeight();
+    }
 
     public Color getColor() {
         return color;

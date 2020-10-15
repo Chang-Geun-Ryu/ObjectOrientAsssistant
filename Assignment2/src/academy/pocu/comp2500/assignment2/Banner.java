@@ -5,13 +5,13 @@ import java.util.ArrayList;
 public class Banner extends ApertureProduct {
     private BannerType bannerType;
 
-    public enum BannerType {
-        GLOSS_BANNER, SCRIM_BANNER, MESH_BANNER;
-    }
-
-    public enum BannerSize {
-        W100_H50, W100_H100, W200_H50, W300_H100;
-    }
+//    public enum BannerType {
+//        GLOSS_BANNER, SCRIM_BANNER, MESH_BANNER;
+//    }
+//
+//    public enum BannerSize {
+//        W100_H50, W100_H100, W200_H50, W300_H100;
+//    }
 
     public Banner(BannerType bannerType, BannerSize bannerSize, Orientation orientation, Color color) {
         super();
