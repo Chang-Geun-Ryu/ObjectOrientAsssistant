@@ -1,27 +1,27 @@
 package academy.pocu.comp2500.assignment2;
 
 public class Size {
-    private double width;
-    private double height;
+    private int width;
+    private int height;
 
-    public Size(double width, double height) {
+    public Size(int width, int height) {
         this.width = width;
         this.height = height;
     }
 
-    public double getWidth() {
+    public int getWidth() {
         return width;
     }
 
-    public double getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public void setWidth(double width) {
+    public void setWidth(int width) {
         this.width = width;
     }
 
-    public void setHeight(double height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 }

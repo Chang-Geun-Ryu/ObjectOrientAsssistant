@@ -1,38 +1,47 @@
 package academy.pocu.comp2500.assignment2;
 
-import java.util.ArrayList;
-
 public class Aperture {
-    protected String text;
-//    private int x;
-//    private int y;
-//    private int width;
-//    private int height;
+    protected double x;
+    protected double y;
+    protected double width;
+    protected double height;
 
-    protected ArrayList<Integer> elements;
-
-    protected Aperture() {
-//        this.text = text;
-//        this.x = x;
-//        this.y = y;
-//        this.width = width;
-//        this.height = height;
-//        this.elements = new ArrayList<Integer>();
+    protected Aperture(double x, double y, double width, double height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
-    public String getText() {
-        return text;
+    public double getX() {
+        return x;
     }
 
-    protected void setText(String text) {
-        this.text = text;
+    public void setX(double x) {
+        this.x = x;
     }
 
-    protected void setElement(ArrayList<Integer> elements) {
-        this.elements = elements;
+    public double getY() {
+        return y;
     }
 
-    public ArrayList<Integer> getElements() {
-        return this.elements;
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
     }
 }

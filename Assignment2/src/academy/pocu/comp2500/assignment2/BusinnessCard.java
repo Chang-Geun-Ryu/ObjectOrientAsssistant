@@ -22,14 +22,14 @@ public class BusinnessCard extends ApertureProduct {
     public BusinnessCard(BusinessCardType businessCardType, CardSides cardSides, BusinessCardColor businessCardColor, Orientation orientation) {
         super();
 
-        double width = 90;
-        double height = 50;
+        int width = 90;
+        int height = 50;
         this.businessCardType = businessCardType; // ~
         this.cardSides = cardSides;
         this.businessCardColor = businessCardColor;
         // 세로 방향일 때, 가로 세로 변경
         if (orientation == Orientation.PORTRAIT) {
-            double temp = width;
+            int temp = width;
             width = height;
             height = temp;
         }
