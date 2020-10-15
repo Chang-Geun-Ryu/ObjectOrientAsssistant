@@ -10,8 +10,8 @@ public class ApertureProduct extends Product {
         PORTRAIT, LANDSCAPE;
     }
 
-    protected ApertureProduct(String productId) {
-        super(productId);
+    protected ApertureProduct() {
+        super();
     }
 
     public void addAperture(Aperture aperture) {

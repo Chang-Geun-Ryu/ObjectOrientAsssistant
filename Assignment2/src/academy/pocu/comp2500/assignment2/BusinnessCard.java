@@ -19,8 +19,8 @@ public class BusinnessCard extends ApertureProduct {
         IVORY_CARD, WHITE_CARD, GRAY_CARD;
     }
 
-    public BusinnessCard(String productId, BusinessCardType businessCardType, CardSides cardSides, BusinessCardColor businessCardColor, Orientation orientation) {
-        super(productId);
+    public BusinnessCard(BusinessCardType businessCardType, CardSides cardSides, BusinessCardColor businessCardColor, Orientation orientation) {
+        super();
         super.shippingMethod = ShippingMethod.PICKUP;
         double width = 90;
         double height = 50;

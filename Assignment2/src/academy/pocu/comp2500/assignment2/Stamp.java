@@ -11,8 +11,8 @@ public class Stamp extends Product {
         W4_H3, W5_H2, W7_H4;
     }
 
-    public Stamp(String productId, StampSize stampSize, StampColor stampColor, String text) {
-        super(productId);
+    public Stamp(StampSize stampSize, StampColor stampColor, String text) {
+        super();
 
         switch (stampSize) {
             case W4_H3:

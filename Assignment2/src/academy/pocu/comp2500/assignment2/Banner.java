@@ -13,8 +13,8 @@ public class Banner extends ApertureProduct {
         W100_H50, W100_H100, W200_H50, W300_H100;
     }
 
-    public Banner(String productId, BannerType bannerType, BannerSize bannerSize, Orientation orientation, Color color) {
-        super(productId);
+    public Banner(BannerType bannerType, BannerSize bannerSize, Orientation orientation, Color color) {
+        super();
         this.bannerType = bannerType;
         this.orientation = orientation;
 

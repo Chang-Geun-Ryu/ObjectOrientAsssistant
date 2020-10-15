@@ -7,8 +7,8 @@ public class Calendar extends Product {
         WALL_CALENDAR, MAGNET_CALENDAR, DESK_CALENDAR;
     }
 
-    public Calendar(String productId, CalendarType calendarType) {
-        super(productId);
+    public Calendar(CalendarType calendarType) {
+        super();
 
         switch (calendarType) {
             case WALL_CALENDAR:
