@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class BusinnessCard extends ApertureProduct {
 
     private BusinessCardType businessCardType;
-    private CardSides cardSide;
+    private CardSides cardSides;
     private BusinessCardColor businessCardColor;
     public enum BusinessCardType {
         LINEN_CARD, LAID_CARD, SMOOTH_CARD;
@@ -19,13 +19,13 @@ public class BusinnessCard extends ApertureProduct {
         IVORY_CARD, WHITE_CARD, GRAY_CARD;
     }
 
-    public BusinnessCard(String productId, BusinessCardType businessCardType, CardSides cardSide, BusinessCardColor businessCardColor, Orientation orientation) {
+    public BusinnessCard(String productId, BusinessCardType businessCardType, CardSides cardSides, BusinessCardColor businessCardColor, Orientation orientation) {
         super(productId);
         super.shippingMethod = ShippingMethod.PICKUP;
         double width = 90;
         double height = 50;
         this.businessCardType = businessCardType; // ~
-        this.cardSide = cardSide;
+        this.cardSides = cardSides;
         this.businessCardColor = businessCardColor;
         // 세로 방향일 때, 가로 세로 변경
         if (orientation == Orientation.PORTRAIT) {
@@ -51,7 +51,7 @@ public class BusinnessCard extends ApertureProduct {
                 break;
         }
 
-        if (cardSide == CardSides.DOUBLESIDED_BUSINESS_CARD) {
+        if (cardSides == CardSides.DOUBLESIDED_BUSINESS_CARD) {
             super.price += 30;
         }
 
@@ -71,8 +71,8 @@ public class BusinnessCard extends ApertureProduct {
         }
     }
 
-    public CardSides getCardSide() {
-        return this.cardSide;
+    public CardSides getCardSides() {
+        return this.cardSides;
     }
 
     public BusinessCardColor getBusinessCardColor() {
