@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class Banner extends ApertureProduct {
     private BannerType bannerType;
-
+    private BannerSize bannerSize;
+    private Color bannerColor;
 //    public enum BannerType {
 //        GLOSS_BANNER, SCRIM_BANNER, MESH_BANNER;
 //    }
@@ -17,6 +18,8 @@ public class Banner extends ApertureProduct {
         super();
         this.bannerType = bannerType;
         this.orientation = orientation;
+        this.bannerColor = color;
+        this.bannerSize = bannerSize;
 
         switch (bannerSize) {
             case W100_H50:
@@ -65,4 +68,11 @@ public class Banner extends ApertureProduct {
         return bannerType;
     }
 
+    public BannerSize getBannerSize() {
+        return bannerSize;
+    }
+
+    public Color getBannerColor() {
+        return bannerColor;
+    }
 }

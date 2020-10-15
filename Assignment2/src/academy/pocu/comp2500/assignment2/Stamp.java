@@ -2,6 +2,8 @@ package academy.pocu.comp2500.assignment2;
 
 public class Stamp extends Product {
     private String text;
+    private StampSize stampSize;
+    private StampColor stampColor;
 
 //    public enum StampColor {
 //        RED, GREEN, BLUE;
@@ -13,7 +15,8 @@ public class Stamp extends Product {
 
     public Stamp(StampSize stampSize, StampColor stampColor, String text) {
         super();
-
+        this.stampSize = stampSize;
+        this.stampColor = stampColor;
         switch (stampSize) {
             case W4_H3:
                 super.size = new Size(40, 30);
@@ -52,5 +55,12 @@ public class Stamp extends Product {
         return text;
     }
 
+    public StampSize getStampSize() {
+        return stampSize;
+    }
+
+    public StampColor getStampColor() {
+        return stampColor;
+    }
 }
 

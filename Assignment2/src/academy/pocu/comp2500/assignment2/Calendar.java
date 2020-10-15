@@ -2,14 +2,14 @@ package academy.pocu.comp2500.assignment2;
 
 // 달력
 public class Calendar extends Product {
-
+    private CalendarType calendarType;
 //    public enum CalendarType {
 //        WALL_CALENDAR, MAGNET_CALENDAR, DESK_CALENDAR;
 //    }
 
     public Calendar(CalendarType calendarType) {
         super();
-
+        this.calendarType = calendarType;
         switch (calendarType) {
             case WALL_CALENDAR:
                 super.displayName = "Wall Calendar";
@@ -30,5 +30,9 @@ public class Calendar extends Product {
                 super.color = new Color(0xFF, 0xFF, 0xFF);
                 break;
         }
+    }
+
+    public CalendarType getCalendarType() {
+        return calendarType;
     }
 }
