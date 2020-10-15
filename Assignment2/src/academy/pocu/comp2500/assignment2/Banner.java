@@ -1,68 +1,68 @@
 package academy.pocu.comp2500.assignment2;
 
+import java.util.ArrayList;
+
 public class Banner extends ApertureProduct {
-    private BannerType type;
+    private BannerType bannerType;
 
-    public Banner(BannerType type, BannerSize bannerSize, Color color, Orientation orientation, DeliveryMethod deliveryMethod) {
-        super(getSize(bannerSize), getPrice(bannerSize), color, orientation, deliveryMethod);
-        this.type = type;
+    public enum BannerType {
+        GLOSS_BANNER, SCRIM_BANNER, MESH_BANNER;
     }
 
-    private static Size getSize(BannerSize bannerSize) {
-        Size size = null;
+    public enum BannerSize {
+        W100_H50, W100_H100, W200_H50, W300_H100;
+    }
+
+    public Banner(String productId, BannerType bannerType, BannerSize bannerSize, Orientation orientation, Color color) {
+        super(productId);
+        this.bannerType = bannerType;
+        this.orientation = orientation;
+
         switch (bannerSize) {
-            case SMALL:
-                size = new Size(1000, 500);
+            case W100_H50:
+                super.size = new Size(1000, 500);
+                super.price = 5000;
                 break;
-            case MEDIUM:
-                size = new Size(1000, 1000);
+            case W100_H100:
+                super.size = new Size(1000, 1000);
+                super.price = 5200;
                 break;
-            case LARGE:
-                size = new Size(2000, 500);
+            case W200_H50:
+                super.size = new Size(2000, 500);
+                super.price = 5300;
                 break;
-            case EXTRALARGE:
-                size = new Size(3000, 1000);
+            case W300_H100:
+                super.size = new Size(3000, 1000);
+                super.price = 6000;
                 break;
         }
-        return size;
-    }
 
-    static private int getPrice(BannerSize bannerSize) {
-        int price = 0;
-        switch (bannerSize) {
-            case SMALL:
-                price = 5000;
-                break;
-            case MEDIUM:
-                price = 5200;
-                break;
-            case LARGE:
-                price = 5300;
-                break;
-            case EXTRALARGE:
-                price = 6000;
-                break;
+        // 세로 방향일 때, 가로 세로 변경
+        if (orientation == Orientation.PORTRAIT) {
+            double temp = size.getWidth();
+            size.setWidth(size.getHeight());
+            size.setHeight(temp);
         }
-        return price;
-    }
 
-    /*static private String getDisplayName(BannerType bannerType) {
-        String name = "";
+        super.color = color;
+
         switch (bannerType) {
-            case GLOSS:
-                name = "Gloss Banner";
+            case GLOSS_BANNER:
+                super.displayName = String.format("%s (%.0f mm x %.0f mm)", "Gloss Banner", super.size.getWidth(), super.size.getHeight());
                 break;
-            case SCRIM:
-                name = "Scrim Banner";
+            case SCRIM_BANNER:
+                super.displayName = String.format("%s (%.0f mm x %.0f mm)", "Scrim Banner", super.size.getWidth(), super.size.getHeight());
+                super.price += 100;
                 break;
-            case MESH:
-                name = "Mesh Banner";
+            case MESH_BANNER:
+                super.displayName = String.format("%s (%.0f mm x %.0f mm)", "Mesh Banner", super.size.getWidth(), super.size.getHeight());
+                super.price += 100;
                 break;
         }
-        return name;
-    }*/
-
-    public BannerType getType() {
-        return type;
     }
+
+    public BannerType getBannerType() {
+        return bannerType;
+    }
+
 }

@@ -1,48 +1,48 @@
 package academy.pocu.comp2500.assignment2;
 
+// 상품 부모 클래스
 public class Product {
-    protected Size size;
     protected int price;
-    private Color color;
-    private DeliveryMethod deliveryMethod;
+    protected String productId;
+    protected Size size;
+    protected Color color;
+    protected String displayName;
+    protected ShippingMethod shippingMethod;
 
-    public Product(Size size, int price, Color color, DeliveryMethod deliveryMethod) {
-        this.size = size;
-        this.price = price;
-        this.color = color;
-        this.deliveryMethod = deliveryMethod;
+    public enum ShippingMethod {
+        PICKUP, SHIP;
+    }
+
+    protected Product(String productId) {
+        this.productId = productId;
     }
 
     public int getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public Color getColor() {
-        //System.out.printf("r = %02X , g = %02X b = %02X\n", color.getR(),color.getG(),color.getB());
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
+    public String getProductId() {
+        return productId;
     }
 
     public Size getSize() {
         return size;
     }
 
-    public DeliveryMethod getDeliveryMethod() {
-        return deliveryMethod;
+    public Color getColor() {
+        return color;
     }
 
-    public void setDeliveryMethod(DeliveryMethod deliveryMethod) {
-        this.deliveryMethod = deliveryMethod;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public boolean isEquals(Product product) {
-        return this.size.isEquals(product.size) && this.color.isEquals(product.color) && this.price == product.price;
+    public ShippingMethod getShippingMethod() {
+        return shippingMethod;
     }
+
+    public void setShippingMethod(ShippingMethod shippingMethod) {
+        this.shippingMethod = shippingMethod;
+    }
+
 }
