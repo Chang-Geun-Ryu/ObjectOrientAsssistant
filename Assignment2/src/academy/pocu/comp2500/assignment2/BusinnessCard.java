@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class BusinnessCard extends ApertureProduct {
 
     private BusinessCardType businessCardType;
-
+    private CardSides side;
 //    public enum BusinessCardType {
 //        LINEN_CARD, LAID_CARD, SMOOTH_CARD;
 //    }
@@ -24,6 +24,7 @@ public class BusinnessCard extends ApertureProduct {
         double width = 90;
         double height = 50;
         this.businessCardType = businessCardType; // ~
+        this.side = cardSides;
         // 세로 방향일 때, 가로 세로 변경
         if (orientation == Orientation.PORTRAIT) {
             double temp = width;
@@ -66,6 +67,10 @@ public class BusinnessCard extends ApertureProduct {
                 super.color = new Color(0xE6, 0xE6, 0xE6);
                 break;
         }
+    }
+
+    public CardSides getSide() {
+        return this.side;
     }
 
     public BusinessCardType getBusinessCardType() {
