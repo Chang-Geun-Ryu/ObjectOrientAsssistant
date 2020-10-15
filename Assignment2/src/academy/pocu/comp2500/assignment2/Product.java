@@ -9,13 +9,12 @@ public class Product {
     protected String displayName;
     protected ShippingMethod shippingMethod;
 
-    public enum ShippingMethod {
-        PICKUP, SHIP;
-    }
+//    public enum ShippingMethod {
+//        PICKUP, SHIP;
+//    }
 
     protected Product(String productId) {
         this.productId = productId;
-        this.shippingMethod = ShippingMethod.PICKUP;
     }
 
     public int getPrice() {
