@@ -6,23 +6,23 @@ public class BusinnessCard extends ApertureProduct {
 
     private BusinessCardType businessCardType;
 
-    public enum BusinessCardType {
-        LINEN_CARD, LAID_CARD, SMOOTH_CARD;
-    }
+//    public enum BusinessCardType {
+//        LINEN_CARD, LAID_CARD, SMOOTH_CARD;
+//    }
 
-    public enum CardSides {
-        SINGLESIDED_BUSINESS_CARD, DOUBLESIDED_BUSINESS_CARD;
-    }
+//    public enum CardSides {
+//        SINGLESIDED_BUSINESS_CARD, DOUBLESIDED_BUSINESS_CARD;
+//    }
 
-    public enum BusinessCardColor {
-        IVORY_CARD, WHITE_CARD, GRAY_CARD;
-    }
+//    public enum BusinessCardColor {
+//        IVORY_CARD, WHITE_CARD, GRAY_CARD;
+//    }
 
     public BusinnessCard(String productId, BusinessCardType businessCardType, CardSides cardSides, BusinessCardColor businessCardColor, Orientation orientation) {
         super(productId);
         double width = 90;
         double height = 50;
-        this.businessCardType = businessCardType;
+        this.businessCardType = businessCardType; // ~
         // 세로 방향일 때, 가로 세로 변경
         if (orientation == Orientation.PORTRAIT) {
             double temp = width;
