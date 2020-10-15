@@ -6,25 +6,27 @@ public class BusinnessCard extends ApertureProduct {
 
     private BusinessCardType businessCardType;
     private CardSides side;
-//    public enum BusinessCardType {
-//        LINEN_CARD, LAID_CARD, SMOOTH_CARD;
-//    }
+    private BusinessCardColor businessCardColor;
+    public enum BusinessCardType {
+        LINEN_CARD, LAID_CARD, SMOOTH_CARD;
+    }
 
-//    public enum CardSides {
-//        SINGLESIDED_BUSINESS_CARD, DOUBLESIDED_BUSINESS_CARD;
-//    }
+    public enum CardSides {
+        SINGLESIDED_BUSINESS_CARD, DOUBLESIDED_BUSINESS_CARD;
+    }
 
-//    public enum BusinessCardColor {
-//        IVORY_CARD, WHITE_CARD, GRAY_CARD;
-//    }
+    public enum BusinessCardColor {
+        IVORY_CARD, WHITE_CARD, GRAY_CARD;
+    }
 
-    public BusinnessCard(String productId, BusinessCardType businessCardType, CardSides cardSides, BusinessCardColor businessCardColor, Orientation orientation, ShippingMethod shippingMethod) {
+    public BusinnessCard(String productId, BusinessCardType businessCardType, CardSides cardSides, BusinessCardColor businessCardColor, Orientation orientation) {
         super(productId);
-        super.shippingMethod = shippingMethod;
+        super.shippingMethod = ShippingMethod.PICKUP;
         double width = 90;
         double height = 50;
         this.businessCardType = businessCardType; // ~
         this.side = cardSides;
+        this.businessCardColor = businessCardColor;
         // 세로 방향일 때, 가로 세로 변경
         if (orientation == Orientation.PORTRAIT) {
             double temp = width;
@@ -71,6 +73,10 @@ public class BusinnessCard extends ApertureProduct {
 
     public CardSides getSide() {
         return this.side;
+    }
+
+    public BusinessCardColor getCardColor() {
+        return this.businessCardColor;
     }
 
     public BusinessCardType getBusinessCardType() {
