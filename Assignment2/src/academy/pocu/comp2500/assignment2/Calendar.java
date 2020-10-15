@@ -1,34 +1,36 @@
 package academy.pocu.comp2500.assignment2;
 
-// 달력
 public class Calendar extends Product {
+    private CalendarType type;
 
-    public enum CalendarType {
-        WALL_CALENDAR, MAGNET_CALENDAR, DESK_CALENDAR;
-    }
-
-    public Calendar(CalendarType calendarType) {
+    public Calendar(CalendarType calendarType, ShippingOptionsType deliveryMethod) {
         super();
+        this.type = calendarType;
+        setName(calendarType.getName());
+        setPrice(calendarType.getPrice());
+        setWidth(type.getWidth());
+        setHeight(type.getHeight());
+//        setColor(0xFFFFFF);
+        if (deliveryMethod == null) {
 
-        switch (calendarType) {
-            case WALL_CALENDAR:
-                super.displayName = "Wall Calendar";
-                super.size = new Size(400, 400);
-                super.price = 1000;
-                super.color = new Color(0xFF, 0xFF, 0xFF);
-                break;
-            case DESK_CALENDAR:
-                super.displayName = "Desk Calendar";
-                super.size = new Size(200, 150);
-                super.price = 1000;
-                super.color = new Color(0xFF, 0xFF, 0xFF);
-                break;
-            case MAGNET_CALENDAR:
-                super.displayName = "Magnet Calendar";
-                super.size = new Size(100, 200);
-                super.price = 1500;
-                super.color = new Color(0xFF, 0xFF, 0xFF);
-                break;
+        } else {
+            setDeliveryMethod(deliveryMethod);
         }
     }
+
+    public CalendarType getType() {
+        return this.type;
+    }
+
+    public int getColor() {
+        return 0xFFFFFF;
+    }
+
+//    public int getWidth() {
+//        return this.type.getWidth();
+//    }
+//
+//    public int getHeight() {
+//        return this.type.getHeight();
+//    }
 }

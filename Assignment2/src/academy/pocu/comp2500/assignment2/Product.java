@@ -1,49 +1,66 @@
 package academy.pocu.comp2500.assignment2;
 
-// 상품 부모 클래스
 public class Product {
-    protected int price;
-//    protected String productId;
-    protected Size size;
-    protected Color color;
-    protected String displayName;
-    protected ShippingMethod shippingMethod;
-
-//    public enum ShippingMethod {
-//        PICKUP, SHIP;
-//    }
+    private String name;
+    private int price;
+    private ShippingOptionsType deliveryMethod;
+    protected int width;
+    protected int height;
+//    private int color;
 
     protected Product() {
-//        this.productId = productId;
-        shippingMethod = ShippingMethod.PICKUP;
+        this.name = "";
+        this.price = 0;
+        this.deliveryMethod = ShippingOptionsType.PICKUP;
+        this.width = 0;
+        this.height = 0;
+    }
+
+//    protected void setColor(int color) {
+//        this.color = color;
+//    }
+
+    protected void setWidth(int width) {
+        this.width = width;
+    }
+
+    protected  void setHeight(int height) {
+        this.height = height;
+    }
+
+//    public int getColor() {
+//        return this.color;
+//    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public int getPrice() {
-        return price;
+        return this.price;// + (this.texts.size() + this.imagePaths.size()) * 5;
     }
 
-//    public String getProductId() {
-//        return productId;
-//    }
-
-    public Size getSize() {
-        return size;
+    public ShippingOptionsType getDeliveryMethod() {
+        return this.deliveryMethod;
     }
 
-    public Color getColor() {
-        return color;
+    protected void setPrice(int price) {
+        this.price = price;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    protected void setName(String name) {
+        this.name = name;
     }
 
-    public ShippingMethod getShippingMethod() {
-        return shippingMethod;
+    public void setDeliveryMethod(ShippingOptionsType deliveryMethod) {
+        this.deliveryMethod = deliveryMethod;
     }
-
-    public void setShippingMethod(ShippingMethod shippingMethod) {
-        this.shippingMethod = shippingMethod;
-    }
-
 }
