@@ -2,38 +2,22 @@ package academy.pocu.comp2500.assignment2;
 
 import java.util.ArrayList;
 
-public class ApertureProduct extends BaseProduct {
+public class ApertureProduct extends Product {
 
-    protected EOrientation orientation;
-    protected ArrayList<ImageAperture> imageApertures = new ArrayList<>();
-    protected ArrayList<TextAperture> textApertures = new ArrayList<>();
+    private ArrayList<Aperture> apertures = new ArrayList<>();
 
-    ApertureProduct(EOrientation orientation, EShippingMethod shippingMethod) {
-        super(shippingMethod);
-        this.orientation = orientation;
+    protected ApertureProduct(Size size, Color color) {
+        super(size, color, ShippingMethod.PICK_UP);
     }
 
-    public void addImageAperture(ImageAperture imageAperture) {
-        if (0 < imageAperture.getX()
-                && imageAperture.getX() + imageAperture.getDemension().getWidth() < demension.getWidth()
-                && 0 < imageAperture.getY()
-                && imageAperture.getY() + imageAperture.getDemension().getHeight() < demension.getHeight()) {
-            imageApertures.add(imageAperture);
-            price += 5;
+    public void addAperture(Aperture aperture) {
+        if (aperture.getX() >= 0 && aperture.getY() >= 0 && this.getSize().getWidth() >= aperture.getX() + aperture.getSize().getWidth() && this.getSize().getHeight() >= aperture.getY() + aperture.getSize().getHeight()) {
+            this.apertures.add(aperture);
+            this.setPrice(this.getPrice() + 5);
         }
     }
 
-    public void addTextAperture(TextAperture textAperture) {
-        if (0 < textAperture.getX()
-                && textAperture.getX() + textAperture.getDemension().getWidth() < demension.getWidth()
-                && 0 < textAperture.getY()
-                && textAperture.getY() + textAperture.getDemension().getHeight() < demension.getHeight()) {
-            textApertures.add(textAperture);
-            price += 5;
-        }
-    }
-
-    public EOrientation getOrientation() {
-        return orientation;
+    public ArrayList<Aperture> getApertures() {
+        return apertures;
     }
 }

@@ -1,7 +1,7 @@
 package academy.pocu.comp2500.assignment2;
 
-public enum EBusinessCardColor {
+public enum CardColor {
     GRAY,
     IVORY,
-    WHITE,
+    WHITE
 }

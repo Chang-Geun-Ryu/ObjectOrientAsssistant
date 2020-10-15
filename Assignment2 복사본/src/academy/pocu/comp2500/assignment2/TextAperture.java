@@ -1,8 +1,12 @@
 package academy.pocu.comp2500.assignment2;
 
 public class TextAperture extends Aperture {
-    public TextAperture(String text, int x, int y, Demension size) {
-        super(text, x, y, size);
+
+    private String text;
+
+    public TextAperture(String text, int x, int y, Size size) {
+        super(x, y, size);
+        this.text = text;
     }
 
     public String getText() {
