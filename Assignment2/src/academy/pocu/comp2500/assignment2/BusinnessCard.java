@@ -21,7 +21,7 @@ public class BusinnessCard extends ApertureProduct {
 
     public BusinnessCard(BusinessCardType businessCardType, CardSides cardSides, BusinessCardColor businessCardColor, Orientation orientation) {
         super();
-        super.shippingMethod = ShippingMethod.PICKUP;
+
         double width = 90;
         double height = 50;
         this.businessCardType = businessCardType; // ~

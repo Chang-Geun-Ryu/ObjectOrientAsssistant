@@ -15,6 +15,7 @@ public class Product {
 
     protected Product() {
 //        this.productId = productId;
+        shippingMethod = ShippingMethod.PICKUP;
     }
 
     public int getPrice() {
