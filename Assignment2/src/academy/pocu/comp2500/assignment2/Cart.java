@@ -3,29 +3,27 @@ package academy.pocu.comp2500.assignment2;
 import java.util.ArrayList;
 
 public class Cart {
-    private ArrayList<Product> products = new ArrayList<Product>();
-    private double totalPrice;
+    private ArrayList<Product> products = new ArrayList<>();
 
-    public Cart() {
-        this.totalPrice = 0;
+    public ArrayList<Product> getProducts() {
+        return products;
     }
 
     public void addProduct(Product product) {
         products.add(product);
-        totalPrice += product.getPrice();
     }
 
     public void removeProduct(Product product) {
-        if (products.remove(product)) {
-            totalPrice -= product.getPrice();
+        products.remove(product);
+    }
+
+    public int getTotalPrice() {
+        int total = 0;
+
+        for (Product product : products) {
+            total += product.getPrice();
         }
-    }
 
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public ArrayList<Product> getProducts() {
-        return products;
+        return total;
     }
 }

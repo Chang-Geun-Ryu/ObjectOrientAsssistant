@@ -4,33 +4,36 @@ import java.util.ArrayList;
 
 public class ApertureProduct extends Product {
     protected Orientation orientation;
-    protected ArrayList<Aperture> apertures = new ArrayList<Aperture>();
+    protected ArrayList<Aperture> apertures = new ArrayList<>();
 
-    public enum Orientation {
-        PORTRAIT, LANDSCAPE;
-    }
-
-    protected ApertureProduct() {
-        super();
-    }
-
-    public void addAperture(Aperture aperture) {
-//        if (aperture.x < 0 || aperture.x + aperture.width > super.size.getWidth() || aperture.y < 0 || aperture.y + aperture.height > super.size.getHeight()) {
-//            return;
-//        }
-        if (aperture.x + aperture.width <= 0 || aperture.x >= aperture.width || aperture.y + aperture.height <= 0 || aperture.y >= aperture.height) {
-            return;
-        }
-        this.apertures.add(aperture);
-        super.price += 5;
-    }
-
-    public ArrayList<Aperture> getAperture() {
-        return apertures;
+    protected ApertureProduct(String displayName, Color color, int width, int height, int price, ShippingMethod shippingMethod, Orientation orientation) {
+        super(displayName, color, width, height, price, shippingMethod);
+        this.orientation = orientation;
     }
 
     public Orientation getOrientation() {
         return orientation;
     }
 
+    public ArrayList<Aperture> getApertures() {
+        return apertures;
+    }
+
+    public void addTextAperture(TextAperture textAperture) {
+        if (textAperture.isInvalid(width, height)) {
+            return;
+        }
+
+        apertures.add(textAperture);
+        super.price += 5;
+    }
+
+    public void addImageAperture(ImageAperture imageAperture) {
+        if (imageAperture.isInvalid(width, height)) {
+            return;
+        }
+
+        apertures.add(imageAperture);
+        super.price += 5;
+    }
 }

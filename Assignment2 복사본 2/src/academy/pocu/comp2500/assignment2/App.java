@@ -4,7 +4,6 @@ import academy.pocu.comp2500.assignment2.registry.Registry;
 
 public class App {
     public App(Registry registry) {
-        // register your classes or methods here
         registry.registerRedStampCreator("Stamp");
         registry.registerBlueStampCreator("Stamp");
         registry.registerGreenStampCreator("Stamp");
@@ -30,35 +29,35 @@ public class App {
         registry.registerProductAdder("Cart", "addProduct");
         registry.registerProductRemover("Cart", "removeProduct");
         registry.registerTotalPriceGetter("Cart", "getTotalPrice");
-        registry.registerLandscapeBannerTextApertureAdder("ApertureProduct", "addAperture");
-        registry.registerLandscapeBannerImageApertureAdder("ApertureProduct", "addAperture");
-        registry.registerPortraitBannerTextApertureAdder("ApertureProduct", "addAperture");
-        registry.registerPortraitBannerImageApertureAdder("ApertureProduct", "addAperture");
-        registry.registerGlossBannerTextApertureAdder("ApertureProduct", "addAperture");
-        registry.registerGlossBannerImageApertureAdder("ApertureProduct", "addAperture");
-        registry.registerScrimBannerTextApertureAdder("ApertureProduct", "addAperture");
-        registry.registerScrimBannerImageApertureAdder("ApertureProduct", "addAperture");
-        registry.registerMeshBannerTextApertureAdder("ApertureProduct", "addAperture");
-        registry.registerMeshBannerImageApertureAdder("ApertureProduct", "addAperture");
-        registry.registerLandscapeBusinnessCardTextApertureAdder("ApertureProduct", "addAperture");
-        registry.registerLandscapeBusinnessCardImageApertureAdder("ApertureProduct", "addAperture");
-        registry.registerPortraitBusinnessCardTextApertureAdder("ApertureProduct", "addAperture");
-        registry.registerPortraitBusinnessCardImageApertureAdder("ApertureProduct", "addAperture");
-        registry.registerIvoryBusinnessCardTextApertureAdder("ApertureProduct", "addAperture");
-        registry.registerIvoryBusinnessCardImageApertureAdder("ApertureProduct", "addAperture");
-        registry.registerGrayBusinnessCardTextApertureAdder("ApertureProduct", "addAperture");
-        registry.registerGrayBusinnessCardImageApertureAdder("ApertureProduct", "addAperture");
-        registry.registerWhiteBusinnessCardTextApertureAdder("ApertureProduct", "addAperture");
-        registry.registerWhiteBusinnessCardImageApertureAdder("ApertureProduct", "addAperture");
-        registry.registerLaidBusinnessCardTextApertureAdder("ApertureProduct", "addAperture");
-        registry.registerLaidBusinnessCardImageApertureAdder("ApertureProduct", "addAperture");
-        registry.registerLinenBusinnessCardTextApertureAdder("ApertureProduct", "addAperture");
-        registry.registerLinenBusinnessCardImageApertureAdder("ApertureProduct", "addAperture");
-        registry.registerSmoothBusinnessCardTextApertureAdder("ApertureProduct", "addAperture");
-        registry.registerSmoothBusinnessCardImageApertureAdder("ApertureProduct", "addAperture");
-        registry.registerSingleSidedBusinnessCardTextApertureAdder("ApertureProduct", "addAperture");
-        registry.registerSingleSidedBusinnessCardImageApertureAdder("ApertureProduct", "addAperture");
-        registry.registerDoubleSidedBusinnessCardTextApertureAdder("ApertureProduct", "addAperture");
-        registry.registerDoubleSidedBusinnessCardImageApertureAdder("ApertureProduct", "addAperture");
+        registry.registerLandscapeBannerTextApertureAdder("ApertureProduct", "addText");
+        registry.registerLandscapeBannerImageApertureAdder("ApertureProduct", "addImagePath");
+        registry.registerPortraitBannerTextApertureAdder("ApertureProduct", "addText");
+        registry.registerPortraitBannerImageApertureAdder("ApertureProduct", "addImagePath");
+        registry.registerGlossBannerTextApertureAdder("ApertureProduct", "addText");
+        registry.registerGlossBannerImageApertureAdder("ApertureProduct", "addImagePath");
+        registry.registerScrimBannerTextApertureAdder("ApertureProduct", "addText");
+        registry.registerScrimBannerImageApertureAdder("ApertureProduct", "addImagePath");
+        registry.registerMeshBannerTextApertureAdder("ApertureProduct", "addText");
+        registry.registerMeshBannerImageApertureAdder("ApertureProduct", "addImagePath");
+        registry.registerLandscapeBusinnessCardTextApertureAdder("ApertureProduct", "addText");
+        registry.registerLandscapeBusinnessCardImageApertureAdder("ApertureProduct", "addImagePath");
+        registry.registerPortraitBusinnessCardTextApertureAdder("ApertureProduct", "addText");
+        registry.registerPortraitBusinnessCardImageApertureAdder("ApertureProduct", "addImagePath");
+        registry.registerIvoryBusinnessCardTextApertureAdder("ApertureProduct", "addText");
+        registry.registerIvoryBusinnessCardImageApertureAdder("ApertureProduct", "addImagePath");
+        registry.registerGrayBusinnessCardTextApertureAdder("ApertureProduct", "addText");
+        registry.registerGrayBusinnessCardImageApertureAdder("ApertureProduct", "addImagePath");
+        registry.registerWhiteBusinnessCardTextApertureAdder("ApertureProduct", "addText");
+        registry.registerWhiteBusinnessCardImageApertureAdder("ApertureProduct", "addImagePath");
+        registry.registerLaidBusinnessCardTextApertureAdder("ApertureProduct", "addText");
+        registry.registerLaidBusinnessCardImageApertureAdder("ApertureProduct", "addImagePath");
+        registry.registerLinenBusinnessCardTextApertureAdder("ApertureProduct", "addText");
+        registry.registerLinenBusinnessCardImageApertureAdder("ApertureProduct", "addImagePath");
+        registry.registerSmoothBusinnessCardTextApertureAdder("ApertureProduct", "addText");
+        registry.registerSmoothBusinnessCardImageApertureAdder("ApertureProduct", "addImagePath");
+        registry.registerSingleSidedBusinnessCardTextApertureAdder("ApertureProduct", "addText");
+        registry.registerSingleSidedBusinnessCardImageApertureAdder("ApertureProduct", "addImagePath");
+        registry.registerDoubleSidedBusinnessCardTextApertureAdder("ApertureProduct", "addText");
+        registry.registerDoubleSidedBusinnessCardImageApertureAdder("ApertureProduct", "addImagePath");
     }
 }

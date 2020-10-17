@@ -1,80 +1,50 @@
 package academy.pocu.comp2500.lab6;
 
-public class MeatLoverPizza extends Pizza {
-    private static final int MAX_VEGGIE_COUNT = 1;
+import java.util.ArrayList;
 
-    private int veggieCount;
+public class MeatLoverPizza extends Pizza {
 
     public MeatLoverPizza() {
-        super(21, 5 + MAX_VEGGIE_COUNT);
-        super.toppings.add(Topping.BACON);
-        super.toppings.add(Topping.PEPERONI);
-        super.toppings.add(Topping.HAM);
-        super.toppings.add(Topping.SAUSAGES);
-        super.toppings.add(Topping.CHEDDAR_CHEESE);
-        this.veggieCount = 0;
+        super(21, 1, 4, 1);
+        super.addTopping(Topping.BACON);
+        super.addTopping(Topping.PEPERONI);
+        super.addTopping(Topping.HAM);
+        super.addTopping(Topping.SAUSAGES);
+        super.addTopping(Topping.CHEDDAR_CHEESE);
     }
 
     public boolean addBlackOlives() {
-        if (isValid()) {
-            return false;
+        if (possibleToppingList.get(Topping.BLACK_OLIVES)) {
+            return this.addTopping(Topping.BLACK_OLIVES);
         }
-        super.toppings.add(Topping.BLACK_OLIVES);
-        ++this.veggieCount;
-        if (this.veggieCount == MAX_VEGGIE_COUNT) {
-            super.valid = true;
-        }
-        return true;
+        return false;
     }
 
     public boolean removeBlackOlives() {
-        boolean isRemoved = super.toppings.remove(Topping.BLACK_OLIVES);
-        if (isRemoved) {
-            --this.veggieCount;
-            super.valid = false;
-        }
-        return isRemoved;
+        return super.removeTopping(Topping.BLACK_OLIVES);
     }
 
     public boolean addRedOnions() {
-        if (isValid()) {
-            return false;
+        if (possibleToppingList.get(Topping.RED_ONIONS)) {
+            return this.addTopping(Topping.RED_ONIONS);
         }
-        super.toppings.add(Topping.RED_ONIONS);
-        ++this.veggieCount;
-        if (this.veggieCount == MAX_VEGGIE_COUNT) {
-            super.valid = true;
-        }
-        return true;
+        return false;
     }
 
     public boolean removeRedOnions() {
-        boolean isRemoved = this.toppings.remove(Topping.RED_ONIONS);
-        if (isRemoved) {
-            --this.veggieCount;
-            super.valid = false;
-        }
-        return isRemoved;
+        return super.removeTopping(Topping.RED_ONIONS);
     }
 
     public boolean addGreenPeppers() {
-        if (isValid()) {
-            return false;
+        if (possibleToppingList.get(Topping.GREEN_PEPPERS)) {
+            return this.addTopping(Topping.GREEN_PEPPERS);
         }
-        super.toppings.add(Topping.GREEN_PEPPERS);
-        ++this.veggieCount;
-        if (this.veggieCount == MAX_VEGGIE_COUNT) {
-            super.valid = true;
-        }
-        return true;
+        return false;
+
     }
 
     public boolean removeGreenPeppers() {
-        boolean isRemoved = super.toppings.remove(Topping.GREEN_PEPPERS);
-        if (isRemoved) {
-            --this.veggieCount;
-            super.valid = false;
-        }
-        return isRemoved;
+        return super.removeTopping(Topping.GREEN_PEPPERS);
     }
+
 }

@@ -1,37 +1,35 @@
 package academy.pocu.comp2500.assignment2;
 
 public class Aperture {
-    private int x;
-    private int y;
-    private Size size;
+    protected int width;
+    protected int height;
+    protected int x;
+    protected int y;
 
-    protected Aperture(int x, int y, Size size) {
+    protected Aperture(int width, int height, int x, int y) {
+        this.width = width;
+        this.height = height;
         this.x = x;
         this.y = y;
-        this.size = size;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public int getX() {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public Size getSize() {
-        return size;
-    }
-
-    public void setSize(Size size) {
-        this.size = size;
+    protected boolean isApertureCorrect(Product product) {
+        return x >= 0 && y >= 0 && x + this.width < product.width && this.y + this.height < product.height;
     }
 }

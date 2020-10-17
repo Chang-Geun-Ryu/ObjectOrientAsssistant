@@ -1,53 +1,75 @@
 package academy.pocu.comp2500.assignment2;
 
 public class Banner extends ApertureProduct {
-    private BannerMaterial bannerMaterial;
+    private BannerType bannerType;
     private BannerSize bannerSize;
-//    private Orientation orientation;
 
-    public Banner(BannerMaterial bannerMaterial, BannerSize bannerSize, Color color, Orientation orientation) {
-        super(new Size(), color);
-        this.bannerMaterial = bannerMaterial;
-//        this.orientation = orientation;
+    public Banner(BannerType bannerType, BannerSize bannerSize,
+                  Orientation orientation, short r, short g, short b, Delivery delivery) {
+        super(orientation, delivery);
+        super.r = r;
+        super.g = g;
+        super.b = b;
+        this.bannerType = bannerType;
         this.bannerSize = bannerSize;
 
-        setOrientation(orientation);
-
-        if (bannerSize == BannerSize.SIZE_1_05) {
-            this.setSize(new Size(1000, 500));
-        } else if (bannerSize == BannerSize.SIZE_1_1) {
-            this.setSize(new Size(1000, 1000));
-            this.setPrice(200);
-        } else if (bannerSize == BannerSize.SIZE_2_05) {
-            this.setSize(new Size(2000, 500));
-            this.setPrice(300);
-        } else if (bannerSize == BannerSize.SIZE_3_1) {
-            this.setSize(new Size(3000, 1000));
-            this.setPrice(1000);
-        }
-
-        if (bannerMaterial == BannerMaterial.GLOSS) {
-            this.setName(String.format("Gloss Banner (%d mm x %d mm)", this.getWidth(), this.getHeight()));
-            this.setPrice(this.getPrice() + 5000);
-        } else if (bannerMaterial == BannerMaterial.SCRIM || bannerMaterial == BannerMaterial.MESH) {
-            if (bannerMaterial == BannerMaterial.SCRIM) {
-                this.setName(String.format("Scrim Banner (%d mm x %d mm)", this.getWidth(), this.getHeight()));
-            } else {
-                this.setName(String.format("Mesh Banner (%d mm x %d mm)", this.getWidth(), this.getHeight()));
+        switch (bannerType) {
+            case GLOSS: {
+                super.name = "Gloss";
+                super.price = 5000;
+                break;
             }
-            this.setPrice(this.getPrice() + 5100);
+            case SCRIM: {
+                super.name = "Scrim";
+                super.price = 5100;
+            }
+            case MESH: {
+                super.name = "Mesh";
+                super.price = 5100;
+                break;
+            }
+            default: {
+                assert (false) : "Enum Error";
+            }
         }
+
+        switch (bannerSize) {
+            case MM1000X500: {
+                super.width = 1000;
+                super.height = 500;
+                break;
+            }
+            case MM1000X1000: {
+                super.width = 1000;
+                super.height = 1000;
+                super.price += 200;
+                break;
+            }
+            case MM2000X500: {
+                super.width = 2000;
+                super.height = 500;
+                super.price += 300;
+                break;
+            }
+            case MM3000X1000: {
+                super.width = 3000;
+                super.height = 1000;
+                super.price += 1000;
+                break;
+            }
+            default: {
+                assert (false) : "Enum Error";
+            }
+        }
+
+        super.name += String.format("Banner (%s mm x %s mm)", super.width, super.height);
     }
 
-    public BannerMaterial getBannerMaterial() {
-        return bannerMaterial;
+    public BannerType getBannerType() {
+        return bannerType;
     }
 
     public BannerSize getBannerSize() {
         return bannerSize;
     }
-
-//    public Orientation getOrientation() {
-//        return orientation;
-//    }
 }

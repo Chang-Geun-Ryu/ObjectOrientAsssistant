@@ -1,47 +1,35 @@
 package academy.pocu.comp2500.assignment2;
 
 public class Aperture {
-    protected double x;
-    protected double y;
-    protected double width;
-    protected double height;
+    protected int x;
+    protected int y;
+    protected int width;
+    protected int height;
 
-    protected Aperture(double x, double y, double width, double height) {
+    protected Aperture(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
     }
 
-    public double getX() {
+    public int getX() {
         return x;
     }
 
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public double getY() {
+    public int getY() {
         return y;
     }
 
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public double getWidth() {
+    public int getWidth() {
         return width;
     }
 
-    public void setWidth(double width) {
-        this.width = width;
-    }
-
-    public double getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public void setHeight(double height) {
-        this.height = height;
+    public boolean isInvalid(int width, int height) {
+        return x < 0 || y < 0 || x + this.width > width || y + this.height > height;
     }
 }

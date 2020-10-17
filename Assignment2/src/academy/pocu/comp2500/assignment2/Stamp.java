@@ -2,65 +2,44 @@ package academy.pocu.comp2500.assignment2;
 
 public class Stamp extends Product {
     private String text;
-    private StampSize stampSize;
-    private StampColor stampColor;
 
-//    public enum StampColor {
-//        RED, GREEN, BLUE;
-//    }
+    public Stamp(StampColor stampColor, StampSize size, String text, ShippingMethod shippingMethod) {
+        super("Stamp", null, 0, 0, 0, shippingMethod);
+        switch (stampColor) {
+            case RED:
+                super.color = new Color(0xFF, 0x00, 0x00);
+                break;
+            case BLUE:
+                super.color = new Color(0x00, 0x00, 0xFF);
+                break;
+            case GREEN:
+                super.color = new Color(0x00, 0x80, 0x00);
+                break;
+        }
 
-//    public enum StampSize {
-//        W4_H3, W5_H2, W7_H4;
-//    }
-
-    public Stamp(StampSize stampSize, StampColor stampColor, String text) {
-        super();
-        this.stampSize = stampSize;
-        this.stampColor = stampColor;
-        switch (stampSize) {
-            case W4_H3:
-                super.size = new Size(40, 30);
+        switch (size) {
+            case MM40X30:
+                super.width = 40;
+                super.height = 30;
                 super.price = 2300;
                 break;
-            case W5_H2:
-                super.size = new Size(50, 20);
+            case MM50X20:
+                super.width = 50;
+                super.height = 20;
                 super.price = 2300;
                 break;
-            case W7_H4:
-                super.size = new Size(70, 40);
+            case MM70X40:
+                super.width = 70;
+                super.height = 40;
                 super.price = 2600;
                 break;
         }
 
-        switch (stampColor) {
-            case RED:
-                super.color = new Color(Integer.valueOf("FF", 16), Integer.valueOf("00", 16), Integer.valueOf("00", 16));
-//                super.color = new Color(0xFF, 0x00, 0x00);
-                break;
-            case BLUE:
-                super.color = new Color(Integer.valueOf("00", 16), Integer.valueOf("00", 16), Integer.valueOf("FF", 16));
-//                super.color = new Color(0x00, 0x00, 0xFF);
-                break;
-            case GREEN:
-                super.color = new Color(Integer.valueOf("00", 16), Integer.valueOf("80", 16), Integer.valueOf("00", 16));
-//                super.color = new Color(0xFF, 0x80, 0x00);
-                break;
-        }
-
+        super.displayName = String.format("Stamp (%d mm x %d mm)", super.width, super.height);
         this.text = text;
-        super.displayName = String.format("%s (%.0f mm x %.0f mm)", "Stamp", super.size.getWidth(), super.size.getHeight());
     }
 
     public String getText() {
         return text;
     }
-
-    public StampSize getStampSize() {
-        return stampSize;
-    }
-
-    public StampColor getStampColor() {
-        return stampColor;
-    }
 }
-

@@ -1,33 +1,30 @@
 package academy.pocu.comp2500.assignment2;
 
-// 달력
 public class Calendar extends Product {
     private CalendarType calendarType;
-//    public enum CalendarType {
-//        WALL_CALENDAR, MAGNET_CALENDAR, DESK_CALENDAR;
-//    }
 
-    public Calendar(CalendarType calendarType) {
-        super();
+    public Calendar(CalendarType calendarType, ShippingMethod shippingMethod) {
+        super("Calendar", new Color(0xFF, 0xFF, 0xFF), 0, 0, 0, shippingMethod);
         this.calendarType = calendarType;
+
         switch (calendarType) {
-            case WALL_CALENDAR:
+            case WALL:
                 super.displayName = "Wall Calendar";
-                super.size = new Size(400, 400);
+                super.width = 400;
+                super.height = 400;
                 super.price = 1000;
-                super.color = new Color(0xFF, 0xFF, 0xFF);
                 break;
-            case DESK_CALENDAR:
+            case DESK:
                 super.displayName = "Desk Calendar";
-                super.size = new Size(200, 150);
+                super.width = 200;
+                super.height = 150;
                 super.price = 1000;
-                super.color = new Color(0xFF, 0xFF, 0xFF);
                 break;
-            case MAGNET_CALENDAR:
+            case MAGNET:
                 super.displayName = "Magnet Calendar";
-                super.size = new Size(100, 200);
+                super.width = 100;
+                super.height = 200;
                 super.price = 1500;
-                super.color = new Color(0xFF, 0xFF, 0xFF);
                 break;
         }
     }

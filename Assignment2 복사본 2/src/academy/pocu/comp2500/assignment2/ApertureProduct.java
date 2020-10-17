@@ -3,30 +3,38 @@ package academy.pocu.comp2500.assignment2;
 import java.util.ArrayList;
 
 public class ApertureProduct extends Product {
+    protected Orientation orientation;
+    protected ArrayList<TextAperture> texts = new ArrayList<>();
+    protected ArrayList<ImageAperture> imagePath = new ArrayList<>();
 
-    private ArrayList<Aperture> apertures = new ArrayList<>();
-    private Orientation orientation;
-
-    protected ApertureProduct(Size size, Color color) {
-        super(size, color, ShippingMethod.PICK_UP);
+    protected ApertureProduct(Orientation orientation, Delivery delivery) {
+        super(delivery);
+        this.orientation = orientation;
     }
 
-    public void addAperture(Aperture aperture) {
-        if (aperture.getX() >= 0 && aperture.getY() >= 0 && this.getWidth() >= aperture.getX() + aperture.getSize().getWidth() && this.getHeight() >= aperture.getY() + aperture.getSize().getHeight()) {
-            this.apertures.add(aperture);
-            this.setPrice(this.getPrice() + 5);
+    public void addText(TextAperture textAperture) {
+        if (textAperture != null && textAperture.isTextCorrect(this)) {
+            this.texts.add(textAperture);
+            price += 5;
         }
     }
 
-    public ArrayList<Aperture> getApertures() {
-        return apertures;
+    public void addImagePath(ImageAperture imageAperture) {
+        if (imageAperture != null && imageAperture.isImageCorrect(this)) {
+            this.imagePath.add(imageAperture);
+            price += 5;
+        }
     }
 
     public Orientation getOrientation() {
         return orientation;
     }
 
-    protected void setOrientation(Orientation orientation) {
-        this.orientation = orientation;
+    public ArrayList<TextAperture> getTexts() {
+        return texts;
+    }
+
+    public ArrayList<ImageAperture> getImagePath() {
+        return imagePath;
     }
 }

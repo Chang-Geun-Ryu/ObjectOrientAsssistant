@@ -1,79 +1,47 @@
 package academy.pocu.comp2500.lab6;
 
 public class HousePizza extends Pizza {
-    private static final int MAX_MEAT_COUNT = 2;
-
-    private int meatCount;
 
     public HousePizza() {
-        super(20, 4 + MAX_MEAT_COUNT);
-        super.toppings.add(Topping.BLACK_OLIVES);
-        super.toppings.add(Topping.RED_ONIONS);
-        super.toppings.add(Topping.GREEN_PEPPERS);
-        super.toppings.add(Topping.MOZZARELLA_CHEESE);
-        this.meatCount = 0;
+        super(20, 1, 2, 3);
+        super.addTopping(Topping.BLACK_OLIVES);
+        super.addTopping(Topping.RED_ONIONS);
+        super.addTopping(Topping.GREEN_PEPPERS);
+        super.addTopping(Topping.MOZZARELLA_CHEESE);
     }
 
+
     public boolean addBacon() {
-        if (isValid()) {
-            return false;
+        if (possibleToppingList.get(Topping.BACON)) {
+            return this.addTopping(Topping.BACON);
         }
-        super.toppings.add(Topping.BACON);
-        ++this.meatCount;
-        if (this.meatCount == MAX_MEAT_COUNT) {
-            super.valid = true;
-        }
-        return true;
+        return false;
     }
 
     public boolean removeBacon() {
-        boolean isRemoved = super.toppings.remove(Topping.BACON);
-        if (isRemoved) {
-            --this.meatCount;
-            super.valid = false;
-        }
-        return isRemoved;
+        return super.removeTopping(Topping.BACON);
     }
 
     public boolean addPeperoni() {
-        if (isValid()) {
-            return false;
+        if (possibleToppingList.get(Topping.PEPERONI)) {
+            return this.addTopping(Topping.PEPERONI);
         }
-        super.toppings.add(Topping.PEPERONI);
-        ++this.meatCount;
-        if (this.meatCount == MAX_MEAT_COUNT) {
-            super.valid = true;
-        }
-        return true;
+        return false;
     }
 
     public boolean removePeperoni() {
-        boolean isRemoved = super.toppings.remove(Topping.PEPERONI);
-        if (isRemoved) {
-            --this.meatCount;
-            super.valid = false;
-        }
-        return isRemoved;
+        return super.removeTopping(Topping.PEPERONI);
     }
 
     public boolean addSausages() {
-        if (isValid()) {
-            return false;
+        if (possibleToppingList.get(Topping.SAUSAGES)) {
+            return this.addTopping(Topping.SAUSAGES);
         }
-        super.toppings.add(Topping.SAUSAGES);
-        ++this.meatCount;
-        if (this.meatCount == MAX_MEAT_COUNT) {
-            super.valid = true;
-        }
-        return true;
+        return false;
     }
 
     public boolean removeSausages() {
-        boolean isRemoved = super.toppings.remove(Topping.SAUSAGES);
-        if (isRemoved) {
-            --this.meatCount;
-            super.valid = false;
-        }
-        return isRemoved;
+        return super.removeTopping(Topping.SAUSAGES);
     }
+
 }

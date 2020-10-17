@@ -1,49 +1,36 @@
 package academy.pocu.comp2500.assignment2;
 
-// 상품 부모 클래스
 public class Product {
-    protected int price;
-//    protected String productId;
-    protected Size size;
-    protected Color color;
     protected String displayName;
+    protected Color color;
+    protected int width;
+    protected int height;
+    protected int price;
     protected ShippingMethod shippingMethod;
 
-//    public enum ShippingMethod {
-//        PICKUP, SHIP;
-//    }
-
-    protected Product() {
-//        this.productId = productId;
-        shippingMethod = ShippingMethod.PICKUP;
+    protected Product(String displayName, Color color, int width, int height, int price, ShippingMethod shippingMethod) {
+        this.displayName = displayName;
+        this.color = color;
+        this.width = width;
+        this.height = height;
+        this.price = price;
+        this.shippingMethod = shippingMethod;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
-//    public String getProductId() {
-//        return productId;
-//    }
-
-    public Size getSize() {
-        return size;
-    }
-
-    public int getWidth() {
-        return size.getWidth();
-    }
-
-    public int getHeight() {
-        return size.getHeight();
+    public String getDisplayName() {
+        return displayName;
     }
 
     public Color getColor() {
         return color;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public ShippingMethod getShippingMethod() {
@@ -54,4 +41,7 @@ public class Product {
         this.shippingMethod = shippingMethod;
     }
 
+    public int getPrice() {
+        return price;
+    }
 }

@@ -1,78 +1,51 @@
 package academy.pocu.comp2500.assignment2;
 
-import java.util.ArrayList;
-
 public class Banner extends ApertureProduct {
     private BannerType bannerType;
-    private BannerSize bannerSize;
-    private Color bannerColor;
-//    public enum BannerType {
-//        GLOSS_BANNER, SCRIM_BANNER, MESH_BANNER;
-//    }
-//
-//    public enum BannerSize {
-//        W100_H50, W100_H100, W200_H50, W300_H100;
-//    }
 
-    public Banner(BannerType bannerType, BannerSize bannerSize, Orientation orientation, Color color) {
-        super();
+    public Banner(BannerType bannerType, Color color, BannerSize size, Orientation orientation, ShippingMethod shippingMethod) {
+        super("Banner", color, 0, 0, 0, shippingMethod, orientation);
+
         this.bannerType = bannerType;
-        this.orientation = orientation;
-        this.bannerColor = color;
-        this.bannerSize = bannerSize;
 
-        switch (bannerSize) {
-            case W100_H50:
-                super.size = new Size(1000, 500);
-                super.price = 5000;
+        switch (size) {
+            case MM1000X500:
+                super.width = 1000;
+                super.height = 500;
+                super.price = 5100;
                 break;
-            case W100_H100:
-                super.size = new Size(1000, 1000);
-                super.price = 5200;
-                break;
-            case W200_H50:
-                super.size = new Size(2000, 500);
+            case MM1000X1000:
+                super.width = 1000;
+                super.height = 1000;
                 super.price = 5300;
                 break;
-            case W300_H100:
-                super.size = new Size(3000, 1000);
-                super.price = 6000;
+            case MM2000X500:
+                super.width = 2000;
+                super.height = 500;
+                super.price = 5400;
+                break;
+            case MM3000X1000:
+                super.width = 3000;
+                super.height = 1000;
+                super.price = 6100;
                 break;
         }
-
-        // 세로 방향일 때, 가로 세로 변경
-        if (orientation == Orientation.PORTRAIT) {
-            int temp = size.getWidth();
-            size.setWidth(size.getHeight());
-            size.setHeight(temp);
-        }
-
-        super.color = color;
 
         switch (bannerType) {
-            case GLOSS_BANNER:
-                super.displayName = String.format("%s (%.0f mm x %.0f mm)", "Gloss Banner", super.size.getWidth(), super.size.getHeight());
+            case GLOSS:
+                super.displayName = String.format("Gloss Banner (%d mm x %d mm)", super.width, super.height);
+                super.price -= 100;
                 break;
-            case SCRIM_BANNER:
-                super.displayName = String.format("%s (%.0f mm x %.0f mm)", "Scrim Banner", super.size.getWidth(), super.size.getHeight());
-                super.price += 100;
+            case SCRIM:
+                super.displayName = String.format("Scrim Banner (%d mm x %d mm)", super.width, super.height);
                 break;
-            case MESH_BANNER:
-                super.displayName = String.format("%s (%.0f mm x %.0f mm)", "Mesh Banner", super.size.getWidth(), super.size.getHeight());
-                super.price += 100;
+            case MESH:
+                super.displayName = String.format("Mesh Banner (%d mm x %d mm)", super.width, super.height);
                 break;
         }
     }
 
     public BannerType getBannerType() {
         return bannerType;
-    }
-
-    public BannerSize getBannerSize() {
-        return bannerSize;
-    }
-
-    public Color getBannerColor() {
-        return bannerColor;
     }
 }

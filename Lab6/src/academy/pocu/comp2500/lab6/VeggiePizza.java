@@ -1,80 +1,43 @@
 package academy.pocu.comp2500.lab6;
 
-import java.util.ArrayList;
-
 public class VeggiePizza extends Pizza {
-    private static final int MAX_CHEESE_COUNT = 2;
-
-    private int cheeseCount;
-
     public VeggiePizza() {
-        super(17, 3 + MAX_CHEESE_COUNT);
-        super.toppings.add(Topping.BLACK_OLIVES);
-        super.toppings.add(Topping.RED_ONIONS);
-        super.toppings.add(Topping.GREEN_PEPPERS);
-        this.cheeseCount = 0;
+        super(17, 2, 0, 3);
+        super.addTopping(Topping.BLACK_OLIVES);
+        super.addTopping(Topping.RED_ONIONS);
+        super.addTopping(Topping.GREEN_PEPPERS);
     }
 
     public boolean addMozzarellaCheese() {
-        if (isValid()) {
-            return false;
+        if (possibleToppingList.get(Topping.MOZZARELLA_CHEESE)) {
+            return this.addTopping(Topping.MOZZARELLA_CHEESE);
         }
-        super.toppings.add(Topping.MOZZARELLA_CHEESE);
-        ++this.cheeseCount;
-        if (this.cheeseCount == MAX_CHEESE_COUNT) {
-            super.valid = true;
-        }
-        return true;
+        return false;
     }
 
     public boolean removeMozzarellaCheese() {
-        boolean isRemoved = this.toppings.remove(Topping.MOZZARELLA_CHEESE);
-        if (isRemoved) {
-            --this.cheeseCount;
-            super.valid = false;
-        }
-        return isRemoved;
+        return super.removeTopping(Topping.MOZZARELLA_CHEESE);
     }
 
     public boolean addCheddarCheese() {
-        if (isValid()) {
-            return false;
+        if (possibleToppingList.get(Topping.CHEDDAR_CHEESE)) {
+            return this.addTopping(Topping.CHEDDAR_CHEESE);
         }
-        super.toppings.add(Topping.CHEDDAR_CHEESE);
-        ++this.cheeseCount;
-        if (this.cheeseCount == MAX_CHEESE_COUNT) {
-            super.valid = true;
-        }
-        return true;
+        return false;
     }
 
     public boolean removeCheddarCheese() {
-        boolean isRemoved = this.toppings.remove(Topping.CHEDDAR_CHEESE);
-        if (isRemoved) {
-            --this.cheeseCount;
-            super.valid = false;
-        }
-        return isRemoved;
+        return super.removeTopping(Topping.CHEDDAR_CHEESE);
     }
 
     public boolean addFetaCheese() {
-        if (isValid()) {
-            return false;
+        if (possibleToppingList.get(Topping.FETA_CHEESE)) {
+            return this.addTopping(Topping.FETA_CHEESE);
         }
-        super.toppings.add(Topping.FETA_CHEESE);
-        ++this.cheeseCount;
-        if (this.cheeseCount == MAX_CHEESE_COUNT) {
-            super.valid = true;
-        }
-        return true;
+        return false;
     }
 
     public boolean removeFetaCheese() {
-        boolean isRemoved = this.toppings.remove(Topping.FETA_CHEESE);
-        if (isRemoved) {
-            --this.cheeseCount;
-            super.valid = false;
-        }
-        return isRemoved;
+        return super.removeTopping(Topping.FETA_CHEESE);
     }
 }
