@@ -1,8 +1,18 @@
 package academy.pocu.comp2500.assignment2;
 
 public enum BannerSize {
-    MM1000X500,
-    MM1000X1000,
-    MM2000X500,
-    MM3000X1000
+    SMALL(100, 50),
+    MIDIUM(100, 100),
+    LARGE(200, 50),
+    VERY_LARGE(300, 100);
+
+    private final Size size;
+
+    private BannerSize(int width, int height) {
+        this.size = new Size(width, height);
+    }
+
+    public Size getSize() {
+        return size;
+    }
 }

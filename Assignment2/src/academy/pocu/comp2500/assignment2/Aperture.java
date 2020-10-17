@@ -1,35 +1,28 @@
 package academy.pocu.comp2500.assignment2;
 
 public class Aperture {
-    protected int x;
-    protected int y;
-    protected int width;
-    protected int height;
+    private final String value;
+    private final Point position;
 
-    protected Aperture(int x, int y, int width, int height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+    public Aperture(String aperture, int x, int y) {
+        this.value = aperture;
+        this.position = new Point(x, y);
+    }
+
+    public String getValue() {
+        return value;
     }
 
     public int getX() {
-        return x;
+        return position.getX();
     }
 
     public int getY() {
-        return y;
+        return position.getY();
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public boolean isInvalid(int width, int height) {
-        return x < 0 || y < 0 || x + this.width > width || y + this.height > height;
+    public void setPosition(int x, int y) {
+        position.setX(x);
+        position.setY(y);
     }
 }

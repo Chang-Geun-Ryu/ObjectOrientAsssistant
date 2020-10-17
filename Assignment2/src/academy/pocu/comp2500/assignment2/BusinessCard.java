@@ -1,56 +1,52 @@
 package academy.pocu.comp2500.assignment2;
 
-public class BusinessCard extends ApertureProduct {
-    private BusinessCardType type;
-    private BusinessCardSides sides;
+public class BusinessCard extends ProductWithImage {
+    private static final PriceBySide[] LINEN_BUSINESS_CARD_PRICES = new PriceBySide[]{
+            new PriceBySide(Side.SINGLE_SIDE, BusinessCardPrice.LINEN_SINGLE_SIDE.getPrice()),
+            new PriceBySide(Side.DOUBLE_SIDE, BusinessCardPrice.LINEN_DOUBLE_SIDE.getPrice()),
+    };
 
-    public BusinessCard(BusinessCardType type, BusinessCardColor businessCardColor, BusinessCardSides sides, Orientation orientation, ShippingMethod shippingMethod) {
-        super("Business Card", null, 90, 50, 0, shippingMethod, orientation);
+    private static final PriceBySide[] LAID_BUSINESS_CARD_PRICES = new PriceBySide[]{
+            new PriceBySide(Side.SINGLE_SIDE, BusinessCardPrice.LAID_SINGLE_SIDE.getPrice()),
+            new PriceBySide(Side.DOUBLE_SIDE, BusinessCardPrice.LAID_DOUBLE_SIDE.getPrice()),
+    };
 
-        this.type = type;
-        this.sides = sides;
+    private static final PriceBySide[] SMOOTH_BUSINESS_CARD_PRICES = new PriceBySide[]{
+            new PriceBySide(Side.SINGLE_SIDE, BusinessCardPrice.SMOOTH_SINGLE_SIDE.getPrice()),
+            new PriceBySide(Side.DOUBLE_SIDE, BusinessCardPrice.SMOOTH_DOUBLE_SIDE.getPrice()),
+    };
 
-        switch (businessCardColor) {
-            case GRAY:
-                super.color = new Color(0xE6, 0xE6, 0xE6);
-                break;
-            case IVORY:
-                super.color = new Color(0xFF, 0xFF, 0xF0);
-                break;
-            case WHITE:
-                super.color = new Color(0xFF, 0xFF, 0xFF);
-                break;
+    private static int getPriceFrom(PriceBySide[] priceTable, Side side) {
+        for (PriceBySide tuple : priceTable) {
+            if (tuple.getSide() == side) {
+                return tuple.getPrice();
+            }
         }
 
-        switch (sides) {
-            case SINGLE:
-                super.price = 110;
-                break;
-            case DOUBLE:
-                super.price = 140;
-                break;
-        }
+        return -1;
+    }
 
-        switch (type) {
-            case LINEN:
-                super.displayName = "Linen Business Card";
-                break;
-            case LAID:
-                super.displayName = "Laid Business Card";
-                super.price += 10;
-                break;
-            case SMOOTH:
-                super.displayName = "Smooth Business Card";
-                super.price -= 10;
-                break;
+    private static int getPriceBy(BusinessCardType type, Side side) {
+        if (type == BusinessCardType.LINEN_BUSINESS_CARD) {
+            return getPriceFrom(LINEN_BUSINESS_CARD_PRICES, side);
+        } else if (type == BusinessCardType.LAID_BUSINESS_CARD) {
+            return getPriceFrom(LAID_BUSINESS_CARD_PRICES, side);
+        } else if (type == BusinessCardType.SMOOTH_BUSINESS_CARD) {
+            return getPriceFrom(SMOOTH_BUSINESS_CARD_PRICES, side);
+        } else {
+            return -1;
         }
     }
 
-    public BusinessCardType getBusinessCardType() {
-        return type;
+    private Side side;
+
+    public BusinessCard(BusinessCardType type, BusinessCardColor color, Orientation orientation, Side businessCardSides, ShippingMethod shippingMethod) {
+        super(type.getType(), color.getColor(), new Size(90, 50), getPriceBy(type, businessCardSides), orientation, shippingMethod);
+
+        this.side = businessCardSides;
     }
 
-    public BusinessCardSides getBusinessCardSides() {
-        return sides;
+    public Side getSide() {
+        return side;
     }
 }

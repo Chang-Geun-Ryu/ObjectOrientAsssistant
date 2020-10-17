@@ -3,27 +3,46 @@ package academy.pocu.comp2500.assignment2;
 import java.util.ArrayList;
 
 public class Cart {
-    private ArrayList<Product> products = new ArrayList<>();
+    private final ArrayList<Product> products;
+    private int totalPrice;
 
-    public ArrayList<Product> getProducts() {
-        return products;
+    public Cart() {
+        products = new ArrayList<>();
     }
 
     public void addProduct(Product product) {
+        if (product == null) {
+            return;
+        }
+
+        totalPrice += product.getPrice();
+
         products.add(product);
     }
 
-    public void removeProduct(Product product) {
-        products.remove(product);
+    public void removeProduct(int index) { // index 대신 Product를 받아도 됨.
+        if (!(index >= 0 && index < products.size())) {
+            return;
+        }
+
+        totalPrice -= products.get(index).getPrice();
+
+        products.remove(index);
+    }
+
+    public int getProductCount() {
+        return products.size();
+    }
+
+    public Product getProduct(int index) {
+        if (!(index >= 0 && index < products.size())) {
+            return null;
+        }
+
+        return products.get(index);
     }
 
     public int getTotalPrice() {
-        int total = 0;
-
-        for (Product product : products) {
-            total += product.getPrice();
-        }
-
-        return total;
+        return totalPrice;
     }
 }

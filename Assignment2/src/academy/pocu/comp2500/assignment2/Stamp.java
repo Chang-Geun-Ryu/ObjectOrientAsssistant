@@ -1,41 +1,27 @@
 package academy.pocu.comp2500.assignment2;
 
 public class Stamp extends Product {
-    private String text;
+    private static final PriceBySize[] STAMP_PRICES = new PriceBySize[]{
+            new PriceBySize(StampSize.SMALL.getSize(), StampPrice.SMALL.getPrice()),
+            new PriceBySize(StampSize.MIDIUM.getSize(), StampPrice.MEDIUM.getPrice()),
+            new PriceBySize(StampSize.LARGE.getSize(), StampPrice.LARGE.getPrice())
+    };
 
-    public Stamp(StampColor stampColor, StampSize size, String text, ShippingMethod shippingMethod) {
-        super("Stamp", null, 0, 0, 0, shippingMethod);
-        switch (stampColor) {
-            case RED:
-                super.color = new Color(0xFF, 0x00, 0x00);
-                break;
-            case BLUE:
-                super.color = new Color(0x00, 0x00, 0xFF);
-                break;
-            case GREEN:
-                super.color = new Color(0x00, 0x80, 0x00);
-                break;
+    private static int getPriceBy(StampSize size) {
+        for (PriceBySize tuple : STAMP_PRICES) {
+            if (tuple.getSize() == size.getSize()) {
+                return tuple.getPrice();
+            }
         }
 
-        switch (size) {
-            case MM40X30:
-                super.width = 40;
-                super.height = 30;
-                super.price = 2300;
-                break;
-            case MM50X20:
-                super.width = 50;
-                super.height = 20;
-                super.price = 2300;
-                break;
-            case MM70X40:
-                super.width = 70;
-                super.height = 40;
-                super.price = 2600;
-                break;
-        }
+        return -1;
+    }
 
-        super.displayName = String.format("Stamp (%d mm x %d mm)", super.width, super.height);
+    private final String text;
+
+    public Stamp(Color color, StampSize size, String text, ShippingMethod shippingMethod) {
+        super("Stamp", color, size.getSize(), getPriceBy(size), shippingMethod);
+
         this.text = text;
     }
 
