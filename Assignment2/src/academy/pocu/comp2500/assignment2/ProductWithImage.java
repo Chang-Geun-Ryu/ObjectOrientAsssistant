@@ -41,13 +41,19 @@ public class ProductWithImage extends Product {
 //            }
 //        }
 //    }
-
     public void addAperture(Aperture aperture) {
-        if (aperture == null || isProperPosition(aperture.getX(), aperture.getY()) != true) {
-            return;
+        if (aperture.getX() >= 0 && aperture.getY() >= 0 && this.getWidth() >= aperture.getX() + aperture.getWidth() && this.getHeight() >= aperture.getY() + aperture.getHeight()) {
+            this.apertures.add(aperture);
+            this.setPrice(this.getPrice() + 5);
         }
-
-        this.apertures.add(new Aperture(aperture.getValue(), aperture.getX(), aperture.getY()));
-        super.setPrice(super.getPrice() + 5);
     }
+
+//    public void addAperture(Aperture aperture) {
+//        if (aperture == null || isProperPosition(aperture.getX(), aperture.getY()) != true) {
+//            return;
+//        }
+//
+//        this.apertures.add(new Aperture(aperture.getValue(), aperture.getX(), aperture.getY()));
+//        super.setPrice(super.getPrice() + 5);
+//    }
 }
