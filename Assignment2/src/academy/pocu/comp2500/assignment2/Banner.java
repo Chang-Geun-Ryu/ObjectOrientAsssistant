@@ -9,10 +9,18 @@ public class Banner extends ApertureProduct {
     private BannerSize bannerSize;
 
 
-    protected Banner(BannerType bannerType, BannerSize bannerSize, Color color, Orientation orientation, DeliveryMethod deliveryMethod) {
+    public Banner(BannerType bannerType, BannerSize bannerSize, Color color, Orientation orientation, DeliveryMethod deliveryMethod) {
         super("Banner", 0, 0, color, 5000, deliveryMethod, orientation);
         setBannerType(bannerType);
         setBannerSize(bannerSize);
+    }
+
+    public BannerSize getBannerSize() {
+        return bannerSize;
+    }
+
+    public BannerType getBannerType() {
+        return bannerType;
     }
 
     private void setBannerSize(BannerSize bannerSize) {
