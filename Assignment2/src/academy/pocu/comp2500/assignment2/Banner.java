@@ -46,12 +46,13 @@ public class Banner extends Product {
     private void setBannerType(BannerType bannerType) {
         this.bannerType = bannerType;
         if (this.bannerType == BannerType.GLOSS) {
-            setDisplayName("Gloss Banner");
+            ;
+            setDisplayName(String.format("Gloss Banner (%d mm x %d mm)", this.getWidth(), this.getHeight()));
         } else if (this.bannerType == BannerType.SCRIM) {
-            setDisplayName("Scrim Banner");
+            setDisplayName(String.format("Scrim Banner (%d mm x %d mm)", this.getWidth(), this.getHeight()));
             addPrice(100);
         } else if (this.bannerType == BannerType.MESH) {
-            setDisplayName("Mesh Banner");
+            setDisplayName(String.format("Mesh Banner (%d mm x %d mm)", this.getWidth(), this.getHeight()));
             addPrice(100);
         }
     }
