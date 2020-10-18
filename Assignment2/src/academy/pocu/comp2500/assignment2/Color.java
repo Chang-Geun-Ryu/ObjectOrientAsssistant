@@ -11,7 +11,7 @@ public class Color {
         this.b = b;
     }
 
-    public Color(String color) {
+    protected Color(String color) {
         switch (color) {
             case "RED":
                 this.r = 0xFF;
