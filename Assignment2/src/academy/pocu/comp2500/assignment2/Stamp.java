@@ -40,6 +40,7 @@ public class Stamp extends Product {
             this.addPriceBySize = 300;
             addPrice(addPriceBySize);
         }
+        super.setDisplayName(String.format("Stamp (%d mm x %d mm)", this.getWidth(), this.getHeight()));
     }
 
     public String getText() {

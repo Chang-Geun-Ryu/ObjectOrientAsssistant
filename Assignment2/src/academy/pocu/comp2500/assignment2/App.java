@@ -17,15 +17,15 @@ public class App {
         // 탁상 달력을 만드는 생성자나 메서드를 등록한다. 2개의 오버로딩된 메서드가 있으니 본인의 설계에 적합한 버전을 사용할 것.
         registry.registerDeskCalendarCreator("Calendar");
         // 가로 방향 배너를 만드는 생성자나 메서드를 등록한다. 2개의 오버로딩된 메서드가 있으니 본인의 설계에 적합한 버전을 사용할 것.
-        registry.registerLandscapeBannerCreator("LandscapeBanner");
+        registry.registerLandscapeBannerCreator("Banner");
         // 세로 방향 배너를 만드는 생성자나 메서드를 등록한다. 2개의 오버로딩된 메서드가 있으니 본인의 설계에 적합한 버전을 사용할 것.
-        registry.registerPortraitBannerCreator("PortraitBanner");
+        registry.registerPortraitBannerCreator("Banner");
         // 반사 배너를 만드는 생성자나 메서드를 등록한다. 2개의 오버로딩된 메서드가 있으니 본인의 설계에 적합한 버전을 사용할 것.
-        registry.registerGlossBannerCreator("GlossBanner");
+        registry.registerGlossBannerCreator("Banner");
         // 스크림 배너를 만드는 생성자나 메서드를 등록한다. 2개의 오버로딩된 메서드가 있으니 본인의 설계에 적합한 버전을 사용할 것.
-        registry.registerScrimBannerCreator("ScrimBanner");
+        registry.registerScrimBannerCreator("Banner");
         // 메쉬 배너를 만드는 생성자나 메서드를 등록한다. 2개의 오버로딩된 메서드가 있으니 본인의 설계에 적합한 버전을 사용할 것.
-        registry.registerMeshBannerCreator("MeshBanner");
+        registry.registerMeshBannerCreator("Banner");
         // 가로 방향 명함을 만드는 생성자나 메서드를 등록한다. 2개의 오버로딩된 메서드가 있으니 본인의 설계에 적합한 버전을 사용할 것.
         registry.registerLandscapeBusinessCardCreator("LandscapeCard");
         // 세로 방향 명함을 만드는 생성자나 메서드를 등록한다. 2개의 오버로딩된 메서드가 있으니 본인의 설계에 적합한 버전을 사용할 것.
