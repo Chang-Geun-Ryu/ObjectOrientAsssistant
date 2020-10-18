@@ -19,7 +19,7 @@ public class Program {
     public static void main(String[] args) {
         // write your code here
         DeathByDesserts dd = new DeathByDesserts();
-        dd.
+
         MeatLoverPizza meatLoverPizza = new MeatLoverPizza();
         boolean isAdded = meatLoverPizza.addGreenPeppers(); // true
         boolean isRemoved = meatLoverPizza.removeGreenPeppers(); // true

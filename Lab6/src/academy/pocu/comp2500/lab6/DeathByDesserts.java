@@ -1,14 +1,10 @@
 package academy.pocu.comp2500.lab6;
 
-import java.util.ArrayList;
-
 public class DeathByDesserts extends Meal {
     private static final int PRICE = 20;
 
     public DeathByDesserts() {
         super(PRICE);
-
-        super.mealType = MealType.DEATH_BY_DESSERTS;
     }
 
     public void setDesserts(Dessert dessert1, Dessert dessert2, Dessert dessert3, Dessert dessert4) {
@@ -18,7 +14,6 @@ public class DeathByDesserts extends Meal {
         this.desserts.add(dessert2);
         this.desserts.add(dessert3);
         this.desserts.add(dessert4);
-
-        super.isValid = true;
+        this.isValid = true;
     }
 }
