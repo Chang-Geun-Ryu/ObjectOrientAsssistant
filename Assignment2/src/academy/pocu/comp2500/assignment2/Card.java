@@ -11,7 +11,7 @@ public class Card extends Product {
     private PaperColor paperColor;
     private CardSides cardSides;
 
-    protected Card(PaperType paperType, PaperColor paperColor, Orientation orientation, CardSides cardSides, DeliveryMethod deliveryMethod) {
+    public Card(PaperType paperType, PaperColor paperColor, Orientation orientation, CardSides cardSides, DeliveryMethod deliveryMethod) {
         super("Card", 90, 50, null, 100, deliveryMethod);
         this.orientation = orientation;
         setPaperType(paperType);

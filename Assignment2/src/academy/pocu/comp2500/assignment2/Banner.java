@@ -13,7 +13,7 @@ public class Banner extends Product {
     private BannerSize bannerSize;
 
 
-    protected Banner(BannerType bannerType, BannerSize bannerSize, Color color, Orientation orientation, DeliveryMethod deliveryMethod) {
+    public Banner(BannerType bannerType, BannerSize bannerSize, Color color, Orientation orientation, DeliveryMethod deliveryMethod) {
         super("Banner", 0, 0, color, 5000, deliveryMethod);
         this.orientation = orientation;
         setBannerType(bannerType);
