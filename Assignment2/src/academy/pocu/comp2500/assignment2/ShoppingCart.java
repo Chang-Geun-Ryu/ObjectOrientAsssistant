@@ -1,29 +1,34 @@
 package academy.pocu.comp2500.assignment2;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class ShoppingCart {
-    private ArrayList<Product> items;
+    private HashMap<String, Product> products;
 
     public ShoppingCart() {
-        this.items = new ArrayList<Product>();
+        this.products = new HashMap<>();
     }
 
-    public void addItem(Product product) {
-        this.items.add(product);
+    public void addProduct(Product product) {
+        String productId = UUID.randomUUID().toString();
+        this.products.put(productId, product);
     }
 
-    public void removeItem(Product product) {
-        this.items.remove(product);
-    }
-
-    public int getTotalPrice() {
-        int totalPrice = 0;
-        for (int i = 0; i < this.items.size(); ++i) {
-            Product item = this.items.get(i);
-            totalPrice += item.getPrice();
+    public boolean removeProduct(String productId) {
+        if (this.products.containsKey(productId)) {
+            this.products.remove(productId);
+            return true;
         }
+        return false;
+    }
 
-        return totalPrice;
+    public int getAllPrice() {
+        int sumPrice = 0;
+        for (Map.Entry<String, Product> element : this.products.entrySet()) {
+            sumPrice += element.getValue().getPrice();
+        }
+        return sumPrice;
     }
 }

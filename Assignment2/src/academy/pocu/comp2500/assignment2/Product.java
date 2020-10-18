@@ -1,60 +1,68 @@
 package academy.pocu.comp2500.assignment2;
 
-import java.util.ArrayList;
-
 public class Product {
-    enum ShippingMethod {
-        PICKUP,
-        SHIP
-    }
-
-    protected int red;
-    protected int green;
-    protected int blue;
-    protected int height;
+    protected String type;
     protected int width;
+    protected int height;
+    protected Color color;
     protected int price;
-    private ShippingMethod shippingMethod;
+    protected DeliveryMethod deliveryMethod;
 
-    public Product(int red, int green, int blue, int width, int height, int price, ShippingMethod shippingMethod) {
-        this.red = red;
-        this.green = green;
-        this.blue = blue;
-        this.height = height;
+    protected Product(String type, int width, int height, Color color, int price, DeliveryMethod deliveryMethod) {
+        this.type = type;
         this.width = width;
+        this.height = height;
+        this.color = color;
         this.price = price;
-        this.shippingMethod = shippingMethod;
+        this.deliveryMethod = deliveryMethod;
     }
 
-    public int getRed() {
-        return this.red;
-    }
-
-    public int getGreen() {
-        return this.green;
-    }
-
-    public int getBlue() {
-        return this.blue;
+    public String getDisplayName() {
+        boolean isOneSize = this.type.contains("Calendar") || this.type.contains("Card");
+        return type + (isOneSize ? "" : " (" + width + " mm x " + height + " mm)");
     }
 
     public int getWidth() {
-        return this.width;
+        return width;
     }
 
     public int getHeight() {
-        return this.height;
+        return height;
     }
 
-    public ShippingMethod getShippingMethod() {
-        return this.shippingMethod;
+    public Color getColor() {
+        return color;
     }
 
     public int getPrice() {
-        return this.price;
+        return price;
     }
 
-    public void changeShippingMethod(ShippingMethod shippingMethod) {
-        this.shippingMethod = shippingMethod;
+    public DeliveryMethod getDeliveryMethod() {
+        return deliveryMethod;
+    }
+
+    public void setDeliveryMethod(DeliveryMethod deliveryMethod) {
+        this.deliveryMethod = deliveryMethod;
+    }
+
+    protected void setWidth(int width) {
+        this.width = width;
+    }
+
+    protected void setHeight(int height) {
+        this.height = height;
+    }
+
+    protected void setColor(Color color) {
+        this.color = color;
+    }
+
+    protected void addPrice(int price) {
+        this.price += price;
+    }
+
+    protected void setDisplayName(String type) {
+        this.type = type;
     }
 }

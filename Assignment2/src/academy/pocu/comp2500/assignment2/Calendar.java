@@ -1,49 +1,45 @@
 package academy.pocu.comp2500.assignment2;
 
 public class Calendar extends Product {
-    enum CalendarType {
-        WALL,
-        DESK,
-        MAGNET
-    }
-
     private CalendarType calendarType;
-
-    public Calendar(CalendarType calendarType, ShippingMethod shippingMethod) {
-        super(255, 255, 255, getWidth(calendarType), getHeight(calendarType), getPrice(calendarType), shippingMethod);
-
+    public Calendar(CalendarType calendarType) {
+        super("Calendar", 0, 0, new Color("WHITE"), 1000, DeliveryMethod.PICKUP);
         this.calendarType = calendarType;
-    }
-
-    private static int getWidth(CalendarType calendarType) {
-        if (calendarType == CalendarType.WALL) {
-            return 400;
-        } else if (calendarType == CalendarType.DESK) {
-            return 200;
-        } else {
-            return 100;
-        }
-    }
-
-    private static int getHeight(CalendarType calendarType) {
-        if (calendarType == CalendarType.WALL) {
-            return 400;
-        } else if (calendarType == CalendarType.DESK) {
-            return 150;
-        } else {
-            return 200;
-        }
-    }
-
-    private static int getPrice(CalendarType calendarType) {
-        if (calendarType == CalendarType.MAGNET) {
-            return 1500;
-        }
-
-        return 1000;
+        setSize();
+        addPriceBySize();
+        setDisplayNameByType();
     }
 
     public CalendarType getCalendarType() {
         return calendarType;
+    }
+
+    private void setSize() {
+        if (this.calendarType == CalendarType.WALL) {
+            setWidth(400);
+            setHeight(400);
+        } else if (this.calendarType == CalendarType.DESK) {
+            setWidth(200);
+            setHeight(150);
+        } else if (this.calendarType == CalendarType.MAGNET) {
+            setWidth(100);
+            setHeight(200);
+        }
+    }
+
+    private void setDisplayNameByType() {
+        if (this.calendarType == CalendarType.WALL) {
+            setDisplayName("Wall Calendar");
+        } else if (this.calendarType == CalendarType.DESK) {
+            setDisplayName("Desk Calendar");
+        } else if (this.calendarType == CalendarType.MAGNET) {
+            setDisplayName("Magnet Calendar");
+        }
+    }
+
+    private void addPriceBySize() {
+        if (this.width == 100 && this.height == 200) {
+            addPrice(500);
+        }
     }
 }
