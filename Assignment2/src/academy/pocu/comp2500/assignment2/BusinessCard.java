@@ -49,7 +49,7 @@ public class BusinessCard extends OrientationProduct {
                         price = 140;
                         break;
                 }
-                displayName = "Linen Business Card";
+                displayName = "Linen BusinessCard";
                 break;
             case LAID:
                 switch (cardSides) {
@@ -60,7 +60,7 @@ public class BusinessCard extends OrientationProduct {
                         price = 150;
                         break;
                 }
-                displayName = "Laid Business Card";
+                displayName = "Laid BusinessCard";
                 break;
             case SMOOTH:
                 switch (cardSides) {
@@ -71,7 +71,7 @@ public class BusinessCard extends OrientationProduct {
                         price = 130;
                         break;
                 }
-                displayName = "Smooth Business Card";
+                displayName = "Smooth BusinessCard";
                 break;
         }
 
