@@ -1,10 +1,11 @@
 package academy.pocu.comp2500.assignment2;
 
 public class ImageAperture extends Aperture {
+
     private String imagePath;
 
-    public ImageAperture(int x, int y, int width, int height, String imagePath) {
-        super("image", x, y, width, height);
+    public ImageAperture(String imagePath, int x, int y, Size size) {
+        super(x, y, size);
         this.imagePath = imagePath;
     }
 
