@@ -1,51 +1,53 @@
 package academy.pocu.comp2500.assignment2;
 
+import java.util.ArrayList;
+
 public class Banner extends ApertureProduct {
-    private BannerType type;
+    private int addPriceBySize = 0;
+
+    private BannerType bannerType;
     private BannerSize bannerSize;
-    private Orientation orientation;
 
-    public Banner(BannerType type, BannerSize bannerSize, Color color, Orientation orientation) {
-        super(new Size(0, 0), color);
-        this.type = type;
-        this.orientation = orientation;
+
+    protected Banner(BannerType bannerType, BannerSize bannerSize, Color color, Orientation orientation, DeliveryMethod deliveryMethod) {
+        super("Banner", 0, 0, color, 5000, deliveryMethod, orientation);
+        setBannerType(bannerType);
+        setBannerSize(bannerSize);
+    }
+
+    private void setBannerSize(BannerSize bannerSize) {
+        addPrice(-addPriceBySize);
+        this.addPriceBySize = 0;
         this.bannerSize = bannerSize;
-
-        if (bannerSize == BannerSize.SIZE_1_05) {
-            this.setSize(new Size(1000, 500));
-        } else if (bannerSize == BannerSize.SIZE_1_1) {
-            this.setSize(new Size(1000, 1000));
-            this.setPrice(200);
-        } else if (bannerSize == BannerSize.SIZE_2_05) {
-            this.setSize(new Size(2000, 500));
-            this.setPrice(300);
-        } else if (bannerSize == BannerSize.SIZE_3_1) {
-            this.setSize(new Size(3000, 1000));
-            this.setPrice(1000);
+        if (this.bannerSize == BannerSize.SIZE1000X500) {
+            setWidth(1000);
+            setHeight(500);
+        } else if (this.bannerSize == BannerSize.SIZE1000X1000) {
+            setWidth(1000);
+            setHeight(1000);
+            this.addPriceBySize = 200;
+        } else if (this.bannerSize == BannerSize.SIZE2000X500) {
+            setWidth(2000);
+            setHeight(500);
+            this.addPriceBySize = 100;
+        } else if (this.bannerSize == BannerSize.SIZE3000X1000) {
+            setWidth(3000);
+            setHeight(1000);
+            this.addPriceBySize = 700;
         }
+        addPrice(addPriceBySize);
+    }
 
-        if (type == BannerType.GLOSS) {
-            this.setName(String.format("Gloss Banner (%d mm x %d mm)", this.getSize().getWidth(), this.getSize().getHeight()));
-            this.setPrice(this.getPrice() + 5000);
-        } else if (type == BannerType.SCRIM || type == BannerType.MESH) {
-            if (type == BannerType.SCRIM) {
-                this.setName(String.format("Scrim Banner (%d mm x %d mm)", this.getSize().getWidth(), this.getSize().getHeight()));
-            } else {
-                this.setName(String.format("Mesh Banner (%d mm x %d mm)", this.getSize().getWidth(), this.getSize().getHeight()));
-            }
-            this.setPrice(this.getPrice() + 5100);
+    private void setBannerType(BannerType bannerType) {
+        this.bannerType = bannerType;
+        if (this.bannerType == BannerType.GLOSS) {
+            setDisplayName("Gloss Banner");
+        } else if (this.bannerType == BannerType.SCRIM) {
+            setDisplayName("Scrim Banner");
+            addPrice(100);
+        } else if (this.bannerType == BannerType.MESH) {
+            setDisplayName("Mesh Banner");
+            addPrice(100);
         }
-    }
-
-    public BannerType getType() {
-        return type;
-    }
-
-    public BannerSize getBannerSize() {
-        return bannerSize;
-    }
-
-    public Orientation getOrientation() {
-        return orientation;
     }
 }

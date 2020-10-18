@@ -1,8 +1,8 @@
 package academy.pocu.comp2500.assignment2;
 
 public enum BannerSize {
-    SIZE_1_05,
-    SIZE_1_1,
-    SIZE_2_05,
-    SIZE_3_1
+    SIZE1000X500,
+    SIZE1000X1000,
+    SIZE2000X500,
+    SIZE3000X1000
 }
