@@ -1,57 +1,60 @@
 package academy.pocu.comp2500.assignment2;
 
+import java.util.ArrayList;
+
 public class Product {
-    private final String type;
-    private final Color color;
-    private final Size size;
-    private int price;
+    enum ShippingMethod {
+        PICKUP,
+        SHIP
+    }
+
+    protected int red;
+    protected int green;
+    protected int blue;
+    protected int height;
+    protected int width;
+    protected int price;
     private ShippingMethod shippingMethod;
 
-    public Product(String type, Color color, Size size, int price, ShippingMethod shippingMethod) {
-        this.type = type;
-        this.color = color;
-        this.size = size;
+    public Product(int red, int green, int blue, int width, int height, int price, ShippingMethod shippingMethod) {
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+        this.height = height;
+        this.width = width;
         this.price = price;
         this.shippingMethod = shippingMethod;
     }
 
-    public String getName() {
-        return type;
+    public int getRed() {
+        return this.red;
     }
 
-    public int getRedValue() {
-        return color.getRed();
+    public int getGreen() {
+        return this.green;
     }
 
-    public int getGreenValue() {
-        return color.getGreen();
-    }
-
-    public int getBlueValue() {
-        return color.getBlue();
+    public int getBlue() {
+        return this.blue;
     }
 
     public int getWidth() {
-        return size.getWidth();
+        return this.width;
     }
 
     public int getHeight() {
-        return size.getHeight();
+        return this.height;
+    }
+
+    public ShippingMethod getShippingMethod() {
+        return this.shippingMethod;
     }
 
     public int getPrice() {
-        return price;
+        return this.price;
     }
 
-    protected void setPrice(int price) {
-        this.price = price;
-    }
-
-    public ShippingMethod getshippingMethod() {
-        return shippingMethod;
-    }
-
-    public void setshippingMethod(ShippingMethod shippingMethod) {
+    public void changeShippingMethod(ShippingMethod shippingMethod) {
         this.shippingMethod = shippingMethod;
     }
 }

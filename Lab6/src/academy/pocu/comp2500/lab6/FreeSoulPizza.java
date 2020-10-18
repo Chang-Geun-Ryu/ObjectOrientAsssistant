@@ -4,26 +4,16 @@ public class FreeSoulPizza extends Pizza {
     private static final int PRICE = 25;
     private static final int MAX_MEAT_COUNT = 2;
     private static final int MAX_VEGGIE_COUNT = 2;
-
-    private int veggieCount;
-    private int meatCount;
-    private boolean isCheeseAdded;
+    private static final int MIN_CHEESE_COUNT = 1;
 
     public FreeSoulPizza() {
         super(PRICE);
     }
 
-
-    private boolean isMax() {
-        return this.meatCount == MAX_MEAT_COUNT
-                && this.veggieCount == MAX_VEGGIE_COUNT
-                && this.isCheeseAdded;
-    }
-
     public boolean addTopping(Topping topping) {
         if ((isMeat(topping) && this.meatCount >= MAX_MEAT_COUNT)
                 || (isVeggie(topping) && this.veggieCount >= MAX_VEGGIE_COUNT)
-                || (isCheese(topping) && this.isCheeseAdded)) {
+                || (isCheese(topping) && this.cheeseCount >= MIN_CHEESE_COUNT)) {
             return false;
         }
 
@@ -38,9 +28,11 @@ public class FreeSoulPizza extends Pizza {
         }
 
         if (isCheese(topping)) {
-            this.isCheeseAdded = true;
+            ++this.cheeseCount;
         }
-        super.isAdded = isMax();
+
+        this.checkAndUpdateValid();
+
         return true;
     }
 
@@ -57,30 +49,18 @@ public class FreeSoulPizza extends Pizza {
             }
 
             if (isCheese(topping)) {
-                this.isCheeseAdded = false;
+                --this.cheeseCount;
             }
         }
-        super.isAdded = isMax();
+
         return isRemoved;
     }
 
-    private static boolean isMeat(Topping topping) {
-        return topping == Topping.BACON
-                || topping == Topping.CHICKEN
-                || topping == Topping.PEPERONI
-                || topping == Topping.SAUSAGES
-                || topping == Topping.HAM;
-    }
-
-    private static boolean isVeggie(Topping topping) {
-        return topping == Topping.BLACK_OLIVES
-                || topping == Topping.RED_ONIONS
-                || topping == Topping.GREEN_PEPPERS;
-    }
-
-    private static boolean isCheese(Topping topping) {
-        return topping == Topping.MOZZARELLA_CHEESE
-                || topping == Topping.CHEDDAR_CHEESE
-                || topping == Topping.FETA_CHEESE;
+    private void checkAndUpdateValid() {
+        if (this.meatCount == MAX_MEAT_COUNT
+                && this.veggieCount == MAX_VEGGIE_COUNT
+                && this.cheeseCount >= MIN_CHEESE_COUNT) {
+            super.isValid = true;
+        }
     }
 }

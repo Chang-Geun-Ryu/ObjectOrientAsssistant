@@ -1,17 +1,16 @@
 package academy.pocu.comp2500.lab6;
 
-import java.util.ArrayList;
-
 public class MeatLoverPizza extends Pizza {
     private static final int PRICE = 21;
 
     public MeatLoverPizza() {
         super(PRICE);
-        this.toppings.add(Topping.BACON);
-        this.toppings.add(Topping.PEPERONI);
-        this.toppings.add(Topping.HAM);
-        this.toppings.add(Topping.SAUSAGES);
-        this.toppings.add(Topping.CHEDDAR_CHEESE);
+
+        super.toppings.add(Topping.BACON);
+        super.toppings.add(Topping.PEPERONI);
+        super.toppings.add(Topping.HAM);
+        super.toppings.add(Topping.SAUSAGES);
+        super.toppings.add(Topping.CHEDDAR_CHEESE);
     }
 
     public boolean addBlackOlives() {
@@ -19,16 +18,16 @@ public class MeatLoverPizza extends Pizza {
             return false;
         }
 
-        this.toppings.add(Topping.BLACK_OLIVES);
-        super.isAdded = true;
+        super.toppings.add(Topping.BLACK_OLIVES);
+        super.isValid = true;
         return true;
     }
 
     public boolean removeBlackOlives() {
-        boolean isRemoved = this.toppings.remove(Topping.BLACK_OLIVES);
+        boolean isRemoved = super.toppings.remove(Topping.BLACK_OLIVES);
 
         if (isRemoved) {
-            super.isAdded = false;
+            super.isValid = false;
         }
 
         return isRemoved;
@@ -39,16 +38,16 @@ public class MeatLoverPizza extends Pizza {
             return false;
         }
 
-        this.toppings.add(Topping.RED_ONIONS);
-        super.isAdded = true;
+        super.toppings.add(Topping.RED_ONIONS);
+        super.isValid = true;
         return true;
     }
 
     public boolean removeRedOnions() {
-        boolean isRemoved = this.toppings.remove(Topping.RED_ONIONS);
+        boolean isRemoved = super.toppings.remove(Topping.RED_ONIONS);
 
         if (isRemoved) {
-            super.isAdded = false;
+            super.isValid = false;
         }
 
         return isRemoved;
@@ -59,16 +58,16 @@ public class MeatLoverPizza extends Pizza {
             return false;
         }
 
-        this.toppings.add(Topping.GREEN_PEPPERS);
-        super.isAdded = true;
+        super.toppings.add(Topping.GREEN_PEPPERS);
+        super.isValid = true;
         return true;
     }
 
     public boolean removeGreenPeppers() {
-        boolean isRemoved = this.toppings.remove(Topping.GREEN_PEPPERS);
+        boolean isRemoved = super.toppings.remove(Topping.GREEN_PEPPERS);
 
         if (isRemoved) {
-            super.isAdded = false;
+            super.isValid = false;
         }
 
         return isRemoved;

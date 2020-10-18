@@ -6,38 +6,36 @@ public class HousePizza extends Pizza {
     private static final int PRICE = 20;
     private static final int MAX_MEAT_COUNT = 2;
 
-    private int meatCount;
-
     public HousePizza() {
         super(PRICE);
-        this.toppings.add(Topping.BLACK_OLIVES);
-        this.toppings.add(Topping.RED_ONIONS);
-        this.toppings.add(Topping.GREEN_PEPPERS);
-        this.toppings.add(Topping.MOZZARELLA_CHEESE);
-    }
 
-    private boolean isMax() {
-        return this.meatCount == MAX_MEAT_COUNT;
+        super.toppings.add(Topping.BLACK_OLIVES);
+        super.toppings.add(Topping.RED_ONIONS);
+        super.toppings.add(Topping.GREEN_PEPPERS);
+        super.toppings.add(Topping.MOZZARELLA_CHEESE);
     }
 
     public boolean addBacon() {
-        if (isValid()) {
+        if (super.isValid) {
             return false;
         }
 
-        this.toppings.add(Topping.BACON);
-        ++this.meatCount;
-        super.isAdded = isMax();
+        super.toppings.add(Topping.BACON);
+        ++super.meatCount;
+
+        this.checkAndUpdateValid();
+
         return true;
     }
 
     public boolean removeBacon() {
-        boolean isRemoved = this.toppings.remove(Topping.BACON);
+        boolean isRemoved = super.toppings.remove(Topping.BACON);
 
         if (isRemoved) {
-            --this.meatCount;
+            --super.meatCount;
+            super.updateToInvalid();
         }
-        super.isAdded = isMax();
+
         return isRemoved;
     }
 
@@ -46,19 +44,22 @@ public class HousePizza extends Pizza {
             return false;
         }
 
-        this.toppings.add(Topping.PEPERONI);
-        ++this.meatCount;
-        super.isAdded = isMax();
+        super.toppings.add(Topping.PEPERONI);
+        ++super.meatCount;
+
+        this.checkAndUpdateValid();
+
         return true;
     }
 
     public boolean removePeperoni() {
-        boolean isRemoved = this.toppings.remove(Topping.PEPERONI);
+        boolean isRemoved = super.toppings.remove(Topping.PEPERONI);
 
         if (isRemoved) {
-            --this.meatCount;
+            --super.meatCount;
+            super.updateToInvalid();
         }
-        super.isAdded = isMax();
+
         return isRemoved;
     }
 
@@ -67,19 +68,27 @@ public class HousePizza extends Pizza {
             return false;
         }
 
-        this.toppings.add(Topping.SAUSAGES);
-        ++this.meatCount;
-        super.isAdded = isMax();
+        super.toppings.add(Topping.SAUSAGES);
+        ++super.meatCount;
+        this.checkAndUpdateValid();
+
         return true;
     }
 
     public boolean removeSausages() {
-        boolean isRemoved = this.toppings.remove(Topping.SAUSAGES);
+        boolean isRemoved = super.toppings.remove(Topping.SAUSAGES);
 
         if (isRemoved) {
-            --this.meatCount;
+            --super.meatCount;
+            super.updateToInvalid();
         }
-        super.isAdded = isMax();
+
         return isRemoved;
+    }
+
+    private void checkAndUpdateValid() {
+        if (super.meatCount == MAX_MEAT_COUNT) {
+            super.isValid = true;
+        }
     }
 }

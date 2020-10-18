@@ -1,52 +1,82 @@
 package academy.pocu.comp2500.assignment2;
 
-public class BusinessCard extends ProductWithImage {
-    private static final PriceBySide[] LINEN_BUSINESS_CARD_PRICES = new PriceBySide[]{
-            new PriceBySide(Side.SINGLE_SIDE, BusinessCardPrice.LINEN_SINGLE_SIDE.getPrice()),
-            new PriceBySide(Side.DOUBLE_SIDE, BusinessCardPrice.LINEN_DOUBLE_SIDE.getPrice()),
-    };
+public class BusinessCard extends ProductWithApertures {
+    enum BusinessCardType {
+        LINEN,
+        LAID,
+        SMOOTH
+    }
 
-    private static final PriceBySide[] LAID_BUSINESS_CARD_PRICES = new PriceBySide[]{
-            new PriceBySide(Side.SINGLE_SIDE, BusinessCardPrice.LAID_SINGLE_SIDE.getPrice()),
-            new PriceBySide(Side.DOUBLE_SIDE, BusinessCardPrice.LAID_DOUBLE_SIDE.getPrice()),
-    };
+    enum BusinessCardColor {
+        GREY,
+        IVORY,
+        WHITE
+    }
 
-    private static final PriceBySide[] SMOOTH_BUSINESS_CARD_PRICES = new PriceBySide[]{
-            new PriceBySide(Side.SINGLE_SIDE, BusinessCardPrice.SMOOTH_SINGLE_SIDE.getPrice()),
-            new PriceBySide(Side.DOUBLE_SIDE, BusinessCardPrice.SMOOTH_DOUBLE_SIDE.getPrice()),
-    };
+    private BusinessCardType businessCardType;
+    private int sides;
 
-    private static int getPriceFrom(PriceBySide[] priceTable, Side side) {
-        for (PriceBySide tuple : priceTable) {
-            if (tuple.getSide() == side) {
-                return tuple.getPrice();
+
+    public BusinessCard(BusinessCardColor businessCardColor, BusinessCardType businessCardType, int sides, Orientation orientation, ShippingMethod shippingMethod) {
+        super(getRed(businessCardColor), getGreen(businessCardColor), getBlue(businessCardColor), 9, 5, getPrice(businessCardType, sides), orientation, shippingMethod);
+
+        this.businessCardType = businessCardType;
+        this.sides = sides;
+    }
+
+    private static int getRed(BusinessCardColor businessCardColor) {
+        if (businessCardColor == BusinessCardColor.GREY) {
+            return 230;
+        } else {
+            return 255;
+        }
+    }
+
+    private static int getGreen(BusinessCardColor businessCardColor) {
+        if (businessCardColor == BusinessCardColor.GREY) {
+            return 230;
+        } else {
+            return 255;
+        }
+    }
+
+    private static int getBlue(BusinessCardColor businessCardColor) {
+        if (businessCardColor == BusinessCardColor.GREY) {
+            return 230;
+        } else if (businessCardColor == BusinessCardColor.IVORY) {
+            return 240;
+        } else {
+            return 255;
+        }
+    }
+
+    private static int getPrice(BusinessCardType businessCardType, int sides) {
+        if (businessCardType == BusinessCardType.LINEN) {
+            if (sides == 1) {
+                return 110;
+            } else {
+                return 140;
+            }
+        } else if (businessCardType == BusinessCardType.LAID) {
+            if (sides == 1) {
+                return 120;
+            } else {
+                return 150;
+            }
+        } else {
+            if (sides == 1) {
+                return 100;
+            } else {
+                return 130;
             }
         }
-
-        return -1;
     }
 
-    private static int getPriceBy(BusinessCardType type, Side side) {
-        if (type == BusinessCardType.LINEN_BUSINESS_CARD) {
-            return getPriceFrom(LINEN_BUSINESS_CARD_PRICES, side);
-        } else if (type == BusinessCardType.LAID_BUSINESS_CARD) {
-            return getPriceFrom(LAID_BUSINESS_CARD_PRICES, side);
-        } else if (type == BusinessCardType.SMOOTH_BUSINESS_CARD) {
-            return getPriceFrom(SMOOTH_BUSINESS_CARD_PRICES, side);
-        } else {
-            return -1;
-        }
+    public BusinessCardType getBusinessCardType() {
+        return businessCardType;
     }
 
-    private Side side;
-
-    public BusinessCard(BusinessCardType type, BusinessCardColor color, Orientation orientation, Side businessCardSides, ShippingMethod shippingMethod) {
-        super(type.getType(), color.getColor(), new Size(90, 50), getPriceBy(type, businessCardSides), orientation, shippingMethod);
-
-        this.side = businessCardSides;
-    }
-
-    public Side getSide() {
-        return side;
+    public int getSides() {
+        return sides;
     }
 }

@@ -1,50 +1,70 @@
 package academy.pocu.comp2500.assignment2;
 
-public class Banner extends ProductWithImage {
-    private static final PriceBySize[] GLOSS_BANNER_PRICES = new PriceBySize[]{
-            new PriceBySize(BannerSize.SMALL.getSize(), BannerPrice.GLOSS_SMALL.getPrice()),
-            new PriceBySize(BannerSize.MIDIUM.getSize(), BannerPrice.GLOSS_MEDIUM.getPrice()),
-            new PriceBySize(BannerSize.LARGE.getSize(), BannerPrice.GLOSS_LARGE.getPrice()),
-            new PriceBySize(BannerSize.VERY_LARGE.getSize(), BannerPrice.GLOSS_VERY_LARGE.getPrice())
-    };
+public class Banner extends ProductWithApertures {
+    enum BannerType {
+        GLOSS,
+        SCRIM,
+        MESH
+    }
 
-    private static final PriceBySize[] SCRIM_BANNER_PRICES = new PriceBySize[]{
-            new PriceBySize(BannerSize.SMALL.getSize(), BannerPrice.SCRIM_SMALL.getPrice()),
-            new PriceBySize(BannerSize.MIDIUM.getSize(), BannerPrice.SCRIM_MEDIUM.getPrice()),
-            new PriceBySize(BannerSize.LARGE.getSize(), BannerPrice.SCRIM_LARGE.getPrice()),
-            new PriceBySize(BannerSize.VERY_LARGE.getSize(), BannerPrice.SCRIM_VERY_LARGE.getPrice())
-    };
+    enum BannerSize {
+        W100H50,
+        W100H100,
+        W200H50,
+        W300H100
+    }
 
-    private static final PriceBySize[] MESH_BANNER_PRICES = new PriceBySize[]{
-            new PriceBySize(BannerSize.SMALL.getSize(), BannerPrice.MESH_SMALL.getPrice()),
-            new PriceBySize(BannerSize.MIDIUM.getSize(), BannerPrice.MESH_MEDIUM.getPrice()),
-            new PriceBySize(BannerSize.LARGE.getSize(), BannerPrice.MESH_LARGE.getPrice()),
-            new PriceBySize(BannerSize.VERY_LARGE.getSize(), BannerPrice.MESH_VERY_LARGE.getPrice())
-    };
+    private BannerType bannerType;
 
-    private static int getPriceFrom(PriceBySize[] priceTable, BannerSize size) {
-        for (PriceBySize tuple : priceTable) {
-            if (tuple.getSize() == size.getSize()) {
-                return tuple.getPrice();
+    public Banner(int red, int green, int blue, BannerSize bannerSize, BannerType bannerType, Orientation orientation, ShippingMethod shippingMethod) {
+        super(red, green, blue, getWidth(bannerSize), getHeight(bannerSize), getPrice(bannerType, bannerSize), orientation, shippingMethod);
+
+        this.bannerType = bannerType;
+    }
+
+    private static int getWidth(BannerSize bannerSize) {
+        if (bannerSize == BannerSize.W100H50 || bannerSize == BannerSize.W100H100) {
+            return 1000;
+        } else if (bannerSize == BannerSize.W200H50) {
+            return 2000;
+        } else {
+            return 3000;
+        }
+    }
+
+    private static int getHeight(BannerSize bannerSize) {
+        if (bannerSize == BannerSize.W100H50 || bannerSize == BannerSize.W200H50) {
+            return 500;
+        } else {
+            return 1000;
+        }
+    }
+
+    private static int getPrice(BannerType bannerType, BannerSize bannerSize) {
+        if (bannerType == BannerType.GLOSS) {
+            if (bannerSize == BannerSize.W100H50) {
+                return 5000;
+            } else if (bannerSize == BannerSize.W100H100) {
+                return 5200;
+            } else if (bannerSize == BannerSize.W200H50) {
+                return 5300;
+            } else {
+                return 6000;
+            }
+        } else {
+            if (bannerSize == BannerSize.W100H50) {
+                return 5100;
+            } else if (bannerSize == BannerSize.W100H100) {
+                return 5300;
+            } else if (bannerSize == BannerSize.W200H50) {
+                return 5400;
+            } else {
+                return 6100;
             }
         }
-
-        return -1;
     }
 
-    protected static int getPriceBy(BannerType type, BannerSize size) {
-        if (type == BannerType.GLOSS_BANNER) {
-            return getPriceFrom(GLOSS_BANNER_PRICES, size);
-        } else if (type == BannerType.SCRIM_BANNER) {
-            return getPriceFrom(SCRIM_BANNER_PRICES, size);
-        } else if (type == BannerType.MESH_BANNER) {
-            return getPriceFrom(MESH_BANNER_PRICES, size);
-        } else {
-            return -1;
-        }
-    }
-
-    public Banner(BannerType type, Color color, BannerSize size, Orientation orientation, ShippingMethod shippingMethod) {
-        super(type.getType(), color, size.getSize(), getPriceBy(type, size), orientation, shippingMethod);
+    public BannerType getBannerType() {
+        return bannerType;
     }
 }
