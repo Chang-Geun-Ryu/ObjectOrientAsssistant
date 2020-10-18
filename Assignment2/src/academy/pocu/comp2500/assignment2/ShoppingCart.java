@@ -2,7 +2,6 @@ package academy.pocu.comp2500.assignment2;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class ShoppingCart {
     private HashMap<String, Product> products;
@@ -12,13 +11,12 @@ public class ShoppingCart {
     }
 
     public void addProduct(Product product) {
-        String productId = UUID.randomUUID().toString();
-        this.products.put(productId, product);
+        this.products.put(product.getProductId(), product);
     }
 
-    public boolean removeProduct(String productId) {
-        if (this.products.containsKey(productId)) {
-            this.products.remove(productId);
+    public boolean removeProduct(Product product) {
+        if (this.products.containsKey(product.getProductId())) {
+            this.products.remove(product.getProductId());
             return true;
         }
         return false;
@@ -30,5 +28,9 @@ public class ShoppingCart {
             sumPrice += element.getValue().getPrice();
         }
         return sumPrice;
+    }
+
+    public HashMap<String, Product> getProducts() {
+        return products;
     }
 }

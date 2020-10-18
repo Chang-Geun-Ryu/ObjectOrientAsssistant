@@ -5,8 +5,10 @@ public class Aperture {
     private int y;
     private int width;
     private int height;
+    private String type;
 
-    public Aperture(int x, int y, int width, int height) {
+    protected Aperture(String type, int x, int y, int width, int height) {
+        this.type = type;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -27,5 +29,9 @@ public class Aperture {
 
     public int getHeight() {
         return height;
+    }
+
+    public String getType() {
+        return type;
     }
 }

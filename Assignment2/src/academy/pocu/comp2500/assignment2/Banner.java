@@ -2,20 +2,15 @@ package academy.pocu.comp2500.assignment2;
 
 import java.util.ArrayList;
 
-public class Banner extends Product {
-//    private ArrayList<TextAperture> textApertures = new ArrayList<>();
-//    private ArrayList<ImageAperture> imageApertures = new ArrayList<>();
-    private  ArrayList<Aperture> apertures = new ArrayList<>();
+public class Banner extends ApertureProduct {
     private int addPriceBySize = 0;
 
-    private Orientation orientation;
     private BannerType bannerType;
     private BannerSize bannerSize;
 
 
-    public Banner(BannerType bannerType, BannerSize bannerSize, Color color, Orientation orientation, DeliveryMethod deliveryMethod) {
-        super("Banner", 0, 0, color, 5000, deliveryMethod);
-        this.orientation = orientation;
+    protected Banner(BannerType bannerType, BannerSize bannerSize, Color color, Orientation orientation, DeliveryMethod deliveryMethod) {
+        super("Banner", 0, 0, color, 5000, deliveryMethod, orientation);
         setBannerType(bannerType);
         setBannerSize(bannerSize);
     }
@@ -46,7 +41,6 @@ public class Banner extends Product {
     private void setBannerType(BannerType bannerType) {
         this.bannerType = bannerType;
         if (this.bannerType == BannerType.GLOSS) {
-            ;
             setDisplayName(String.format("Gloss Banner (%d mm x %d mm)", this.getWidth(), this.getHeight()));
         } else if (this.bannerType == BannerType.SCRIM) {
             setDisplayName(String.format("Scrim Banner (%d mm x %d mm)", this.getWidth(), this.getHeight()));
@@ -55,54 +49,5 @@ public class Banner extends Product {
             setDisplayName(String.format("Mesh Banner (%d mm x %d mm)", this.getWidth(), this.getHeight()));
             addPrice(100);
         }
-    }
-    public boolean addAperture(Aperture aperture) {
-        if (isInAperture(aperture)) {
-            this.apertures.add(aperture);
-            addPrice(5);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public ArrayList<Aperture> getApertures() {
-        return  apertures;
-    }
-
-//    public boolean addTextAperture(TextAperture textAperture) {
-//        if (isInAperture(textAperture)) {
-//            this.textApertures.add(textAperture);
-//            addPrice(5);
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-//
-//    public boolean addImageAperture(ImageAperture imageAperture) {
-//        if (isInAperture(imageAperture)) {
-//            this.imageApertures.add(imageAperture);
-//            addPrice(5);
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-//
-//    public ArrayList<TextAperture> getTextApertures() {
-//        return textApertures;
-//    }
-//
-//    public ArrayList<ImageAperture> getImageApertures() {
-//        return imageApertures;
-//    }
-
-    public Orientation getOrientation() {
-        return orientation;
-    }
-
-    private boolean isInAperture(Aperture aperture) {
-        return (0 <= aperture.getX() && aperture.getX() + aperture.getWidth() <= this.getWidth() && 0 <= aperture.getY() && aperture.getY() + aperture.getHeight() <= this.getHeight());
     }
 }

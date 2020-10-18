@@ -1,5 +1,7 @@
 package academy.pocu.comp2500.assignment2;
 
+import java.util.UUID;
+
 public class Product {
     protected String type;
     protected int width;
@@ -7,6 +9,7 @@ public class Product {
     protected Color color;
     protected int price;
     protected DeliveryMethod deliveryMethod;
+    private String productId;
 
     protected Product(String type, int width, int height, Color color, int price, DeliveryMethod deliveryMethod) {
         this.type = type;
@@ -15,6 +18,7 @@ public class Product {
         this.color = color;
         this.price = price;
         this.deliveryMethod = deliveryMethod;
+        this.productId = UUID.randomUUID().toString();
     }
 
     public String getDisplayName() {
@@ -36,6 +40,10 @@ public class Product {
 
     public int getPrice() {
         return price;
+    }
+
+    public String getProductId() {
+        return productId;
     }
 
     public DeliveryMethod getDeliveryMethod() {
