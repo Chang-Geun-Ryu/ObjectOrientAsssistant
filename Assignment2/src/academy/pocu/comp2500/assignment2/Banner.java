@@ -1,64 +1,93 @@
 package academy.pocu.comp2500.assignment2;
 
-import java.util.ArrayList;
+public class Banner extends OrientationProduct {
+    private BannerMaterial bannerMaterial;
 
-public class Banner extends ApertureProduct {
-//    private int addPriceBySize = 0;
-
-    private BannerType bannerType;
-    private BannerSize bannerSize;
-
-
-    public Banner(BannerType bannerType, BannerSize bannerSize, Color color, Orientation orientation, DeliveryMethod deliveryMethod) {
-        super("Banner", 0, 0, color, 5000, deliveryMethod, orientation);
-        setBannerType(bannerType);
-        setBannerSize(bannerSize);
+    public BannerMaterial getBannerMaterial() {
+        return bannerMaterial;
     }
 
-    public BannerSize getBannerSize() {
-        return bannerSize;
-    }
+    public Banner(Orientation orientation, RGB color, BannerMaterial bannerMaterial, BannerSize bannerSize) {
+        this.bannerMaterial = bannerMaterial;
+        this.orientation = orientation;
+        this.color = color;
 
-    public BannerType getBannerType() {
-        return bannerType;
-    }
+        switch (bannerSize) {
+            case SIZE_100X50:
+                size = new Size(1000, 500);
+                switch (bannerMaterial) {
+                    case GLOSS:
+                        price = 5000;
+                        break;
+                    case MESH:
+                        price = 5100;
+                        break;
+                    case SCRIM:
+                        price = 5100;
+                        break;
+                }
+                break;
+            case SIZE_100X100:
+                size = new Size(1000, 1000);
 
-    private void setBannerSize(BannerSize bannerSize) {
-//        addPrice(-addPriceBySize);
-//        this.addPriceBySize = 0;
-        this.bannerSize = bannerSize;
-        if (this.bannerSize == BannerSize.SIZE1000X500) {
-            setWidth(1000);
-            setHeight(500);
-        } else if (this.bannerSize == BannerSize.SIZE1000X1000) {
-            setWidth(1000);
-            setHeight(1000);
-//            this.addPriceBySize = 200;
-            addPrice(200);
-        } else if (this.bannerSize == BannerSize.SIZE2000X500) {
-            setWidth(2000);
-            setHeight(500);
-//            this.addPriceBySize = 100;
-            addPrice(300);
-        } else if (this.bannerSize == BannerSize.SIZE3000X1000) {
-            setWidth(3000);
-            setHeight(1000);
-//            this.addPriceBySize = 700;
-            addPrice(1000);
+                switch (bannerMaterial) {
+                    case GLOSS:
+                        price = 5200;
+                        break;
+                    case MESH:
+                        price = 5300;
+                        break;
+                    case SCRIM:
+                        price = 5300;
+                        break;
+                }
+                break;
+            case SIZE_200X50:
+                size = new Size(2000, 500);
+
+                switch (bannerMaterial) {
+                    case GLOSS:
+                        price = 5300;
+                        break;
+                    case MESH:
+                        price = 5400;
+                        break;
+                    case SCRIM:
+                        price = 5400;
+                        break;
+
+                }
+                break;
+            case SIZE_300X100:
+                size = new Size(3000, 1000);
+
+                switch (bannerMaterial) {
+                    case GLOSS:
+                        price = 6000;
+                        break;
+                    case MESH:
+                        price = 6100;
+                        break;
+                    case SCRIM:
+                        price = 6100;
+                        break;
+                }
+                break;
         }
-//        addPrice(addPriceBySize);
-    }
 
-    private void setBannerType(BannerType bannerType) {
-        this.bannerType = bannerType;
-        if (this.bannerType == BannerType.GLOSS) {
-            setDisplayName("Gloss Banner");
-        } else if (this.bannerType == BannerType.SCRIM) {
-            setDisplayName("Scrim Banner");
-            addPrice(100);
-        } else if (this.bannerType == BannerType.MESH) {
-            setDisplayName("Mesh Banner");
-            addPrice(100);
+
+        switch (bannerMaterial) {
+            case SCRIM:
+                displayName = "Scrim Banner";
+                break;
+            case MESH:
+                displayName = "Mesh Banner";
+                break;
+            case GLOSS:
+                displayName = "Gloss Banner";
+                break;
         }
+
+        displayName += " (" + getSize().getWidth() + "mm x " + getSize().getHeight() + "mm)";
     }
 }

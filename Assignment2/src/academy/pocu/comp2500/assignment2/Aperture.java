@@ -1,26 +1,17 @@
 package academy.pocu.comp2500.assignment2;
 
 public class Aperture {
-    private int x;
-    private int y;
-    private int width;
-    private int height;
-//    private String type;
+    protected int width;
+    protected int height;
+    protected int x;
+    protected int y;
 
-    protected Aperture(int x, int y, int width, int height) {
-//        this.type = type;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+    public int getY() {
+        return y;
     }
 
     public int getX() {
         return x;
-    }
-
-    public int getY() {
-        return y;
     }
 
     public int getWidth() {
@@ -31,7 +22,10 @@ public class Aperture {
         return height;
     }
 
-//    public String getType() {
-//        return type;
-//    }
+    protected Aperture(int x, int y, int width, int height) {
+        this.x = x;
+        this.y = y;
+        this.width = Math.max(0, width);
+        this.height = Math.max(0, height);
+    }
 }
