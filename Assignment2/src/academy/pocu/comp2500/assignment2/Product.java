@@ -62,9 +62,9 @@ public class Product {
         this.height = height;
     }
 
-    protected void setColor(Color color) {
-        this.color = color;
-    }
+//    protected void setColor(Color color) {
+//        this.color = color;
+//    }
 
     protected void addPrice(int price) {
         this.price += price;
@@ -72,5 +72,24 @@ public class Product {
 
     protected void setDisplayName(String type) {
         this.type = type;
+    }
+
+    protected Color setColor(String color) {
+        switch (color) {
+            case "RED":
+                return new Color(0xFF, 0x00, 0x00);
+            case "BLUE":
+                return new Color(0x00, 0x00, 0xFF);
+            case "GREEN":
+                return new Color(0x00, 0x80, 0x00);
+            case "WHITE":
+                return new Color(0xFF, 0xFF, 0xFF);
+            case "GRAY":
+                return new Color(0xE6, 0xE6, 0xE6);
+            case "IVORY":
+                return new Color(0xFF, 0xFF, 0xF0);
+            default:
+                return new Color(0x00, 0x00, 0x00);
+        }
     }
 }

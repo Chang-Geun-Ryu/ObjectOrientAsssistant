@@ -16,11 +16,11 @@ public class Stamp extends Product {
     protected void setStampColor(StampColor stampColor) {
         this.stampColor = stampColor;
         if (this.stampColor == StampColor.BLUE) {
-            setColor(new Color("BLUE"));
+            setColor("BLUE");
         } else if (this.stampColor == StampColor.GREEN) {
-            setColor(new Color("GREEN"));
+            setColor("GREEN");
         } else if (this.stampColor == StampColor.RED) {
-            setColor(new Color("RED"));
+            setColor("RED");
         }
     }
 

@@ -3,7 +3,8 @@ package academy.pocu.comp2500.assignment2;
 public class Calendar extends Product {
     private CalendarType calendarType;
     public Calendar(CalendarType calendarType) {
-        super("Calendar", 0, 0, new Color("WHITE"), 1000, DeliveryMethod.PICKUP);
+        super("Calendar", 0, 0, null, 1000, DeliveryMethod.PICKUP);
+        setColor("WHITE");
         this.calendarType = calendarType;
         setSize();
         addPriceBySize();

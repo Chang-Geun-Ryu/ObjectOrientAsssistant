@@ -38,11 +38,11 @@ public class Card extends ApertureProduct {
     private void setPaperColor(PaperColor paperColor) {
         this.paperColor = paperColor;
         if (this.paperColor == PaperColor.GRAY) {
-            setColor(new Color("GRAY"));
+            setColor("GRAY");
         } else if (this.paperColor == PaperColor.WHITE) {
-            setColor(new Color("WHITE"));
+            setColor("WHITE");
         } else if (this.paperColor == PaperColor.IVORY) {
-            setColor(new Color("IVORY"));
+            setColor("IVORY");
         }
     }
 

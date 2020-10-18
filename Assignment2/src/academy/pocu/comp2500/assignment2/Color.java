@@ -11,45 +11,45 @@ public class Color {
         this.b = b;
     }
 
-    public Color(String color) {
-        switch (color) {
-            case "RED":
-                this.r = 0xFF;
-                this.g = 0x00;
-                this.b = 0x00;
-                break;
-            case "BLUE":
-                this.r = 0x00;
-                this.g = 0x00;
-                this.b = 0xFF;
-                break;
-            case "GREEN":
-                this.r = 0x00;
-                this.g = 0x80;
-                this.b = 0x00;
-                break;
-            case "WHITE":
-                this.r = 0xFF;
-                this.g = 0xFF;
-                this.b = 0xFF;
-                break;
-            case "GRAY":
-                this.r = 0xE6;
-                this.g = 0xE6;
-                this.b = 0xE6;
-                break;
-            case "IVORY":
-                this.r = 0xFF;
-                this.g = 0xFF;
-                this.b = 0xF0;
-                break;
-            default:
-                this.r = 0x00;
-                this.g = 0x00;
-                this.b = 0x00;
-                break;
-        }
-    }
+//    public Color(String color) {
+//        switch (color) {
+//            case "RED":
+//                this.r = 0xFF;
+//                this.g = 0x00;
+//                this.b = 0x00;
+//                break;
+//            case "BLUE":
+//                this.r = 0x00;
+//                this.g = 0x00;
+//                this.b = 0xFF;
+//                break;
+//            case "GREEN":
+//                this.r = 0x00;
+//                this.g = 0x80;
+//                this.b = 0x00;
+//                break;
+//            case "WHITE":
+//                this.r = 0xFF;
+//                this.g = 0xFF;
+//                this.b = 0xFF;
+//                break;
+//            case "GRAY":
+//                this.r = 0xE6;
+//                this.g = 0xE6;
+//                this.b = 0xE6;
+//                break;
+//            case "IVORY":
+//                this.r = 0xFF;
+//                this.g = 0xFF;
+//                this.b = 0xF0;
+//                break;
+//            default:
+//                this.r = 0x00;
+//                this.g = 0x00;
+//                this.b = 0x00;
+//                break;
+//        }
+//    }
 
     public int getR() {
         return r;
