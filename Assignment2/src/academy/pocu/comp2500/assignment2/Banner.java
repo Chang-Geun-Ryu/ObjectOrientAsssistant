@@ -3,7 +3,7 @@ package academy.pocu.comp2500.assignment2;
 import java.util.ArrayList;
 
 public class Banner extends ApertureProduct {
-    private int addPriceBySize = 0;
+//    private int addPriceBySize = 0;
 
     private BannerType bannerType;
     private BannerSize bannerSize;
@@ -24,8 +24,8 @@ public class Banner extends ApertureProduct {
     }
 
     private void setBannerSize(BannerSize bannerSize) {
-        addPrice(-addPriceBySize);
-        this.addPriceBySize = 0;
+//        addPrice(-addPriceBySize);
+//        this.addPriceBySize = 0;
         this.bannerSize = bannerSize;
         if (this.bannerSize == BannerSize.SIZE1000X500) {
             setWidth(1000);
@@ -33,17 +33,20 @@ public class Banner extends ApertureProduct {
         } else if (this.bannerSize == BannerSize.SIZE1000X1000) {
             setWidth(1000);
             setHeight(1000);
-            this.addPriceBySize = 200;
+//            this.addPriceBySize = 200;
+            addPrice(200);
         } else if (this.bannerSize == BannerSize.SIZE2000X500) {
             setWidth(2000);
             setHeight(500);
-            this.addPriceBySize = 100;
+//            this.addPriceBySize = 100;
+            addPrice(300);
         } else if (this.bannerSize == BannerSize.SIZE3000X1000) {
             setWidth(3000);
             setHeight(1000);
-            this.addPriceBySize = 700;
+//            this.addPriceBySize = 700;
+            addPrice(1000);
         }
-        addPrice(addPriceBySize);
+//        addPrice(addPriceBySize);
     }
 
     private void setBannerType(BannerType bannerType) {
