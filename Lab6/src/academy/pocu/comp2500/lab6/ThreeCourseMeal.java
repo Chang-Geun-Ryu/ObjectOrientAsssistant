@@ -1,5 +1,7 @@
 package academy.pocu.comp2500.lab6;
 
+import java.util.ArrayList;
+
 public class ThreeCourseMeal extends Meal {
     private static final int PRICE = 25;
 
@@ -7,25 +9,39 @@ public class ThreeCourseMeal extends Meal {
         super(PRICE);
     }
 
-    private void setValid() {
-        isValid = this.appetizers.size() != 0 && this.mainCourses.size() != 0 && this.desserts.size() != 0;
-    }
-
     public void setMainCourse(MainCourse mainCourse) {
-        this.mainCourses.clear();
-        this.mainCourses.add(mainCourse);
-        setValid();
+        if (this.mainCourses.size() == 0) {
+            this.mainCourses.add(mainCourse);
+        } else {
+            this.mainCourses.set(0, mainCourse);
+        }
+
+        this.checkAndUpdateValid();
     }
 
     public void setAppetizer(Appetizer appetizer) {
-        this.appetizers.clear();
-        this.appetizers.add(appetizer);
-        setValid();
+        if (this.appetizers.size() == 0) {
+            this.appetizers.add(appetizer);
+        } else {
+            this.appetizers.set(0, appetizer);
+        }
+
+        this.checkAndUpdateValid();
     }
 
     public void setDessert(Dessert dessert) {
-        this.desserts.clear();
-        this.desserts.add(dessert);
-        setValid();
+        if (this.desserts.size() == 0) {
+            this.desserts.add(dessert);
+        } else {
+            this.desserts.set(0, dessert);
+        }
+
+        this.checkAndUpdateValid();
+    }
+
+    public void checkAndUpdateValid() {
+        if (this.appetizers.size() == 1 && this.mainCourses.size() == 1 && this.desserts.size() == 1) {
+            super.isValid = true;
+        }
     }
 }

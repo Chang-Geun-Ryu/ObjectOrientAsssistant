@@ -3,19 +3,14 @@ package academy.pocu.comp2500.lab6;
 public class MeatLoverPizza extends Pizza {
     private static final int PRICE = 21;
 
-    private boolean isVeggieAdded;
-
     public MeatLoverPizza() {
         super(PRICE);
-        this.toppings.add(Topping.BACON);
-        this.toppings.add(Topping.PEPERONI);
-        this.toppings.add(Topping.HAM);
-        this.toppings.add(Topping.SAUSAGES);
-        this.toppings.add(Topping.CHEDDAR_CHEESE);
-    }
 
-    private void setValid() {
-        isValid = this.isVeggieAdded;
+        super.toppings.add(Topping.BACON);
+        super.toppings.add(Topping.PEPERONI);
+        super.toppings.add(Topping.HAM);
+        super.toppings.add(Topping.SAUSAGES);
+        super.toppings.add(Topping.CHEDDAR_CHEESE);
     }
 
     public boolean addBlackOlives() {
@@ -23,21 +18,18 @@ public class MeatLoverPizza extends Pizza {
             return false;
         }
 
-        this.toppings.add(Topping.BLACK_OLIVES);
-        this.isVeggieAdded = true;
-
-        setValid();
+        super.toppings.add(Topping.BLACK_OLIVES);
+        super.isValid = true;
         return true;
     }
 
     public boolean removeBlackOlives() {
-        boolean isRemoved = this.toppings.remove(Topping.BLACK_OLIVES);
+        boolean isRemoved = super.toppings.remove(Topping.BLACK_OLIVES);
 
         if (isRemoved) {
-            this.isVeggieAdded = false;
+            super.isValid = false;
         }
 
-        setValid();
         return isRemoved;
     }
 
@@ -46,19 +38,17 @@ public class MeatLoverPizza extends Pizza {
             return false;
         }
 
-        this.toppings.add(Topping.RED_ONIONS);
-        this.isVeggieAdded = true;
-        setValid();
+        super.toppings.add(Topping.RED_ONIONS);
+        super.isValid = true;
         return true;
     }
 
     public boolean removeRedOnions() {
-        boolean isRemoved = this.toppings.remove(Topping.RED_ONIONS);
+        boolean isRemoved = super.toppings.remove(Topping.RED_ONIONS);
 
         if (isRemoved) {
-            this.isVeggieAdded = false;
+            super.isValid = false;
         }
-        setValid();
 
         return isRemoved;
     }
@@ -68,19 +58,17 @@ public class MeatLoverPizza extends Pizza {
             return false;
         }
 
-        this.toppings.add(Topping.GREEN_PEPPERS);
-        this.isVeggieAdded = true;
-        setValid();
+        super.toppings.add(Topping.GREEN_PEPPERS);
+        super.isValid = true;
         return true;
     }
 
     public boolean removeGreenPeppers() {
-        boolean isRemoved = this.toppings.remove(Topping.GREEN_PEPPERS);
+        boolean isRemoved = super.toppings.remove(Topping.GREEN_PEPPERS);
 
         if (isRemoved) {
-            this.isVeggieAdded = false;
+            super.isValid = false;
         }
-        setValid();
 
         return isRemoved;
     }

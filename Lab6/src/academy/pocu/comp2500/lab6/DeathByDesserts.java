@@ -1,5 +1,7 @@
 package academy.pocu.comp2500.lab6;
 
+import java.util.ArrayList;
+
 public class DeathByDesserts extends Meal {
     private static final int PRICE = 20;
 
@@ -14,6 +16,7 @@ public class DeathByDesserts extends Meal {
         this.desserts.add(dessert2);
         this.desserts.add(dessert3);
         this.desserts.add(dessert4);
-        this.isValid = true;
+
+        super.isValid = true;
     }
 }
