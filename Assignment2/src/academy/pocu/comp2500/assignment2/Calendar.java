@@ -1,40 +1,71 @@
 package academy.pocu.comp2500.assignment2;
 
-public class Calendar extends BaseProduct {
+public class Calendar extends Product {
+    private CalendarType type;
 
-    private CalendarType calendarType;
-
-    public Calendar(ShippingMethod shippingMethod, CalendarType calendarType) {
+    public Calendar(ShippingMethod shippingMethod, CalendarType type) {
         super(shippingMethod);
-        Color calendarColor = new Color(0xFF, 0xFF, 0xFF);
-        super.setColor(calendarColor);
+        this.type = type;
+        this.setColor();
+        this.setSize(type);
+        this.setName(type);
+        this.setPrice(type);
+    }
 
-        this.calendarType = calendarType;
+    public enum CalendarType {
+        WALL,
+        DESK,
+        MAGNET
+    }
 
-        Size size;
-        switch (calendarType) {
-            case DESK_CALENDAR:
-                size = new Size(200, 150);
-                super.setDisplayName("Desk Calendar");
-                super.setSize(size);
-                super.setPrice(1000);
+    public CalendarType getType() {
+        return this.type;
+    }
+
+    private void setColor() {
+        super.red = 255;
+        super.green = 255;
+        super.blue = 255;
+    }
+
+    private void setSize(CalendarType type) {
+        switch (type) {
+            case WALL:
+                super.length = 400;
+                super.height = 400;
                 break;
-            case WALL_CALENDAR:
-                size = new Size(400, 400);
-                super.setDisplayName("Wall Calendar");
-                super.setSize(size);
-                super.setPrice(1000);
+            case DESK:
+                super.length = 200;
+                super.height = 150;
                 break;
-            case MAGNET_CALENDAR:
-                size = new Size(100, 200);
-                super.setDisplayName("Magnet Calendar");
-                super.setSize(size);
-                super.setPrice(1500);
+            case MAGNET:
+                super.length = 100;
+                super.height = 200;
                 break;
         }
     }
 
-    public CalendarType getCalendarType() {
-        return this.calendarType;
+    private void setName(CalendarType type) {
+        switch (type) {
+            case WALL:
+                super.name = "Wall Calendar";
+                break;
+            case DESK:
+                super.name = "Desk Calendar";
+                break;
+            case MAGNET:
+                super.name = "Magnet Calendar";
+                break;
+        }
+    }
+
+    private void setPrice(CalendarType type) {
+        switch (type) {
+            case WALL:
+            case DESK:
+                super.price = 1000;
+            case MAGNET:
+                super.price = 1500;
+        }
     }
 }

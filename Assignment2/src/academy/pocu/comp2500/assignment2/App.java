@@ -4,19 +4,26 @@ import academy.pocu.comp2500.assignment2.registry.Registry;
 
 public class App {
     public App(Registry registry) {
+        // register your classes or methods here
+
+        // stamp
         registry.registerRedStampCreator("Stamp");
         registry.registerBlueStampCreator("Stamp");
         registry.registerGreenStampCreator("Stamp");
+
+        // calendar
         registry.registerWallCalendarCreator("Calendar");
         registry.registerMagnetCalendarCreator("Calendar");
         registry.registerDeskCalendarCreator("Calendar");
 
-
+        // banner
         registry.registerLandscapeBannerCreator("Banner");
         registry.registerPortraitBannerCreator("Banner");
         registry.registerGlossBannerCreator("Banner");
         registry.registerScrimBannerCreator("Banner");
         registry.registerMeshBannerCreator("Banner");
+
+        // businesscard
         registry.registerLandscapeBusinessCardCreator("BusinessCard");
         registry.registerPortraitBusinessCardCreator("BusinessCard");
         registry.registerIvoryBusinessCardCreator("BusinessCard");
@@ -28,11 +35,13 @@ public class App {
         registry.registerSingleSidedBusinessCardCreator("BusinessCard");
         registry.registerDoubleSidedBusinessCardCreator("BusinessCard");
 
+        // cart
         registry.registerCartCreator("Cart");
         registry.registerProductAdder("Cart", "addProduct");
         registry.registerProductRemover("Cart", "removeProduct");
         registry.registerTotalPriceGetter("Cart", "getTotalPrice");
 
+        // add aperture to banner
         registry.registerLandscapeBannerTextApertureAdder("CustomizableProduct", "addAperture");
         registry.registerLandscapeBannerImageApertureAdder("CustomizableProduct", "addAperture");
         registry.registerPortraitBannerTextApertureAdder("CustomizableProduct", "addAperture");
@@ -43,6 +52,8 @@ public class App {
         registry.registerScrimBannerImageApertureAdder("CustomizableProduct", "addAperture");
         registry.registerMeshBannerTextApertureAdder("CustomizableProduct", "addAperture");
         registry.registerMeshBannerImageApertureAdder("CustomizableProduct", "addAperture");
+
+        // add aperture to businesscard
         registry.registerLandscapeBusinnessCardTextApertureAdder("CustomizableProduct", "addAperture");
         registry.registerLandscapeBusinnessCardImageApertureAdder("CustomizableProduct", "addAperture");
         registry.registerPortraitBusinnessCardTextApertureAdder("CustomizableProduct", "addAperture");

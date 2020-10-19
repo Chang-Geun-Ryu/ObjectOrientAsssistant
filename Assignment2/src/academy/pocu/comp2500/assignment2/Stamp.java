@@ -1,74 +1,75 @@
 package academy.pocu.comp2500.assignment2;
 
-public class Stamp extends BaseProduct {
-    private String text;
-    private StampSize stampSize;
+public class Stamp extends Product {
+    private String aperture;
 
-    public Stamp(String text, StampColor stampColor, StampSize stampSize, ShippingMethod shippingMethod) {
+    public Stamp(ShippingMethod shippingMethod, ProductColor color, StampSize size, String text) {
         super(shippingMethod);
-        this.text = text;
-        this.stampSize = stampSize;
+        this.setColor(color);
+        this.setSize(size);
+        this.setName(super.length, super.height);
+        this.aperture = text;
+        this.setPrice(size);
+    }
 
-        int[] sizes = this.getStampSizes(stampSize);
-        Size size = new Size(sizes[0], sizes[1]);
-        super.setSize(size);
+    public enum StampSize {
+        SIZE1,
+        SIZE2,
+        SIZE3
+    }
 
-        switch (stampSize) {
-            case FOUR_BY_THREE:
-                super.setDisplayName("Stamp (40 mm x 30 mm)");
-                super.setPrice(2300);
-                break;
-            case FIVE_BY_TWO:
-                super.setDisplayName("Stamp (50 mm x 20 mm)");
-                super.setPrice(2300);
-                break;
-            case SEVEN_BY_FOUR:
-                super.setDisplayName("Stamp (70 mm x 40 mm)");
-                super.setPrice(2600);
-                break;
-        }
+    public String getAperture() {
+        return this.aperture;
+    }
 
+    private void setAperture(String text) {
+        this.aperture = text;
+    }
 
-
-        Color color;
-        switch (stampColor) {
+    private void setColor(ProductColor color) {
+        switch (color) {
             case RED:
-                color = new Color(0xFF, 0x0, 0x0);
-                super.setColor(color);
-                break;
-            case GREEN:
-                color = new Color(0x0, 0x80, 0x0);
-                super.setColor(color);
+                super.red = 255;
                 break;
             case BLUE:
-                color = new Color(0x0, 0x0, 0xFF);
-                super.setColor(color);
+                super.blue = 255;
+                break;
+            case GREEN:
+                super.green = 255;
                 break;
         }
     }
 
-
-    private int[] getStampSizes(StampSize stampSize) {
-        int[] size = new int[2];
-        switch (stampSize) {
-            case FOUR_BY_THREE:
-                size[0] = 40;
-                size[1] = 30;
+    private void setSize(StampSize size) {
+        switch (size) {
+            case SIZE1:
+                super.length = 40;
+                super.height = 30;
                 break;
-            case FIVE_BY_TWO:
-                size[0] = 50;
-                size[1] = 20;
+            case SIZE2:
+                super.length = 50;
+                super.height = 20;
                 break;
-            case SEVEN_BY_FOUR:
-                size[0] = 70;
-                size[1] = 40;
+            case SIZE3:
+                super.length = 70;
+                super.height = 40;
                 break;
         }
-        return size;
     }
 
-    public String getText() {
-        return this.text;
+    private void setName(int length, int height) {
+        super.name = String.format("Stamp (%d mm x %d mm)", length, height);
     }
 
+    private void setPrice(StampSize size) {
+        switch (size) {
+            case SIZE1:
+            case SIZE2:
+                super.price = 2300;
+                break;
+            case SIZE3:
+                super.price = 2600;
+                break;
+        }
+    }
 }
