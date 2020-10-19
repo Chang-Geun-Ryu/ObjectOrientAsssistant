@@ -21,15 +21,15 @@ public class Banner extends CustomizableProduct {
                 switch (bannerMaterial) {
                     case SCRIM:
                         super.setDisplayName("Scrim Banner (1000 mm x 500 mm)");
-                        super.addPrice(5100);
+                        super.setPrice(5100);
                         break;
                     case MESH:
                         super.setDisplayName("Mesh Banner (1000 mm x 500 mm)");
-                        super.addPrice(5100);
+                        super.setPrice(5100);
                         break;
                     case GLOSS:
                         super.setDisplayName("Gloss Banner (1000 mm x 500 mm)");
-                        super.addPrice(5000);
+                        super.setPrice(5000);
                         break;
                 }
                 break;
@@ -37,15 +37,15 @@ public class Banner extends CustomizableProduct {
                 switch (bannerMaterial) {
                     case SCRIM:
                         super.setDisplayName("Scrim Banner (1000 mm x 1000 mm)");
-                        super.addPrice(5300);
+                        super.setPrice(5300);
                         break;
                     case MESH:
                         super.setDisplayName("Mesh Banner (1000 mm x 1000 mm)");
-                        super.addPrice(5300);
+                        super.setPrice(5300);
                         break;
                     case GLOSS:
                         super.setDisplayName("Gloss Banner (1000 mm x 1000 mm)");
-                        super.addPrice(5200);
+                        super.setPrice(5200);
                         break;
                 }
                 break;
@@ -53,15 +53,15 @@ public class Banner extends CustomizableProduct {
                 switch (bannerMaterial) {
                     case SCRIM:
                         super.setDisplayName("Scrim Banner (2000 mm x 500 mm)");
-                        super.addPrice(5400);
+                        super.setPrice(5400);
                         break;
                     case MESH:
                         super.setDisplayName("Mesh Banner (2000 mm x 500 mm)");
-                        super.addPrice(5400);
+                        super.setPrice(5400);
                         break;
                     case GLOSS:
                         super.setDisplayName("Gloss Banner (2000 mm x 500 mm)");
-                        super.addPrice(5300);
+                        super.setPrice(5300);
                         break;
                 }
                 break;
@@ -69,15 +69,15 @@ public class Banner extends CustomizableProduct {
                 switch (bannerMaterial) {
                     case SCRIM:
                         super.setDisplayName("Scrim Banner (3000 mm x 1000 mm)");
-                        super.addPrice(6100);
+                        super.setPrice(6100);
                         break;
                     case MESH:
                         super.setDisplayName("Mesh Banner (3000 mm x 1000 mm)");
-                        super.addPrice(6100);
+                        super.setPrice(6100);
                         break;
                     case GLOSS:
                         super.setDisplayName("Gloss Banner (3000 mm x 1000 mm)");
-                        super.addPrice(6000);
+                        super.setPrice(6000);
                         break;
                 }
                 break;
