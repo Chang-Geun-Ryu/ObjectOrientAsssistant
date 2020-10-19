@@ -29,7 +29,7 @@ public class BaseProduct {
         return color;
     }
 
-    public void setColor(Color color) {
+    protected void setColor(Color color) {
         this.color = color;
     }
 
