@@ -1,60 +1,74 @@
 package academy.pocu.comp2500.assignment2;
 
-public class Stamp extends Product {
+public class Stamp extends BaseProduct {
     private String text;
-    public String getText() {
-        return text;
-    }
+    private StampSize stampSize;
 
-    private StampColor stampColor;
-
-
-    public StampColor getStampColor() {
-        return stampColor;
-    }
-
-    public Stamp(StampColor stampColor, StampSizeType stampSize, String text) {
+    public Stamp(String text, StampColor stampColor, StampSize stampSize, ShippingMethod shippingMethod) {
+        super(shippingMethod);
         this.text = text;
-        this.stampColor = stampColor;
+        this.stampSize = stampSize;
 
+        int[] sizes = this.getStampSizes(stampSize);
+        Size size = new Size(sizes[0], sizes[1]);
+        super.setSize(size);
+
+        switch (stampSize) {
+            case FOUR_BY_THREE:
+                super.setDisplayName("Stamp (40 mm x 30 mm)");
+                super.setPrice(2300);
+                break;
+            case FIVE_BY_TWO:
+                super.setDisplayName("Stamp (50 mm x 20 mm)");
+                super.setPrice(2300);
+                break;
+            case SEVEN_BY_FOUR:
+                super.setDisplayName("Stamp (70 mm x 40 mm)");
+                super.setPrice(2600);
+                break;
+        }
+
+
+
+        Color color;
         switch (stampColor) {
             case RED:
-                //color = 0xff0000;
-                color = new RGB(0xff, 0, 0);
+                color = new Color(0xFF, 0x0, 0x0);
+                super.setColor(color);
                 break;
             case GREEN:
-                //color = 0x008000;
-                color = new RGB(0, 0x80, 0);
+                color = new Color(0x0, 0x80, 0x0);
+                super.setColor(color);
                 break;
             case BLUE:
-                //color = 0x0000ff;
-                color = new RGB(0, 0, 0xff);
+                color = new Color(0x0, 0x0, 0xFF);
+                super.setColor(color);
                 break;
         }
-        switch (stampSize) {
-            case SIZE_4X3:
-//                width = 40;
-//                height = 30;
-                size = new Size(40, 30);
-                price = 2300;
-                break;
-            case SIZE_5X2:
-//                width = 50;
-//                height = 20;
-                size = new Size(50, 20);
-                price = 2300;
-                break;
-            case SIZE_7X4:
-//                width = 70;
-//                height = 40;
-                size = new Size(70, 40);
-                price = 2600;
-                break;
-        }
-        displayName = "Stamp";
-        displayName += " (" + getSize().getWidth() + "mm x " + getSize().getHeight() + "mm)";
     }
 
 
+    private int[] getStampSizes(StampSize stampSize) {
+        int[] size = new int[2];
+        switch (stampSize) {
+            case FOUR_BY_THREE:
+                size[0] = 40;
+                size[1] = 30;
+                break;
+            case FIVE_BY_TWO:
+                size[0] = 50;
+                size[1] = 20;
+                break;
+            case SEVEN_BY_FOUR:
+                size[0] = 70;
+                size[1] = 40;
+                break;
+        }
+        return size;
+    }
+
+    public String getText() {
+        return this.text;
+    }
 
 }

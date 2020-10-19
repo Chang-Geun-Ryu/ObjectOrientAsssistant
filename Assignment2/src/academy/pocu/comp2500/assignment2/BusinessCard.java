@@ -1,80 +1,82 @@
 package academy.pocu.comp2500.assignment2;
 
-public class BusinessCard extends OrientationProduct {
-    private CardSides cardSides;
-    private BusinessCardMaterial paperMaterial;
-    private BusinessCardColor paperColor;
+public class BusinessCard extends CustomizableProduct {
 
-    public BusinessCardMaterial getPaperMaterial() {
-        return paperMaterial;
+    private CardSides cardSides;
+    private PaperMaterial paperMaterial;
+    private CardColor cardColor;
+
+    public BusinessCard(Orientation cardOrientation, ShippingMethod shippingMethod, CardColor cardColor, CardSides cardSides, PaperMaterial paperMaterial) {
+        super(cardOrientation, shippingMethod);
+
+        Size size = new Size(90, 50);
+        super.setSize(size);
+
+        Color color;
+        this.cardColor = cardColor;
+        switch (cardColor) {
+            case GREY:
+                color = new Color(0xE6, 0xE6, 0xE6);
+                super.setColor(color);
+                break;
+            case IVORY:
+                color = new Color(0xFF, 0xFF, 0xF0);
+                super.setColor(color);
+                break;
+            case WHITE:
+                color = new Color(0xFF, 0xFF, 0xFF);
+                super.setColor(color);
+                break;
+        }
+
+        this.paperMaterial = paperMaterial;
+        this.cardSides = cardSides;
+        switch (paperMaterial) {
+            case LINEN:
+                super.setDisplayName("Linen Business Card");
+                switch (cardSides) {
+                    case SINGLE_SIDED_CARD:
+                        super.setPrice(110);
+                        break;
+                    case DOUBLE_SIDED_CARD:
+                        super.setPrice(140);
+                        break;
+                }
+                break;
+            case LAID:
+                super.setDisplayName("Laid Business Card");
+                switch (cardSides) {
+                    case SINGLE_SIDED_CARD:
+                        super.setPrice(120);
+                        break;
+                    case DOUBLE_SIDED_CARD:
+                        super.setPrice(150);
+                        break;
+                }
+                break;
+            case SMOOTH:
+                super.setDisplayName("Smooth Business Card");
+                switch (cardSides) {
+                    case SINGLE_SIDED_CARD:
+                        super.setPrice(100);
+                        break;
+                    case DOUBLE_SIDED_CARD:
+                        super.setPrice(130);
+                        break;
+                }
+                break;
+        }
     }
 
     public CardSides getCardSides() {
-        return cardSides;
+        return this.cardSides;
     }
 
-//    public BusinessCardColor getPaperColor() {
-//        return paperColor;
-//    }
-
-    public BusinessCard(Orientation orientation, BusinessCardColor paperColor, BusinessCardMaterial paperMaterial, CardSides cardSides) {
-        this.cardSides = cardSides;
-        this.paperMaterial = paperMaterial;
-        this.orientation = orientation;
-        this.paperColor = paperColor;
-        size = new Size(90, 50);
-
-        switch (paperColor) {
-            case GREY:
-                //color = 0xe6e6e6;
-                color = new RGB(0xe6, 0xe6, 0xe6);
-                break;
-            case IVORY:
-                //color = 0xfffff0;
-                color = new RGB(0xff, 0xff, 0xf0);
-                break;
-            case WHITE:
-                //color = 0xffffff;
-                color = new RGB(0xff, 0xff, 0xff);
-                break;
-        }
-
-        switch (paperMaterial) {
-            case LINEN:
-                switch (cardSides) {
-                    case SINGLESIDEDCARD:
-                        price = 110;
-                        break;
-                    case DOUBLESIDEDCARD:
-                        price = 140;
-                        break;
-                }
-                displayName = "Linen Business Card";
-                break;
-            case LAID:
-                switch (cardSides) {
-                    case SINGLESIDEDCARD:
-                        price = 120;
-                        break;
-                    case DOUBLESIDEDCARD:
-                        price = 150;
-                        break;
-                }
-                displayName = "Laid Business Card";
-                break;
-            case SMOOTH:
-                switch (cardSides) {
-                    case SINGLESIDEDCARD:
-                        price = 100;
-                        break;
-                    case DOUBLESIDEDCARD:
-                        price = 130;
-                        break;
-                }
-                displayName = "Smooth Business Card";
-                break;
-        }
-
+    public CardColor getCardColor() {
+        return this.cardColor;
     }
 
+    public PaperMaterial getPaperMaterial() {
+        return this.paperMaterial;
+    }
 }
