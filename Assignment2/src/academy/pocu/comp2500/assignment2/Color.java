@@ -5,7 +5,7 @@ public class Color {
     private int g;
     private int b;
 
-    public Color(int red, int green, int blue) {
+    public Color(int r, int g, int b) {
 
         this.r = Math.min(Math.max(0, r), 0xff);
         this.g = Math.min(Math.max(0, g), 0xff);
