@@ -8,5 +8,12 @@ public class App {
         // registry.registerMarineCreator("Foo");
         // OR
         // registry.registerMarineCreator("Foo", "bar");
+        registry.registerMarineCreator("Marine");
+        registry.registerTankCreator("Tank");
+        registry.registerWraithCreator("Wraith");
+        registry.registerTurretCreator("Turret");
+        registry.registerMineCreator("Mine");
+        registry.registerSmartMineCreator("SmartMine");
+        registry.registerDestroyerCreator("Destroyer");
     }
 }
