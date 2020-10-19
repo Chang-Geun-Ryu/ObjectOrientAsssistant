@@ -10,78 +10,75 @@ public class Banner extends CustomizableProduct {
         super.setColor(color);
 
         this.bannerSize = bannerSize;
-        int[] sizes = this.getBannerSizeValues(bannerSize);
-        Size size = new Size(sizes[0], sizes[1]);
-        super.setSize(size);
+//        int[] sizes = this.getBannerSizeValues(bannerSize);
+//        Size size = new Size(sizes[0], sizes[1]);
+//        super.setSize(size);
 
 
         this.bannerMaterial = bannerMaterial;
         switch (bannerSize) {
             case ONE_BY_HALF:
+                setSize(new Size(1000, 500));
                 switch (bannerMaterial) {
-                    case SCRIM:
-                        super.setDisplayName("Scrim Banner (1000 mm x 500 mm)");
-                        super.setPrice(5100);
+                    case GLOSS:
+                        price = 5000;
                         break;
                     case MESH:
-                        super.setDisplayName("Mesh Banner (1000 mm x 500 mm)");
-                        super.setPrice(5100);
+                        price = 5100;
                         break;
-                    case GLOSS:
-                        super.setDisplayName("Gloss Banner (1000 mm x 500 mm)");
-                        super.setPrice(5000);
+                    case SCRIM:
+                        price = 5100;
                         break;
                 }
                 break;
             case ONE_BY_ONE:
+                setSize(new Size(1000, 1000));
+
                 switch (bannerMaterial) {
-                    case SCRIM:
-                        super.setDisplayName("Scrim Banner (1000 mm x 1000 mm)");
-                        super.setPrice(5300);
+                    case GLOSS:
+                        price = 5200;
                         break;
                     case MESH:
-                        super.setDisplayName("Mesh Banner (1000 mm x 1000 mm)");
-                        super.setPrice(5300);
+                        price = 5300;
                         break;
-                    case GLOSS:
-                        super.setDisplayName("Gloss Banner (1000 mm x 1000 mm)");
-                        super.setPrice(5200);
+                    case SCRIM:
+                        price = 5300;
                         break;
                 }
                 break;
             case TWO_BY_HALF:
+                setSize(new Size(2000, 500));
+
                 switch (bannerMaterial) {
-                    case SCRIM:
-                        super.setDisplayName("Scrim Banner (2000 mm x 500 mm)");
-                        super.setPrice(5400);
+                    case GLOSS:
+                        price = 5300;
                         break;
                     case MESH:
-                        super.setDisplayName("Mesh Banner (2000 mm x 500 mm)");
-                        super.setPrice(5400);
+                        price = 5400;
                         break;
-                    case GLOSS:
-                        super.setDisplayName("Gloss Banner (2000 mm x 500 mm)");
-                        super.setPrice(5300);
+                    case SCRIM:
+                        price = 5400;
                         break;
+
                 }
                 break;
             case TREE_BY_ONE:
+                setSize(new Size(3000, 1000));
+
                 switch (bannerMaterial) {
-                    case SCRIM:
-                        super.setDisplayName("Scrim Banner (3000 mm x 1000 mm)");
-                        super.setPrice(6100);
+                    case GLOSS:
+                        price = 6000;
                         break;
                     case MESH:
-                        super.setDisplayName("Mesh Banner (3000 mm x 1000 mm)");
-                        super.setPrice(6100);
+                        price = 6100;
                         break;
-                    case GLOSS:
-                        super.setDisplayName("Gloss Banner (3000 mm x 1000 mm)");
-                        super.setPrice(6000);
+                    case SCRIM:
+                        price = 6100;
                         break;
                 }
                 break;
         }
+
 
         switch (bannerMaterial) {
             case SCRIM:
@@ -122,9 +119,9 @@ public class Banner extends CustomizableProduct {
         return sizeInfo;
     }
 
-    public BannerSize getBannerSize() {
-        return this.bannerSize;
-    }
+//    public BannerSize getBannerSize() {
+//        return this.bannerSize;
+//    }
 
     public BannerMaterial getBannerMaterial() {
         return bannerMaterial;

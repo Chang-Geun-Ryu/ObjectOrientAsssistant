@@ -5,7 +5,7 @@ public class BaseProduct {
 
     private Color color;
     private ShippingMethod shippingMethod;
-    private int price;
+    protected int price;
     private Size size;
     protected String displayName;
 
