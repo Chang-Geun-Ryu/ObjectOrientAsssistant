@@ -7,7 +7,7 @@ public class BaseProduct {
     private ShippingMethod shippingMethod;
     private int price;
     private Size size;
-    private String displayName;
+    protected String displayName;
 
     protected BaseProduct(ShippingMethod shippingMethod) {
         this.shippingMethod = shippingMethod;

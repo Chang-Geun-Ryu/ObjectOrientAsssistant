@@ -82,6 +82,20 @@ public class Banner extends CustomizableProduct {
                 }
                 break;
         }
+
+        switch (bannerMaterial) {
+            case SCRIM:
+                displayName = "Scrim Banner";
+                break;
+            case MESH:
+                displayName = "Mesh Banner";
+                break;
+            case GLOSS:
+                displayName = "Gloss Banner";
+                break;
+        }
+
+        displayName += " (" + getSize().getWidth() + "mm x " + getSize().getHeight() + "mm)";
     }
 
 
