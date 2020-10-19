@@ -9,6 +9,9 @@ public class Cart {
     }
 
     public void addProduct(BaseProduct product) {
+        if (product == null) {
+            return;
+        }
         this.products.add(product);
     }
     public void removeProduct(BaseProduct product) {
