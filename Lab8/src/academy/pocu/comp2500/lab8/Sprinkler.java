@@ -38,8 +38,7 @@ public class Sprinkler extends SmartDevice implements ISprayable {
                 continue;
             }
 
-            if (schedule.getStartTick() <= super.currentTick
-                    && super.currentTick <= schedule.getStartTick() + schedule.getDuration()) {
+            if (schedule.getStartTick() <= super.currentTick && super.currentTick <= schedule.getStartTick() + schedule.getDuration()) {
                 // determine activator
                 // System.out.format("current tick: %s\n", super.currentTick);
                 boolean activator;
