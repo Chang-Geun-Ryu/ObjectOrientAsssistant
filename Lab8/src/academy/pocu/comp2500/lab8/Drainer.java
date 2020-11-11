@@ -19,7 +19,9 @@ public class Drainer extends SmartDevice implements IWaterDetectable, IDrainable
 
     @Override
     public void drain(Planter planter) {
-        planter.setWaterAmount(planter.getWaterAmount() - 7);
+        if (super.isOn) {
+            planter.setWaterAmount(planter.getWaterAmount() - 7);
+        }
     }
 
     @Override
