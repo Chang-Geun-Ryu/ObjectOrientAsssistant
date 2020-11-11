@@ -17,8 +17,10 @@ public class Sprinkler extends SmartDevice implements ISprayable {
 
     @Override
     public void spray(Planter planter) {
-        int waterAmount = planter.getWaterAmount() + 15;
-        planter.setWaterAmount(waterAmount);
+        if (super.isOn) {
+            int waterAmount = planter.getWaterAmount() + 15;
+            planter.setWaterAmount(waterAmount);
+        }
     }
 
     @Override
@@ -38,7 +40,8 @@ public class Sprinkler extends SmartDevice implements ISprayable {
                 continue;
             }
 
-            if (schedule.getStartTick() <= super.currentTick && super.currentTick <= schedule.getStartTick() + schedule.getDuration()) {
+            if (schedule.getStartTick() <= super.currentTick
+                    && super.currentTick <= schedule.getStartTick() + schedule.getDuration()) {
                 // determine activator
                 // System.out.format("current tick: %s\n", super.currentTick);
                 boolean activator;
