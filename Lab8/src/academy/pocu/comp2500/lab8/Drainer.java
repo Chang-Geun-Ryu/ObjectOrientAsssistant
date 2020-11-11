@@ -11,9 +11,18 @@ public class Drainer extends SmartDevice implements IWaterDetectable, IDrainable
 
     @Override
     public void detect(final int waterLevel) {
-        boolean activator = waterLevel >= this.triggerLevel;
-        if (activator ^ this.isOn) {
-            super.activateOrDeactivate(activator);
+//        boolean activator = waterLevel >= this.triggerLevel;
+//        if (activator ^ this.isOn) {
+//            super.activateOrDeactivate(activator);
+//        }
+        if (this.triggerLevel <= waterLevel) {
+            if (!super.isOn()) {
+                super.isOn = true;
+            }
+        } else {
+            if (super.isOn()) {
+                super.isOn = false;
+            }
         }
     }
 
