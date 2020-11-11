@@ -3,70 +3,87 @@ package academy.pocu.comp2500.lab8;
 import java.util.ArrayList;
 
 public class Planter {
-    private final int USE_WATER = 2;
+
     private int waterAmount;
-    private ArrayList<Sprinkler> sprayableDevices;
-    private ArrayList<Drainer> drainableDevices;
+    private int tics;
+    private ArrayList<SmartDevice> smartDevices;
+    private ArrayList<ISprayable> sprayables;
+    private ArrayList<IDrainable> drainables;
     private ArrayList<IWaterDetectable> waterDetectables;
 
-    private ISprayable sprayableCallBack = null;
+    private final int CONSUMED_WATER = 2;
+
 
     public Planter(int waterAmount) {
         this.waterAmount = waterAmount;
-        this.sprayableDevices = new ArrayList<>();
-        this.drainableDevices = new ArrayList<>();
+        this.tics = 0;
+        this.smartDevices = new ArrayList<>();
+        this.sprayables = new ArrayList<>();
+        this.drainables = new ArrayList<>();
         this.waterDetectables = new ArrayList<>();
-    }
-
-    public void setSprayableCallBack(ISprayable sprayable) {
-        this.sprayableCallBack = sprayable;
     }
 
     public int getWaterAmount() {
         return this.waterAmount;
     }
-
-    public void installSmartDevice(SmartDevice device) {
-        device.addInstall(this);
+    public void increaseWaterAmount(int waterAmount) {
+        this.waterAmount += waterAmount;
+    }
+    public void decreaseWaterAmount(int waterAmount) {
+        if (this.waterAmount < waterAmount) {
+            this.waterAmount = 0;
+        } else {
+            this.waterAmount -= waterAmount;
+        }
     }
 
-    public void installSprinkler(Sprinkler s) {
-        this.sprayableDevices.add(s);
+    public void installSmartDevice(SmartDevice smartDevice) {
+        this.smartDevices.add(smartDevice);
     }
 
-    public void installDrainer(Drainer d) {
-        this.drainableDevices.add(d);
+    public ArrayList<IWaterDetectable> getWaterDetectables() {
+        return this.waterDetectables;
     }
 
-    public void addDetect(IWaterDetectable detectable) {
-        this.waterDetectables.add(detectable);
+    public ArrayList<ISprayable> getSprayables() {
+        return this.sprayables;
     }
 
-    public void sprayWater(int watarLevel) {
-        this.waterAmount += watarLevel;
+    public ArrayList<IDrainable> getDrainables() {
+        return this.drainables;
     }
 
-    public void drainWater(int waterLevel) {
-        this.waterAmount -= waterLevel;
+    public int getTics() {
+        return tics;
     }
 
     public void tick() {
-        for (IWaterDetectable iWaterDetectable : this.waterDetectables) {
-            iWaterDetectable.detect(this.waterAmount);
+        for (SmartDevice device : smartDevices) {
+            device.onTick();
+            if (device.getDeviceKind() == EDeviceKind.SPRINKLER) {
+                this.sprayables.add((ISprayable) device);
+            } else if (device.getDeviceKind() == EDeviceKind.DRAINER) {
+                this.waterDetectables.add((IWaterDetectable) device);
+                this.drainables.add((IDrainable) device);
+            }
         }
 
-        for (Drainer d : this.drainableDevices) {
-            d.onTick();
-            d.drain(this);
+        for (IWaterDetectable device : this.getWaterDetectables()) {
+            device.detect(this.getWaterAmount());
         }
 
-        for (Sprinkler s : this.sprayableDevices) {
-            s.onTick();
-            s.spray(this);
+        for (ISprayable device : this.getSprayables()) {
+            device.spray(this);
         }
 
+        for (IDrainable device : this.getDrainables()) {
+            device.drain(this);
+        }
+        this.decreaseWaterAmount(this.CONSUMED_WATER);
 
-
-        this.waterAmount = this.waterAmount - USE_WATER >= 0 ? this.waterAmount - USE_WATER : 0;
+        this.getSprayables().clear();
+        this.getDrainables().clear();
+        this.getWaterDetectables().clear();
     }
+
 }

@@ -3,103 +3,60 @@ package academy.pocu.comp2500.lab8;
 import java.util.ArrayList;
 
 public class Sprinkler extends SmartDevice implements ISprayable {
-    private final int WATER = 15;
-    private final ArrayList<Schedule> S = new ArrayList<>();
-    private Schedule onSchedule;
-    private int keepSprayTick;
-
+    private ArrayList<Schedule> schedules;
+    private int scheduleIndex;
+    private final int SPRAY_AMOUNT = 15;
 
     public Sprinkler() {
-        this.tick = 0;
-        this.switchTick = 0;
-        this.isOn = false;
-        this.keepSprayTick = 0;
-        this.onSchedule = null;
+        super(EDeviceKind.SPRINKLER);
+        this.schedules = new ArrayList<>();
+        this.scheduleIndex = 0;
+    }
+
+    public ArrayList<Schedule> getSchedules() {
+        return this.schedules;
     }
 
     public void addSchedule(Schedule schedule) {
-        S.add(schedule);
-    }
-
-    @Override
-    public void addInstall(Planter planter) {
-        planter.installSprinkler(this);
-    }
-
-    private Schedule getScheduleOrNull() {
-        ArrayList<Schedule> removeItems = new ArrayList<>();
-        Schedule pickSchedule = null;
-
-        for (Schedule schedule : S) {
-            removeItems.add(schedule);
-
-            if (this.tick < schedule.getStartTick() + schedule.getKeep()) {
-                pickSchedule = schedule;
-                break;
-            }
-        }
-
-        S.removeAll(removeItems);
-
-        return pickSchedule;
-    }
-
-    private boolean processeSchedule() {
-        Schedule schedule = getScheduleOrNull();
-        if (schedule != null) {
-            int startTick = schedule.getStartTick();
-            int keepTick = schedule.getKeep();
-
-            if (this.tick > startTick) {
-
-            } else {
-
-            }
-        }
-
-        return false;
+        this.schedules.add(schedule);
     }
 
     @Override
     public void onTick() {
-        // start
-        if (this.onSchedule == null) {
-            this.onSchedule = getScheduleOrNull();
+        super.increaseTicks();
+        while (this.scheduleIndex < this.schedules.size() && !isValidSchedule(schedules.get(this.scheduleIndex))) {
+            this.increaseScheduleIndex();
+        }
+        if (this.scheduleIndex == this.schedules.size()) {
+            return;
+        }
+        Schedule schedule = this.schedules.get(this.scheduleIndex);
+
+        if (schedule.getOnTick() == this.getTicks()) {
+            super.changeState();
+            super.updateTicksSinceLastUpdate();
         }
 
-        // process on/off
-        if (this.isOn) {
-            if (this.tick == this.onSchedule.getStartTick() + this.onSchedule.getKeep()) {
-                this.isOn = false;
-                switchTick = this.tick;
-            }
-        } else {
-            if (this.onSchedule != null && this.onSchedule.getStartTick() == this.tick) {
-                this.isOn = true;
-                switchTick = this.tick;
-            }
+        if (schedule.getOffTick() == this.getTicks() && super.isOn()) {
+            super.changeState();
+            super.updateTicksSinceLastUpdate();
         }
-
-        // end 처리
-        if (this.onSchedule != null && this.tick >= this.onSchedule.getStartTick() + this.onSchedule.getKeep()) {
-            this.onSchedule = null;
-        }
-
-        this.tick += 1;
     }
 
     @Override
     public void spray(Planter planter) {
-        if (this.isOn) {
-            planter.sprayWater(WATER);
+        if (super.isOn()) {
+            planter.increaseWaterAmount(this.SPRAY_AMOUNT);
         }
     }
 
 
-//    @Override
-//    public void spray(Planter planter) {
-//        if (this.isOn) {
-////            planter.
-//        }
-//    }
+    public boolean isValidSchedule(Schedule schedule) {
+        return schedule.getOnTick() != 0 && schedule.getOffTick() >= super.getTicks();
+    }
+
+    public void increaseScheduleIndex() {
+        ++this.scheduleIndex;
+    }
+
 }

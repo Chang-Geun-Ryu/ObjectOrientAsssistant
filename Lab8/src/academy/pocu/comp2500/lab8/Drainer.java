@@ -1,56 +1,46 @@
 package academy.pocu.comp2500.lab8;
 
+import java.util.ArrayList;
 
 public class Drainer extends SmartDevice implements IDrainable, IWaterDetectable {
-    private final int DRAIN = 7;
-    private final int DETECT_LEVEL;
-    private boolean isDetect;
-    public Drainer(int level) {
-        this.isOn = false;
-        this.DETECT_LEVEL = level >= 0 ? level : 0;
-        this.isDetect = false;
+
+    private final int DRAIN_AMOUNT = 7;
+    private final int CRITERIA;
+
+    public Drainer(int criteria) {
+        super(EDeviceKind.DRAINER);
+        this.CRITERIA = criteria;
     }
 
     @Override
     public void onTick() {
-
-        if (this.isDetect) {
-            if (this.isOn) {
-
-            } else {
-                this.isOn = true;
-                this.switchTick = this.tick;
-            }
-
-        } else {
-            if (this.isOn) {
-                this.isOn = false;
-                this.switchTick = this.tick;
-            }
-        }
-
-        this.tick += 1;
-    }
-
-    @Override
-    public void addInstall(Planter planter) {
-        planter.installDrainer(this);
-        planter.addDetect(this::detect);
-    }
-
-    @Override
-    public void drain(Planter planter) {
-        if (this.isOn) {
-            planter.drainWater(this.DRAIN);
-        }
+        super.increaseTicks();
     }
 
     @Override
     public void detect(int waterLevel) {
-        if (DETECT_LEVEL <= waterLevel) {
-            isDetect = true;
+        if (this.getCriteria() <= waterLevel) {
+            if (!super.isOn()) {
+                super.changeState();
+                super.updateTicksSinceLastUpdate();
+            }
         } else {
-            isDetect = false;
+            if (super.isOn()) {
+                super.changeState();
+                super.updateTicksSinceLastUpdate();
+            }
         }
+    }
+
+    @Override
+    public void drain(Planter planter) {
+        if (super.isOn()) {
+            planter.decreaseWaterAmount(this.DRAIN_AMOUNT);
+        }
+    }
+
+
+    public int getCriteria() {
+        return this.CRITERIA;
     }
 }

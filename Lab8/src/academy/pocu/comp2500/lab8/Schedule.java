@@ -1,19 +1,19 @@
 package academy.pocu.comp2500.lab8;
 
 public class Schedule {
-    private int tick;
-    private int keep;
-
-    public Schedule(int tick, int keep) {
-        this.tick = tick;
-        this.keep = keep;
+    private int startTick;
+    private int workingTick;
+    public Schedule(int startTick, int workingTick) {
+        this.startTick = startTick;
+        this.workingTick = workingTick;
     }
 
-    public int getStartTick() {
-        return this.tick;
+    public int getOnTick() {
+        return startTick;
     }
 
-    public int getKeep() {
-        return this.keep;
+    public int getOffTick() {
+        return this.startTick + this.workingTick;
     }
+
 }
