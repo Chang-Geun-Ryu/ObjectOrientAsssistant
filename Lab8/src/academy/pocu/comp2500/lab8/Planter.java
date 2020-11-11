@@ -70,7 +70,11 @@ public class Planter {
 //            }
 //        }
 
-        this.waterAmount = Math.max(0, this.waterAmount - 2);
+        if (this.waterAmount < 2) {
+            this.waterAmount = 0;
+        } else {
+            this.waterAmount -= 2;
+        }
 
         this.waterDetectables.clear();
         this.sprayables.clear();
