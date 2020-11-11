@@ -1,32 +1,27 @@
 package academy.pocu.comp2500.lab8;
 
 public abstract class SmartDevice {
-
-
-    private EDeviceKind deviceKind;
+    private DeviceType deviceKind;
     private int ticks;
-    private EState state;
+    private boolean isOn;
     private int ticksSinceLastUpdate;
 
-    public SmartDevice(EDeviceKind deviceKind) {
+    public SmartDevice(DeviceType deviceKind) {
         this.ticks = 0;
-        this.state = EState.OFF;
+        this.isOn = false;
         this.ticksSinceLastUpdate = 0;
         this.deviceKind = deviceKind;
     }
 
     public boolean isOn() {
-        return this.state == EState.ON;
+        return this.isOn;
     }
 
     public void changeState() {
-        switch (this.state) {
-            case ON:
-                this.state = EState.OFF;
-                break;
-            case OFF:
-                this.state = EState.ON;
-                break;
+        if (this.isOn) {
+            this.isOn = false;
+        } else {
+            this.isOn = true;
         }
     }
 
@@ -47,11 +42,48 @@ public abstract class SmartDevice {
         this.ticksSinceLastUpdate = this.ticks;
     }
 
-    public EDeviceKind getDeviceKind() {
+    public DeviceType getDeviceKind() {
         return this.deviceKind;
+    }
+
+    public enum DeviceType {
+        DRAINER,
+        SPRINKLER
+    }
+
+    /*
+    protected DeviceType type;
+    protected boolean isOn;
+    protected int currentTick;
+    protected int tickLastUpdated;
+
+    protected SmartDevice() {
+        this.isOn = false;
     }
 
 
 
+    public DeviceType getType() {
+        return this.type;
+    }
 
+    public boolean isOn() {
+        return this.isOn;
+    }
+
+    public int getCurrentTick() {
+        return this.currentTick;
+    }
+
+    public abstract void onTick();
+
+    public int getTicksSinceLastUpdate() {
+        return this.currentTick - this.tickLastUpdated;
+    }
+
+    protected void activateOrDeactivate(boolean activator) {
+        this.isOn = activator;
+        this.tickLastUpdated = currentTick;
+    }
+    */
 }

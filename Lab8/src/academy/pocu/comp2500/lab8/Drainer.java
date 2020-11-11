@@ -1,46 +1,29 @@
 package academy.pocu.comp2500.lab8;
 
-import java.util.ArrayList;
+public class Drainer extends SmartDevice implements IWaterDetectable, IDrainable {
+    private final int triggerLevel;
 
-public class Drainer extends SmartDevice implements IDrainable, IWaterDetectable {
-
-    private final int DRAIN_AMOUNT = 7;
-    private final int CRITERIA;
-
-    public Drainer(int criteria) {
-        super(EDeviceKind.DRAINER);
-        this.CRITERIA = criteria;
+    public Drainer(int triggerLevel) {
+        super();
+        super.type = DeviceType.DRAINER;
+        this.triggerLevel = triggerLevel;
     }
 
     @Override
-    public void onTick() {
-        super.increaseTicks();
-    }
-
-    @Override
-    public void detect(int waterLevel) {
-        if (this.getCriteria() <= waterLevel) {
-            if (!super.isOn()) {
-                super.changeState();
-                super.updateTicksSinceLastUpdate();
-            }
-        } else {
-            if (super.isOn()) {
-                super.changeState();
-                super.updateTicksSinceLastUpdate();
-            }
+    public void detect(final int waterLevel) {
+        boolean activator = waterLevel >= this.triggerLevel;
+        if (activator ^ this.isOn) {
+            super.activateOrDeactivate(activator);
         }
     }
 
     @Override
     public void drain(Planter planter) {
-        if (super.isOn()) {
-            planter.decreaseWaterAmount(this.DRAIN_AMOUNT);
-        }
+        planter.setWaterAmount(planter.getWaterAmount() - 7);
     }
 
-
-    public int getCriteria() {
-        return this.CRITERIA;
+    @Override
+    public void onTick() {
+        super.currentTick += 1;
     }
 }
