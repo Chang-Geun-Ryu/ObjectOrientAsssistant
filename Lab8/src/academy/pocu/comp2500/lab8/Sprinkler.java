@@ -5,10 +5,12 @@ import java.util.ArrayList;
 public class Sprinkler extends SmartDevice implements ISprayable {
     private ArrayList<Schedule> schedules;
 
+    private int scheduleIndex;
     public Sprinkler() {
         super();
         super.type = DeviceType.SPRINKLER;
         this.schedules = new ArrayList<>();
+        this.scheduleIndex = 0;
     }
 
     public void addSchedule(Schedule schedule) {
@@ -33,24 +35,51 @@ public class Sprinkler extends SmartDevice implements ISprayable {
             return;
         }
 
-        for (Schedule schedule : this.schedules) {
-            // check schedule condition
-            if (schedule.getStartTick() <= 0) {
-                continue;
-            }
+//        for (Schedule schedule : this.schedules) {
+//            // check schedule condition
+//            if (schedule.getStartTick() <= 0) {
+//                continue;
+//            }
+//
+//            if (schedule.getStartTick() <= super.currentTick
+//                    && super.currentTick <= schedule.getStartTick() + schedule.getDuration()) {
+//                // determine activator
+//                // System.out.format("current tick: %s\n", super.currentTick);
+//                boolean activator;
+//                if ((schedule.getStartTick() == super.currentTick) || (schedule.getDuration() == super.getTicksSinceLastUpdate())) {
+//                    activator = !super.isOn;
+//                    super.activateOrDeactivate(activator);
+//                }
+//
+//                break;
+//            }
+//        }
+        while (this.scheduleIndex < this.schedules.size() && !isValidSchedule(schedules.get(this.scheduleIndex))) {
+            ++this.scheduleIndex;
+        }
+        if (this.scheduleIndex == this.schedules.size()) {
+            return;
+        }
+        Schedule schedule = this.schedules.get(this.scheduleIndex);
 
-            if (schedule.getStartTick() <= super.currentTick
-                    && super.currentTick <= schedule.getStartTick() + schedule.getDuration()) {
-                // determine activator
-                // System.out.format("current tick: %s\n", super.currentTick);
-                boolean activator;
-                if ((schedule.getStartTick() == super.currentTick) || (schedule.getDuration() == super.getTicksSinceLastUpdate())) {
-                    activator = !super.isOn;
-                    super.activateOrDeactivate(activator);
-                }
-
-                break;
+        if (schedule.getStartTick() == super.currentTick) {
+            if (isOn) {
+                super.activateOrDeactivate(false);
+            } else {
+                super.activateOrDeactivate(true);
             }
         }
+
+        if (schedule.getStartTick() + schedule.getDuration() == super.currentTick && super.isOn) {
+            if (isOn) {
+                super.activateOrDeactivate(false);
+            } else {
+                super.activateOrDeactivate(true);
+            }
+        }
+    }
+
+    public boolean isValidSchedule(Schedule schedule) {
+        return schedule.getStartTick() != 0 && schedule.getStartTick() + schedule.getDuration() >= super.currentTick;
     }
 }
