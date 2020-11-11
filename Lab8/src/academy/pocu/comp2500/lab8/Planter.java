@@ -19,6 +19,18 @@ public class Planter {
         this.waterAmount = waterAmount;
     }
 
+    public void increaseWaterAmount(int waterAmount) {
+        this.waterAmount += waterAmount;
+    }
+
+    public void decreaseAmount(final int waterAmount) {
+        if (this.waterAmount < waterAmount) {
+            this.waterAmount = 0;
+        } else {
+            this.waterAmount -= waterAmount;
+        }
+    }
+
     public void installSmartDevice(final SmartDevice smartDevice) {
         this.smartDevices.add(smartDevice);
     }

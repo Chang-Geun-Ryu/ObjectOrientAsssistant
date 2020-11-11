@@ -17,8 +17,9 @@ public class Sprinkler extends SmartDevice implements ISprayable {
 
     @Override
     public void spray(Planter planter) {
-        int waterAmount = planter.getWaterAmount() + 15;
-        planter.setWaterAmount(waterAmount);
+//        int waterAmount = planter.getWaterAmount() + 15;
+//        planter.setWaterAmount(waterAmount);
+        planter.increaseWaterAmount(15);
     }
 
     @Override
