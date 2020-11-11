@@ -3,14 +3,15 @@ package academy.pocu.comp2500.lab8;
 import java.util.ArrayList;
 
 public class Sprinkler extends SmartDevice implements ISprayable {
+    private static final int AMOUNT_OF_WATER_SPRAYING_IN_LITRE = 15;
+    private int currentTicks;
     private ArrayList<Schedule> schedules;
+    private int indexOfSchedules;
+    private int ticksSinceLastUpdate;
 
-    private int scheduleIndex;
     public Sprinkler() {
-        super();
-        super.type = DeviceType.SPRINKLER;
-        this.schedules = new ArrayList<>();
-        this.scheduleIndex = 0;
+        super.smartDeviceType = SmartDeviceType.SPRINKLER;
+        this.schedules = new ArrayList<Schedule>();
     }
 
     public void addSchedule(Schedule schedule) {
@@ -18,68 +19,51 @@ public class Sprinkler extends SmartDevice implements ISprayable {
     }
 
     @Override
-    public void spray(Planter planter) {
-//        int waterAmount = planter.getWaterAmount() + 15;
-//        planter.setWaterAmount(waterAmount);
-        planter.increaseWaterAmount(15);
+    public boolean isOn() {
+        return super.isOn;
     }
 
     @Override
     public void onTick() {
-        super.currentTick += 1;
-        this.manageSchedule();
-    }
-
-    private void manageSchedule() {
-        if (this.schedules.size() == 0) {
-            return;
-        }
-
-//        for (Schedule schedule : this.schedules) {
-//            // check schedule condition
-//            if (schedule.getStartTick() <= 0) {
-//                continue;
-//            }
-//
-//            if (schedule.getStartTick() <= super.currentTick
-//                    && super.currentTick <= schedule.getStartTick() + schedule.getDuration()) {
-//                // determine activator
-//                // System.out.format("current tick: %s\n", super.currentTick);
-//                boolean activator;
-//                if ((schedule.getStartTick() == super.currentTick) || (schedule.getDuration() == super.getTicksSinceLastUpdate())) {
-//                    activator = !super.isOn;
-//                    super.activateOrDeactivate(activator);
-//                }
-//
-//                break;
-//            }
-//        }
-        while (this.scheduleIndex < this.schedules.size() && !isValidSchedule(schedules.get(this.scheduleIndex))) {
-            ++this.scheduleIndex;
-        }
-        if (this.scheduleIndex == this.schedules.size()) {
-            return;
-        }
-        Schedule schedule = this.schedules.get(this.scheduleIndex);
-
-        if (schedule.getStartTick() == super.currentTick) {
-            if (isOn) {
-                super.activateOrDeactivate(false);
-            } else {
-                super.activateOrDeactivate(true);
+        ++this.currentTicks;
+        if (!super.isOn) {
+            for (int index = indexOfSchedules; index < this.schedules.size(); ++index) {
+                if (this.schedules.get(indexOfSchedules).getTicksWhenOn() + this.schedules.get(indexOfSchedules).getTicksWhenOff() < currentTicks
+                        || this.schedules.get(indexOfSchedules).getTicksWhenOn() == 0) {
+                    ++this.indexOfSchedules;
+                }
             }
         }
 
-        if (schedule.getStartTick() + schedule.getDuration() == super.currentTick && super.isOn) {
-            if (isOn) {
-                super.activateOrDeactivate(false);
+        if (this.indexOfSchedules >= this.schedules.size()) {
+            ++this.ticksSinceLastUpdate;
+            return;
+        }
+
+        if (super.isOn) {
+            if (this.ticksSinceLastUpdate + 1 == this.schedules.get(indexOfSchedules).getTicksWhenOff()) {
+                super.isOn = false;
+                this.ticksSinceLastUpdate = 0;
             } else {
-                super.activateOrDeactivate(true);
+                ++this.ticksSinceLastUpdate;
+            }
+        } else {
+            if (currentTicks == this.schedules.get(this.indexOfSchedules).getTicksWhenOn()) {
+                super.isOn = true;
+                this.ticksSinceLastUpdate = 0;
+            } else {
+                ++this.ticksSinceLastUpdate;
             }
         }
     }
 
-    public boolean isValidSchedule(Schedule schedule) {
-        return schedule.getStartTick() != 0 && schedule.getStartTick() + schedule.getDuration() >= super.currentTick;
+    @Override
+    public int getTicksSinceLastUpdate() {
+        return this.ticksSinceLastUpdate;
+    }
+
+    @Override
+    public void spray(Planter planter) {
+        planter.sprayWater(AMOUNT_OF_WATER_SPRAYING_IN_LITRE);
     }
 }

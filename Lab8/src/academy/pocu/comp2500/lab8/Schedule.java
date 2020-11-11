@@ -1,19 +1,19 @@
 package academy.pocu.comp2500.lab8;
 
 public class Schedule {
-    private final int startTick;
-    private final int duration;
+    private int ticksWhenOn;
+    private int ticksWhenOff;
 
-    public Schedule(int startTick, int duration) {
-        this.startTick = startTick;
-        this.duration = duration;
+    public Schedule(int ticksWhenOn, int ticksWhenOff) {
+        this.ticksWhenOn = ticksWhenOn;
+        this.ticksWhenOff = ticksWhenOff;
     }
 
-    public int getStartTick() {
-        return this.startTick;
+    public int getTicksWhenOn() {
+        return this.ticksWhenOn;
     }
 
-    public int getDuration() {
-        return this.duration;
+    public int getTicksWhenOff() {
+        return this.ticksWhenOff;
     }
 }
