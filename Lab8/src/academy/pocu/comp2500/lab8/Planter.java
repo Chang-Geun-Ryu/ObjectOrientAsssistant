@@ -36,9 +36,9 @@ public class Planter {
 //                Drainer drainer = (Drainer) device;
 //                drainer.detect(this.waterAmount);
 //            }
-            if (device.getType() == SmartDevice.DeviceType.SPRINKLER) {
+            if (device.getDeviceKind() == SmartDevice.DeviceType.SPRINKLER) {
                 this.sprayables.add((ISprayable) device);
-            } else if (device.getType() == SmartDevice.DeviceType.DRAINER) {
+            } else if (device.getDeviceKind() == SmartDevice.DeviceType.DRAINER) {
                 this.waterDetectables.add((IWaterDetectable) device);
                 this.drainables.add((IDrainable) device);
             }

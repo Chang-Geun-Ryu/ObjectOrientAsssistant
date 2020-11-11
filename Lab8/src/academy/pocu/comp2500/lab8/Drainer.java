@@ -4,8 +4,8 @@ public class Drainer extends SmartDevice implements IWaterDetectable, IDrainable
     private final int triggerLevel;
 
     public Drainer(int triggerLevel) {
-        super();
-        super.type = DeviceType.DRAINER;
+        super(DeviceType.DRAINER);
+//        super.type = DeviceType.DRAINER;
         this.triggerLevel = triggerLevel;
     }
 
@@ -35,6 +35,7 @@ public class Drainer extends SmartDevice implements IWaterDetectable, IDrainable
 
     @Override
     public void onTick() {
-        super.currentTick += 1;
+//        super.currentTick += 1;
+        super.increaseTicks();
     }
 }
