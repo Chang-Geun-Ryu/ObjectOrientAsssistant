@@ -3,93 +3,70 @@ package academy.pocu.comp2500.lab8;
 import java.util.ArrayList;
 
 public class Planter {
-    private static final int AMOUNT_OF_WATER_CONSUMING_PER_TICK_IN_LITRE = 2;
+    private final int USE_WATER = 2;
     private int waterAmount;
-    //private ArrayList<SmartDevice> listOfSmartDevices;
-    private ArrayList<Drainer> drainers;
-    private ArrayList<Sprinkler> sprinklers;
+    private ArrayList<Sprinkler> sprayableDevices;
+    private ArrayList<Drainer> drainableDevices;
+    private ArrayList<IWaterDetectable> waterDetectables;
+
+    private ISprayable sprayableCallBack = null;
 
     public Planter(int waterAmount) {
         this.waterAmount = waterAmount;
-        //listOfSmartDevices = new ArrayList<SmartDevice>();
-        drainers = new ArrayList<>();
-        sprinklers = new ArrayList<>();
+        this.sprayableDevices = new ArrayList<>();
+        this.drainableDevices = new ArrayList<>();
+        this.waterDetectables = new ArrayList<>();
+    }
+
+    public void setSprayableCallBack(ISprayable sprayable) {
+        this.sprayableCallBack = sprayable;
     }
 
     public int getWaterAmount() {
         return this.waterAmount;
     }
 
-    public void sprayWater(int amountOfWaterSprayingInLitre) {
-        waterAmount += amountOfWaterSprayingInLitre;
+    public void installSmartDevice(SmartDevice device) {
+        device.addInstall(this);
     }
 
-    public void drainWater(int amountOfWaterDrainingInLitre) {
-        waterAmount = Math.max(0, waterAmount - amountOfWaterDrainingInLitre);
+    public void installSprinkler(Sprinkler s) {
+        this.sprayableDevices.add(s);
     }
 
-    public void installSmartDevice(SmartDevice smartDevice) {
-        //listOfSmartDevices.add(smartDevice);
-        if (smartDevice.smartDeviceType == SmartDeviceType.DRAINER) {
-            drainers.add((Drainer) smartDevice);
-        } else {
-            sprinklers.add((Sprinkler) smartDevice);
-        }
+    public void installDrainer(Drainer d) {
+        this.drainableDevices.add(d);
+    }
+
+    public void addDetect(IWaterDetectable detectable) {
+        this.waterDetectables.add(detectable);
+    }
+
+    public void sprayWater(int watarLevel) {
+        this.waterAmount += watarLevel;
+    }
+
+    public void drainWater(int waterLevel) {
+        this.waterAmount -= waterLevel;
     }
 
     public void tick() {
-        for (int i = 0; i < drainers.size(); ++i) {
-            Drainer drainer = drainers.get(i);
-            drainer.onTick();
-            IWaterDetectable iWaterDetectable = (IWaterDetectable) drainer;
+        for (IWaterDetectable iWaterDetectable : this.waterDetectables) {
             iWaterDetectable.detect(this.waterAmount);
-//            if (drainer.isOn()) {
-//                IDrainable iDrainable = (IDrainable) drainer;
-//                iDrainable.drain(this);
-//            }
         }
 
-        for (int i = 0; i < sprinklers.size(); ++i) {
-            Sprinkler sprinkler = sprinklers.get(i);
-            sprinkler.onTick();
-            ISprayable iSprayable = (ISprayable) sprinkler;
-            if (sprinkler.isOn()) {
-                iSprayable.spray(this);
-            }
+
+        for (Sprinkler s : this.sprayableDevices) {
+            s.onTick();
+            s.spray(this);
         }
 
-        for (int i = 0; i < drainers.size(); ++i) {
-            Drainer drainer = drainers.get(i);
-            if (drainer.isOn()) {
-                IDrainable iDrainable = (IDrainable) drainer;
-                iDrainable.drain(this);
-            }
+
+        for (Drainer d : this.drainableDevices) {
+            d.onTick();
+            d.drain(this);
         }
 
-        this.waterAmount = Math.max(waterAmount - AMOUNT_OF_WATER_CONSUMING_PER_TICK_IN_LITRE, 0);
-        /*for (int i = 0; i < listOfSmartDevices.size(); ++i) {
-            SmartDevice currentDevice = listOfSmartDevices.get(i);
-            currentDevice.onTick();
-            if (currentDevice.smartDeviceType == SmartDeviceType.DRAINER) {
-                Drainer drainer = (Drainer) currentDevice;
-*//*                if (drainer.isJustChanged()) {
-                    drainer.executeWhenIsChanged();
-                }*//*
-                IWaterDetectable iWaterDetectable = (IWaterDetectable) drainer;
-                iWaterDetectable.detect(this.waterAmount);
-                if (drainer.isOn()) {
-                    IDrainable iDrainable = (IDrainable) drainer;
-                    iDrainable.drain(this);
-                }
-            } else {
-                Sprinkler sprinkler = (Sprinkler) currentDevice;
-                ISprayable sprayable = (ISprayable) currentDevice;
-                if (sprinkler.isOn()) {
-                    sprayable.spray(this);
-                }
-            }
-        }
-        this.waterAmount = Math.max(waterAmount - AMOUNT_OF_WATER_CONSUMING_PER_TICK_IN_LITRE, 0);*/
+        this.waterAmount = this.waterAmount - USE_WATER >= 0 ? this.waterAmount - USE_WATER : 0;
     }
-
 }

@@ -3,67 +3,103 @@ package academy.pocu.comp2500.lab8;
 import java.util.ArrayList;
 
 public class Sprinkler extends SmartDevice implements ISprayable {
-    private static final int AMOUNT_OF_WATER_SPRAYING_IN_LITRE = 15;
-    private int currentTicks;
-    private ArrayList<Schedule> schedules;
-    private int indexOfSchedules;
-    private int ticksSinceLastUpdate;
+    private final int WATER = 15;
+    private final ArrayList<Schedule> S = new ArrayList<>();
+    private Schedule onSchedule;
+    private int keepSprayTick;
+
 
     public Sprinkler() {
-        super.smartDeviceType = SmartDeviceType.SPRINKLER;
-        this.schedules = new ArrayList<Schedule>();
+        this.tick = 0;
+        this.switchTick = 0;
+        this.isOn = false;
+        this.keepSprayTick = 0;
+        this.onSchedule = null;
     }
 
     public void addSchedule(Schedule schedule) {
-        this.schedules.add(schedule);
+        S.add(schedule);
     }
 
     @Override
-    public boolean isOn() {
-        return super.isOn;
+    public void addInstall(Planter planter) {
+        planter.installSprinkler(this);
+    }
+
+    private Schedule getScheduleOrNull() {
+        ArrayList<Schedule> removeItems = new ArrayList<>();
+        Schedule pickSchedule = null;
+
+        for (Schedule schedule : S) {
+            removeItems.add(schedule);
+
+            if (this.tick < schedule.getStartTick() + schedule.getKeep()) {
+                pickSchedule = schedule;
+                break;
+            }
+        }
+
+        S.removeAll(removeItems);
+
+        return pickSchedule;
+    }
+
+    private boolean processeSchedule() {
+        Schedule schedule = getScheduleOrNull();
+        if (schedule != null) {
+            int startTick = schedule.getStartTick();
+            int keepTick = schedule.getKeep();
+
+            if (this.tick > startTick) {
+
+            } else {
+
+            }
+        }
+
+        return false;
     }
 
     @Override
     public void onTick() {
-        ++this.currentTicks;
-        if (!super.isOn) {
-            for (int index = indexOfSchedules; index < this.schedules.size(); ++index) {
-                if (this.schedules.get(indexOfSchedules).getTicksWhenOn() + this.schedules.get(indexOfSchedules).getTicksWhenOff() < currentTicks
-                        || this.schedules.get(indexOfSchedules).getTicksWhenOn() == 0) {
-                    ++this.indexOfSchedules;
-                }
-            }
+        // start
+        if (this.onSchedule == null) {
+            this.onSchedule = getScheduleOrNull();
         }
 
-        if (this.indexOfSchedules >= this.schedules.size()) {
-            ++this.ticksSinceLastUpdate;
-            return;
-        }
-
-        if (super.isOn) {
-            if (this.ticksSinceLastUpdate + 1 == this.schedules.get(indexOfSchedules).getTicksWhenOff()) {
-                super.isOn = false;
-                this.ticksSinceLastUpdate = 0;
-            } else {
-                ++this.ticksSinceLastUpdate;
+        // process on/off
+        if (this.isOn) {
+            if (this.tick == this.onSchedule.getStartTick() + this.onSchedule.getKeep()) {
+                this.isOn = false;
+                switchTick = this.tick;
             }
         } else {
-            if (currentTicks == this.schedules.get(this.indexOfSchedules).getTicksWhenOn()) {
-                super.isOn = true;
-                this.ticksSinceLastUpdate = 0;
-            } else {
-                ++this.ticksSinceLastUpdate;
+            if (this.onSchedule != null && this.onSchedule.getStartTick() == this.tick) {
+                this.isOn = true;
+                switchTick = this.tick;
             }
         }
-    }
 
-    @Override
-    public int getTicksSinceLastUpdate() {
-        return this.ticksSinceLastUpdate;
+        // end 처리
+        if (this.onSchedule != null && this.tick >= this.onSchedule.getStartTick() + this.onSchedule.getKeep()) {
+            this.onSchedule = null;
+        }
+
+        this.tick += 1;
     }
 
     @Override
     public void spray(Planter planter) {
-        planter.sprayWater(AMOUNT_OF_WATER_SPRAYING_IN_LITRE);
+        if (this.isOn) {
+            planter.sprayWater(WATER);
+        }
     }
+
+
+//    @Override
+//    public void spray(Planter planter) {
+//        if (this.isOn) {
+////            planter.
+//        }
+//    }
 }

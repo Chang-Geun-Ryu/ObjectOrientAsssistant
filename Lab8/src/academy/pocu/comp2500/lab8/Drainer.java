@@ -1,58 +1,56 @@
 package academy.pocu.comp2500.lab8;
 
+
 public class Drainer extends SmartDevice implements IDrainable, IWaterDetectable {
-    private static final int AMOUNT_OF_WATER_DRAINING_IN_LITRE = 7;
-    private int amountOfWaterInLitreWhenOn;
-    private int ticksSinceLastUpdate;
-    private boolean isJustChanged;
-
-    public Drainer(int amountOfWaterInLitreWhenOn) {
-        super.smartDeviceType = SmartDeviceType.DRAINER;
-        this.amountOfWaterInLitreWhenOn = amountOfWaterInLitreWhenOn;
-    }
-
-    @Override
-    public boolean isOn() {
-        return super.isOn;
+    private final int DRAIN = 7;
+    private final int DETECT_LEVEL;
+    private boolean isDetect;
+    public Drainer(int level) {
+        this.isOn = false;
+        this.DETECT_LEVEL = level >= 0 ? level : 0;
+        this.isDetect = false;
     }
 
     @Override
     public void onTick() {
-        ++this.ticksSinceLastUpdate;
+
+        if (this.isDetect) {
+            if (this.isOn) {
+
+            } else {
+                this.isOn = true;
+                this.switchTick = this.tick;
+            }
+
+        } else {
+            if (this.isOn) {
+                this.isOn = false;
+                this.switchTick = this.tick;
+            }
+        }
+
+        this.tick += 1;
     }
 
     @Override
-    public int getTicksSinceLastUpdate() {
-        return ticksSinceLastUpdate;
+    public void addInstall(Planter planter) {
+        planter.installDrainer(this);
+        planter.addDetect(this::detect);
     }
 
     @Override
     public void drain(Planter planter) {
-        planter.drainWater(AMOUNT_OF_WATER_DRAINING_IN_LITRE);
+        if (this.isOn) {
+            planter.drainWater(this.DRAIN);
+        }
     }
 
     @Override
     public void detect(int waterLevel) {
-        if (amountOfWaterInLitreWhenOn <= waterLevel) {
-            if (super.isOn != true) {
-                super.isOn = true;
-                this.ticksSinceLastUpdate = 0;
-            }
+        if (DETECT_LEVEL <= waterLevel) {
+            isDetect = true;
         } else {
-            if (super.isOn == true) {
-                super.isOn = false;
-                this.ticksSinceLastUpdate = 0;
-            }
+            isDetect = false;
         }
     }
-
-/*    public void executeWhenIsChanged() {
-        super.isOn ^= true;
-        ticksSinceLastUpdate = 0;
-        this.isJustChanged = false;
-    }*/
-
-/*    public boolean isJustChanged() {
-        return this.isJustChanged;
-    }*/
 }
