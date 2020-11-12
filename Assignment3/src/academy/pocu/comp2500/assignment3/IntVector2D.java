@@ -1,5 +1,7 @@
 package academy.pocu.comp2500.assignment3;
 
+import java.util.Objects;
+
 public class IntVector2D {
     private int x;
     private int y;
@@ -7,11 +9,6 @@ public class IntVector2D {
     public IntVector2D(int x, int y) {
         this.x = x;
         this.y = y;
-    }
-
-    public IntVector2D(IntVector2D other) {
-        this.x = other.x;
-        this.y = other.y;
     }
 
     public int getX() {
@@ -30,12 +27,21 @@ public class IntVector2D {
         this.y = y;
     }
 
-    public int getDistance(IntVector2D other) {
-        if (this == other) {
-            return 0;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return false;
         }
-        int distanceY = Math.abs(this.y - other.y);
-        int distanceX = Math.abs(this.x - other.x);
-        return Math.max(distanceX, distanceY);
+        if (o == null) {
+            return false;
+        }
+        IntVector2D vector2D = (IntVector2D) o;
+        return x == vector2D.x &&
+                y == vector2D.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }

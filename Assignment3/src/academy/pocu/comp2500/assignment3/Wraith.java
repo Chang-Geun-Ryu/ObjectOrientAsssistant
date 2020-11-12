@@ -1,198 +1,177 @@
 package academy.pocu.comp2500.assignment3;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
-public class Wraith extends Unit implements IMovable, IThinkable {
-    private boolean barrierUsed;
-    private IntVector2D firstPosition;
+public class Wraith extends Unit implements IMovable {
+    private int useShield;
+    private IntVector2D originVector2D;
 
-    public Wraith(IntVector2D position) {
-        super('W', UnitType.AIR, 4, 0, 6, 80, position);
-        super.attackableTypes.add(UnitType.GROUND);
-        super.attackableTypes.add(UnitType.AIR);
-        super.unitComponents.add(UnitComponent.MOVABLE);
-        super.unitComponents.add(UnitComponent.THINKABLE);
-        super.unitComponents.add(UnitComponent.VISIBLE);
-        this.barrierUsed = false;
-        this.firstPosition = new IntVector2D(position);
+    public Wraith(IntVector2D vector2D) {
+        super(vector2D, 80, 'W', UnitKind.AIR, 4, 0, 6, Target.BOTH);
+        this.useShield = -1;
+        this.pos = new ArrayList<>();
+        this.pos.add(new IntVector2D(0, 0));
+        this.pos.add(new IntVector2D(0, -1));
+        this.pos.add(new IntVector2D(1, 0));
+        this.pos.add(new IntVector2D(0, 1));
+        this.pos.add(new IntVector2D(-1, 0));
+
+        this.originVector2D = new IntVector2D(vector2D.getX(), vector2D.getY());
+    }
+
+    protected void addMove(IntVector2D vector2D) {
+        this.movePos = vector2D;
     }
 
     @Override
-    public AttackIntent attack() {
-        SimulationManager simulationManager = SimulationManager.getInstance();
-        if (simulationManager.getUnits().isEmpty()) {
-            return null;
-        }
-        ArrayList<Unit> attackCandidates = new ArrayList<>(simulationManager.getUnits().size());
-        for (Unit unit : simulationManager.getUnits()) {
-            if (unit != this && unit.getUnitComponents().contains(UnitComponent.VISIBLE) && super.position.getDistance(unit.getPosition()) <= 1) {
-                attackCandidates.add(unit);
-            }
-        }
-        ArrayList<Unit> willBeDeleted = new ArrayList<>();
-        for (Unit unit : attackCandidates) {
-            if (super.position.getX() != unit.getPosition().getX() && super.position.getY() != unit.getPosition().getY()) {
-                willBeDeleted.add(unit);
-            }
-        }
-        for (Unit unit : willBeDeleted) {
-            attackCandidates.remove(unit);
-        }
-        if (attackCandidates.isEmpty() == true) {
-            return null;
-        } else {
-            ArrayList<Unit> airCandidates = new ArrayList<>(attackCandidates.size());
-            for (Unit unit : attackCandidates) {
-                if (unit.getUnitType() == UnitType.AIR) {
-                    airCandidates.add(unit);
-                }
-            }
-            if (airCandidates.isEmpty() == false) {
-                attackCandidates = airCandidates;
-            }
-            int minHP = Integer.MAX_VALUE;
-            for (Unit unit : attackCandidates) {
-                if (unit.getHp() < minHP) {
-                    minHP = unit.getHp();
-                }
-            }
-            ArrayList<Unit> weakestUnits = new ArrayList<>(attackCandidates.size());
-            for (Unit unit : attackCandidates) {
-                if (unit.getHp() == minHP) {
-                    weakestUnits.add(unit);
-                }
-            }
-            if (weakestUnits.size() == 1) {
-                return new AttackIntent(this, new IntVector2D(weakestUnits.get(0).getPosition()), super.ap, super.aoe);
-            } else {
-                ComparatorAttackCross comparatorAttackCross = new ComparatorAttackCross(super.position.getX(), super.position.getY());
-                Collections.sort(weakestUnits, comparatorAttackCross);
-                return new AttackIntent(this, new IntVector2D(weakestUnits.get(0).getPosition()), super.ap, super.aoe);
-            }
-        }
-    }
-
-    @Override
-    public MoveIntent move() {
-        SimulationManager simulationManager = SimulationManager.getInstance();
-        if (simulationManager.getUnits().isEmpty()) {
-            return moveToFirstPosition();
-        }
-        ArrayList<Unit> enemies = new ArrayList<>();
-        for (Unit unit : simulationManager.getUnits()) {
-            if (unit != this && unit.getUnitComponents().contains(UnitComponent.VISIBLE) && unit.getUnitType() == UnitType.AIR) {
-                enemies.add(unit);
-            }
-        }
-        int nearest = Integer.MAX_VALUE;
-        ArrayList<Unit> nearestUnits = null;
-        if (enemies.isEmpty() == false) {
-            nearest = Integer.MAX_VALUE;
-            for (Unit unit : enemies) {
-                if (super.position.getDistance(unit.getPosition()) < nearest) {
-                    nearest = super.position.getDistance(unit.getPosition());
-                }
-            }
-            if (nearest > vision) {
-                enemies.clear();
-            } else {
-                nearestUnits = new ArrayList<>(enemies.size());
-                for (Unit unit : enemies) {
-                    if (super.position.getDistance(unit.getPosition()) == nearest) {
-                        nearestUnits.add(unit);
-                    }
-                }
-            }
-        }
-        if (nearestUnits == null) {
-            for (Unit unit : simulationManager.getUnits()) {
-                if (unit != this && unit.getUnitComponents().contains(UnitComponent.VISIBLE) && unit.getUnitType() == UnitType.GROUND) {
-                    enemies.add(unit);
-                }
-            }
-            if (enemies.isEmpty() == false) {
-                nearest = Integer.MAX_VALUE;
-                for (Unit unit : enemies) {
-                    if (super.position.getDistance(unit.getPosition()) < nearest) {
-                        nearest = super.position.getDistance(unit.getPosition());
-                    }
-                }
-                if (nearest <= vision) {
-                    nearestUnits = new ArrayList<>(enemies.size());
-                    for (Unit unit : enemies) {
-                        if (super.position.getDistance(unit.getPosition()) == nearest) {
-                            nearestUnits.add(unit);
-                        }
-                    }
-                }
-            } else {
-                return moveToFirstPosition();
-            }
-        }
-        if (nearestUnits.size() == 1) {
-            return moveYThanX(nearestUnits.get(0));
-        } else {
-            int minHP = Integer.MAX_VALUE;
-            for (Unit unit : nearestUnits) {
-                if (unit.getHp() < minHP) {
-                    minHP = unit.getHp();
-                }
-            }
-            ArrayList<Unit> weakestUnits = new ArrayList<>(nearestUnits.size());
-            for (Unit unit : nearestUnits) {
-                if (unit.getHp() == minHP) {
-                    weakestUnits.add(unit);
-                }
-            }
-            if (weakestUnits.size() == 1) {
-                return moveYThanX(weakestUnits.get(0));
-            } else {
-                ComparatorClockCycle comparatorClockCycle = new ComparatorClockCycle(super.position.getX(), super.position.getY(), nearest);
-                Collections.sort(weakestUnits, comparatorClockCycle);
-                return moveYThanX(weakestUnits.get(0));
-            }
-        }
-
-    }
-
-    private MoveIntent moveToFirstPosition() {
-        int move = 0;
-        int diffY = this.firstPosition.getY() - super.position.getY();
-        if (diffY == 0) {
-            int diffX = this.firstPosition.getX() - super.position.getX();
-            if (diffX == 0) {
-                return null;
-            } else {
-                move = (diffX > 0) ? 1 : -1;
-                return new MoveIntent(this, new IntVector2D(super.position.getX() + move, super.position.getY()));
-            }
-        } else {
-            move = (diffY > 0) ? 1 : -1;
-            return new MoveIntent(this, new IntVector2D(super.position.getX(), super.position.getY() + move));
-        }
-    }
-
-    public MoveIntent moveYThanX(Unit other) {
-        int move = 0;
-        int diffY = other.getPosition().getY() - this.position.getY();
-        if (diffY != 0) {
-            move = (diffY > 0) ? 1 : -1;
-            return new MoveIntent(this, new IntVector2D(super.position.getX(), super.position.getY() + move));
-        } else {
-            int diffX = other.getPosition().getX() - this.position.getX();
-            // attack도 아닌 move 단계에서 y도 x도 같은(이미 같은 칸이며 공격 대상일 수 있던) 상대방은 move 대상이 될 수 없다.
-            move = (diffX > 0) ? 1 : -1;
-            return new MoveIntent(this, new IntVector2D(super.position.getX() + move, super.position.getY()));
-        }
+    public void onSpawn() {
+        SimulationManager.getInstance().registerThinkable(this);
+        SimulationManager.getInstance().registerMovable(this);
     }
 
     @Override
     public void onAttacked(int damage) {
-        if (barrierUsed == false) {
-            this.barrierUsed = true;
-        } else {
+        if (this.useShield == -1) {
+            this.useShield = 0;
+        }
+
+        if (this.useShield == 1) {
             super.onAttacked(damage);
         }
     }
+
+    @Override
+    public void think() {
+        super.think();
+        if (this.getHp() == 0) {
+            return;
+        }
+        if (this.useShield == 0) {
+            this.useShield = 1;
+        }
+
+        ArrayList<Unit> findedUnits = getFindUnits();
+
+        ArrayList<Unit> airUnits = getAirUnits(findedUnits);
+        Unit attack;
+
+        attack = canAttack(airUnits);
+
+        if (attack == null) { // can't attack air
+            attack = canAttack(findedUnits);
+        }
+
+        if (attack != null) {    // attack
+            addAttack(attack);
+        } else if (airUnits.size() > 0) {
+            goTo(airUnits);
+        } else if (findedUnits.size() > 0) { // move
+            goTo(findedUnits);
+        } else {
+            if (this.originVector2D.hashCode() != this.vector2D.hashCode()) {
+                IntVector2D move = toMove(originVector2D);
+                addMove(move);
+            }
+        }
+    }
+
+    private ArrayList<Unit> getAirUnits(ArrayList<Unit> units) {
+        ArrayList<Unit> air = new ArrayList<>();
+        for (Unit unit : units) {
+            if (unit.unitKind == UnitKind.AIR) {
+                air.add(unit);
+            }
+        }
+
+        return air;
+    }
+
+
+    private void goTo(ArrayList<Unit> findedUnits) {
+        if (findedUnits.size() > 1) {
+            int min = Integer.MAX_VALUE;
+            for (Unit unit : findedUnits) {
+                if (min > calcDistance(unit.vector2D)) {
+                    min = calcDistance(unit.vector2D);
+                }
+            }
+
+            for (int i = findedUnits.size() - 1; i >= 0; --i) {
+                if (calcDistance(findedUnits.get(i).vector2D) != min) {
+                    findedUnits.remove(i);
+                }
+            }
+
+            if (findedUnits.size() > 1) {
+                IntVector2D move = getPriority(findedUnits);
+                move = toMove(move);
+                addMove(move);
+            } else if (findedUnits.size() == 1) { // move
+                IntVector2D move = toMove(findedUnits.get(0).vector2D);
+                addMove(move);
+            } else { // error
+                assert false : "finded unit logic error";
+            }
+
+        } else if (findedUnits.size() == 1) { // move
+            IntVector2D move = toMove(findedUnits.get(0).vector2D);
+            addMove(move);
+        } else {    // stay
+            IntVector2D move = toMove(originVector2D);
+            addMove(move);
+        }
+    }
+
+    private IntVector2D getPriority(ArrayList<Unit> units) {
+
+        int min = units.get(0).getHp();
+        for (Unit u : units) {
+            if (min > u.getHp()) {
+                min = u.getHp();
+            }
+        }
+
+        for (int i = units.size() - 1; i >= 0; --i) {
+            if (min != units.get(i).getHp()) {
+                units.remove(i);
+            }
+        }
+
+        Unit target = units.get(0);
+        int x = target.getPosition().getX() - this.vector2D.getX();
+        int y = target.getPosition().getY() - this.vector2D.getY();
+        double max = Math.toDegrees(Math.atan2(x, y));
+        for (Unit unit : units) {
+            x = unit.vector2D.getX() - this.vector2D.getX();
+            y = unit.vector2D.getY() - this.vector2D.getY();
+
+            if (max < Math.toDegrees(Math.atan2(x, y))) {
+                max = Math.toDegrees(Math.atan2(x, y));
+                target = unit;
+            }
+        }
+
+        return target.vector2D;
+    }
+
+    private IntVector2D toMove(IntVector2D vector2D) {
+        if (vector2D.getY() == this.vector2D.getY()) {
+            int x = this.vector2D.getX() < vector2D.getX() ? 1 : -1;
+            return new IntVector2D(this.vector2D.getX() + x, this.vector2D.getY());
+        } else {
+            int y = this.vector2D.getY() < vector2D.getY() ? 1 : -1;
+            return new IntVector2D(this.vector2D.getX(), this.vector2D.getY() + y);
+        }
+    }
+
+
+
+    @Override
+    public void move() {
+        if (this.movePos != null) {
+            this.vector2D = this.movePos;
+            this.movePos = null;
+        }
+    }
+
 }
