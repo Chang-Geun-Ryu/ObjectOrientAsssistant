@@ -1,65 +1,29 @@
 package academy.pocu.comp2500.assignment3;
 
-import java.util.ArrayList;
+public class Mine extends Unit {
+    protected int touchCount;
 
-public class Mine extends Unit implements ICollisionEventable {
-    protected int pushCount;
-    protected int detectUnitCount;
-
-    public Mine(IntVector2D vector2D, int pushCount) {
-        super(vector2D, 1, 'N', UnitKind.UNDER, 0, 0, 10, Target.LAND);
-        this.pushCount = pushCount;
+    public Mine(IntVector2D position, int touchCount) {
+        super('N', UnitType.GROUND, 0, 0, 10, 1, position);
+        super.attackableTypes.add(UnitType.GROUND);
+        this.touchCount = touchCount;
     }
 
-    protected Mine(IntVector2D vector2D, int pushCount, int detectUnitCount) {
-        super(vector2D, 1, 'A', UnitKind.UNDER, 1, 1, 15, Target.LAND);
-        this.pushCount = pushCount;
-        this.detectUnitCount = detectUnitCount;
-    }
-
-    @Override
-    public void onSpawn() {
-        SimulationManager.getInstance().registerCollisionEventListener(this);
-    }
-
-    @Override
-    public void onAttacked(int damage) {
-        if (damage == 0) {
-            return;
+    public void touch() {
+        if (this.touchCount > 0) {
+            --this.touchCount;
         }
-
-//        if (this.hp == 1) {
-//            ArrayList<Unit> findedUnits = getFindUnits();
-//            for (Unit u : findedUnits) {
-//                u.onAttacked(this.ap);
-//            }
-//            this.hp = 0;
-//        }
-        this.hp = 0;
     }
 
     @Override
-    public void event() {
-        if (this.getHp() == 0) {
-            return;
-        }
-
-        detect();
-    }
-
-    protected void detect() {
-        ArrayList<Unit> findedUnits = getFindUnits();
-
-        pushCount = pushCount - findedUnits.size() >= 0 ? pushCount - findedUnits.size() : 0;
-
-        if (pushCount == 0) {
-//            for (Unit u : findedUnits) {
-//                if (u.getUnitKind() != UnitKind.AIR) {
-//                    u.onAttacked(this.ap);
-//                }
-//            }
-            addAttack(this);
-            this.hp = 0;
+    public AttackIntent attack() {
+        if (this.touchCount == 0) {
+            super.hp = 0;
+            SimulationManager simulationManager = SimulationManager.getInstance();
+            simulationManager.getUnits().remove(this);
+            return new AttackIntent(this, new IntVector2D(super.position), super.ap, super.aoe);
+        } else {
+            return null;
         }
     }
 }

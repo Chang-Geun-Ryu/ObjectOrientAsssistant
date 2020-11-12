@@ -1,96 +1,95 @@
 package academy.pocu.comp2500.assignment3;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class Tank extends Unit implements IMovable {
-    private boolean siege;
-    private boolean direction;
+public class Tank extends Unit implements IMovable, IThinkable {
+    private boolean headEast;
 
-    public Tank(IntVector2D vector2D) {
-        super(vector2D, 85, 'T', UnitKind.LAND, 3, 1, 8, Target.LAND);
-        this.siege = false;
-        this.direction = false;
-
-        this.pos = new ArrayList<>();
-        this.pos.add(new IntVector2D(0, -2));
-        this.pos.add(new IntVector2D(1, -2));
-        this.pos.add(new IntVector2D(2, -1));
-
-        this.pos.add(new IntVector2D(2, 0));
-        this.pos.add(new IntVector2D(2, 1));
-        this.pos.add(new IntVector2D(1, 2));
-
-        this.pos.add(new IntVector2D(0, 2));
-        this.pos.add(new IntVector2D(-1, 2));
-        this.pos.add(new IntVector2D(-2, 1));
-
-        this.pos.add(new IntVector2D(-2, 0));
-        this.pos.add(new IntVector2D(-2, -1));
-        this.pos.add(new IntVector2D(-1, -2));
-
+    public Tank(IntVector2D position) {
+        super('T', UnitType.GROUND, 3, 1, 8, 85, position);
+        super.attackableTypes.add(UnitType.GROUND);
+        super.unitComponents.add(UnitComponent.MOVABLE);
+        super.unitComponents.add(UnitComponent.THINKABLE);
+        super.unitComponents.add(UnitComponent.VISIBLE);
+        this.headEast = true;
     }
 
-    @Override
-    public void onAttacked(int damage) {
-        super.onAttacked(damage * (this.siege ? 2 : 1));
-    }
-
-    @Override
-    public void onSpawn() {
-        SimulationManager.getInstance().registerThinkable(this);
-        SimulationManager.getInstance().registerMovable(this);
-    }
-
-    @Override
-    public void think() {
-        super.think();
-        if (this.getHp() == 0) {
-            return;
+    private void changeMode() {
+        if (super.unitComponents.contains(UnitComponent.MOVABLE)) {
+            super.unitComponents.remove(UnitComponent.MOVABLE);
+            super.multipliedDamage = 2.0;
+        } else {
+            super.unitComponents.add(UnitComponent.MOVABLE);
+            super.multipliedDamage = 1.0;
         }
-        ArrayList<Unit> findedUnits = getFindUnits();
-        Unit attack = canAttack(findedUnits);
+        super.setNowUsed(true);
+    }
 
-        if (attack != null) {    // attack
-            if (this.siege) {
-                addAttack(attack);
-            } else {
-                this.siege = true;
-            }
-        } else if (findedUnits.size() > 0) { // siege
-            if (this.siege) {
-
-            } else {
-                this.siege = true;
-//                addEvent();
-            }
-//            this.siege = true;
-        } else {    // move
-            if (this.siege) {
-                this.siege = false;
-//                addEvent();
-//                this.siege = false;
-            } else { // move
-                if (this.vector2D.getX() == 0) {
-                    this.direction = false;
-                } else if (this.vector2D.getX() == 15) {
-                    this.direction = true;
+    @Override
+    public AttackIntent attack() {
+        if (super.unitComponents.contains(UnitComponent.MOVABLE) == true) {
+            changeMode();
+            return null;
+        } else {
+            SimulationManager simulationManager = SimulationManager.getInstance();
+            ArrayList<Unit> attackCandidates = new ArrayList<>(simulationManager.getUnits().size());
+            for (Unit unit : simulationManager.getUnits()) {
+                if (unit != this && unit.getUnitComponents().contains(UnitComponent.VISIBLE) && unit.getUnitType() == UnitType.GROUND && super.position.getDistance(unit.getPosition()) == 2) {
+                    int diffX = Math.abs(super.position.getX() - unit.getPosition().getX());
+                    int diffY = Math.abs(super.position.getY() - unit.getPosition().getY());
+                    if (diffX != 2 || diffY != 2) {
+                        attackCandidates.add(unit);
+                    }
                 }
-                int x = this.vector2D.getX() + (this.direction ? -1 : 1);
-                int y = this.vector2D.getY();
-                addMove(new IntVector2D(x, y));
+            }
+            if (attackCandidates.isEmpty() == true) {
+                return null;
+            } else {
+                int minHP = Integer.MAX_VALUE;
+                for (Unit unit : attackCandidates) {
+                    if (unit.getHp() < minHP) {
+                        minHP = unit.getHp();
+                    }
+                }
+                ArrayList<Unit> weakestUnits = new ArrayList<>(attackCandidates.size());
+                for (Unit unit : attackCandidates) {
+                    if (unit.getHp() == minHP) {
+                        weakestUnits.add(unit);
+                    }
+                }
+                if (weakestUnits.size() == 1) {
+                    return new AttackIntent(this, new IntVector2D(weakestUnits.get(0).getPosition()), super.ap, super.aoe);
+                } else {
+                    ComparatorClockCycle comparatorClockCycle = new ComparatorClockCycle(super.position.getX(), super.position.getY(), 2);
+                    Collections.sort(weakestUnits, comparatorClockCycle);
+                    return new AttackIntent(this, new IntVector2D(weakestUnits.get(0).getPosition()), super.ap, super.aoe);
+                }
             }
         }
     }
 
-    protected void addMove(IntVector2D vector2D) {
-        this.movePos = vector2D;//new IntVector2D(vector2D.getX() + this.vector2D.getX(), vector2D.getY() + this.vector2D.getY());
-    }
-
     @Override
-    public void move() {
-        if (this.movePos != null) {
-            this.vector2D = this.movePos;
-            this.movePos = null;
+    public MoveIntent move() {
+        if (super.unitComponents.contains(UnitComponent.MOVABLE) == false) {
+            changeMode();
+            return null;
+        } else {
+            if (headEast == true) {
+                if (super.position.getX() == 15) {
+                    headEast = false;
+                    return new MoveIntent(this, new IntVector2D(super.position.getX() - 1, super.position.getY()));
+                } else {
+                    return new MoveIntent(this, new IntVector2D(super.position.getX() + 1, super.position.getY()));
+                }
+            } else {
+                if (super.position.getX() == 0) {
+                    headEast = true;
+                    return new MoveIntent(this, new IntVector2D(super.position.getX() + 1, super.position.getY()));
+                } else {
+                    return new MoveIntent(this, new IntVector2D(super.position.getX() - 1, super.position.getY()));
+                }
+            }
         }
     }
 }
