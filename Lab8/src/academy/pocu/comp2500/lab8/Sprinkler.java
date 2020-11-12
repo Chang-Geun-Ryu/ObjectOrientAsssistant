@@ -33,7 +33,7 @@ public class Sprinkler extends SmartDevice implements ISprayable {
         for (Schedule schedule : S) {
             removeItems.add(schedule);
 
-            if (this.tick < schedule.getStartTick() + schedule.getKeep()) {
+            if (schedule.getStartTick() != 0 && this.tick <= schedule.getStartTick() + schedule.getKeep()) {
                 pickSchedule = schedule;
                 break;
             }
