@@ -62,6 +62,7 @@ public class Sprinkler extends SmartDevice implements ISprayable {
 
     @Override
     public void onTick() {
+        this.tick += 1;
         // start
         if (this.onSchedule == null) {
             this.onSchedule = getScheduleOrNull();
@@ -85,7 +86,6 @@ public class Sprinkler extends SmartDevice implements ISprayable {
             this.onSchedule = null;
         }
 
-        this.tick += 1;
     }
 
     @Override
