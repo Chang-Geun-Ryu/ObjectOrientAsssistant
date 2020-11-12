@@ -1,53 +1,40 @@
 package academy.pocu.comp2500.assignment3;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
-public class Turret extends Unit implements IThinkable {
-    public Turret(IntVector2D position) {
-        super('U', UnitType.GROUND, 2, 0, 7, 99, position);
-        super.attackableTypes.add(UnitType.AIR);
+public class Turret extends Unit {
+    public Turret(IntVector2D vector2D) {
+        super(vector2D, 99, 'U', UnitKind.LAND, 2, 0, 7, Target.AIR);
+        this.pos = new ArrayList<>();
+        this.pos.add(new IntVector2D(0, 0));
+        this.pos.add(new IntVector2D(0, -1));
+        this.pos.add(new IntVector2D(1, -1));
+        this.pos.add(new IntVector2D(1, 0));
+        this.pos.add(new IntVector2D(1, 1));
+        this.pos.add(new IntVector2D(0, 1));
+        this.pos.add(new IntVector2D(-1, 1));
+        this.pos.add(new IntVector2D(-1, 0));
+        this.pos.add(new IntVector2D(-1, -1));
     }
 
     @Override
-    public AttackIntent attack() {
-        SimulationManager simulationManager = SimulationManager.getInstance();
-        if (simulationManager.getUnits().isEmpty()) {
-            return null;
+    public void onSpawn() {
+        SimulationManager.getInstance().registerThinkable(this);
+    }
+
+    @Override
+    public void think() {
+        super.think();
+        if (this.getHp() == 0) {
+            return;
         }
-        ArrayList<Unit> attackCandidates = new ArrayList<>(simulationManager.getUnits().size());
-        for (Unit unit : simulationManager.getUnits()) {
-            if (unit != this && unit.getUnitComponents().contains(UnitComponent.VISIBLE) && unit.getUnitType() == UnitType.AIR && super.position.getDistance(unit.getPosition()) <= 1) {
-                attackCandidates.add(unit);
-            }
-        }
-        if (attackCandidates.isEmpty() == true) {
-            return null;
-        } else {
-            int minHP = Integer.MAX_VALUE;
-            for (Unit unit : attackCandidates) {
-                if (unit.getHp() < minHP) {
-                    minHP = unit.getHp();
-                }
-            }
-            ArrayList<Unit> weakestUnits = new ArrayList<>(attackCandidates.size());
-            for (Unit unit : attackCandidates) {
-                if (unit.getHp() == minHP) {
-                    weakestUnits.add(unit);
-                }
-            }
-            if (weakestUnits.size() == 1) {
-                return new AttackIntent(this, new IntVector2D(weakestUnits.get(0).getPosition()), super.ap, super.aoe);
-            } else {
-                for (Unit unit : weakestUnits) {
-                    if (unit.getPosition().getX() == super.position.getX() && unit.getPosition().getY() == super.position.getY()) {
-                        return new AttackIntent(this, new IntVector2D(this.position), super.ap, super.aoe);
-                    }
-                }
-                ComparatorClockCycle comparatorClockCycle = new ComparatorClockCycle(super.position.getX(), super.position.getY(), 1);
-                Collections.sort(weakestUnits, comparatorClockCycle);
-                return new AttackIntent(this, new IntVector2D(weakestUnits.get(0).getPosition()), super.ap, super.aoe);
-            }
+
+        ArrayList<Unit> findedUnits = getFindUnits();
+        Unit attack = canAttack(findedUnits);
+
+        if (attack != null) {
+            addAttack(attack);
         }
     }
+
 }
