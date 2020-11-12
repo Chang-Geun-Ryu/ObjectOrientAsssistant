@@ -13,6 +13,7 @@ public class Drainer extends SmartDevice implements IDrainable, IWaterDetectable
 
     @Override
     public void onTick() {
+        this.tick += 1;
 
         if (this.isDetect) {
             if (this.isOn) {
@@ -29,7 +30,6 @@ public class Drainer extends SmartDevice implements IDrainable, IWaterDetectable
             }
         }
 
-        this.tick += 1;
     }
 
     @Override
