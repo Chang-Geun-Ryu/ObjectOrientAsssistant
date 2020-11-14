@@ -1,20 +1,25 @@
 package academy.pocu.comp2500.lab8;
 
 public abstract class SmartDevice {
-    protected boolean isOn;
-    protected int switchTick;
     protected int tick;
+    protected int ticksSinceLastUpdate;
+    private boolean on;
 
-    public boolean isOn() {
-        return this.isOn;
+    public final boolean isOn() {
+        return on;
     }
 
     public abstract void onTick();
 
-    public abstract void addInstall(Planter planter);
-
-    public int getTicksSinceLastUpdate() {
-        return this.tick - this.switchTick;
+    public final int getTicksSinceLastUpdate() {
+        return ticksSinceLastUpdate;
     }
 
+    protected final void updateOn(boolean on) {
+        if (this.on != on) {
+            ticksSinceLastUpdate = 0;
+        }
+
+        this.on = on;
+    }
 }

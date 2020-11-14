@@ -1,56 +1,28 @@
 package academy.pocu.comp2500.lab8;
 
-
 public class Drainer extends SmartDevice implements IDrainable, IWaterDetectable {
-    private final int DRAIN = 7;
-    private final int DETECT_LEVEL;
-    private boolean isDetect;
-    public Drainer(int level) {
-        this.isOn = false;
-        this.DETECT_LEVEL = level >= 0 ? level : 0;
-        this.isDetect = false;
+    private static final int DRAIN_AMOUNT = -7;
+    private int detectionAmount;
+
+    public Drainer(int detectionAmount) {
+        this.detectionAmount = detectionAmount;
     }
 
     @Override
     public void onTick() {
-        this.tick += 1;
-
-        if (this.isDetect) {
-            if (this.isOn) {
-
-            } else {
-                this.isOn = true;
-                this.switchTick = this.tick;
-            }
-
-        } else {
-            if (this.isOn) {
-                this.isOn = false;
-                this.switchTick = this.tick;
-            }
-        }
-
-    }
-
-    @Override
-    public void addInstall(Planter planter) {
-        planter.installDrainer(this);
-        planter.addDetect(this::detect);
+        tick++;
+        ticksSinceLastUpdate++;
     }
 
     @Override
     public void drain(Planter planter) {
-        if (this.isOn) {
-            planter.drainWater(this.DRAIN);
+        if (isOn()) {
+            planter.addWater(DRAIN_AMOUNT);
         }
     }
 
     @Override
     public void detect(int waterLevel) {
-        if (DETECT_LEVEL <= waterLevel) {
-            isDetect = true;
-        } else {
-            isDetect = false;
-        }
+        updateOn(waterLevel >= detectionAmount);
     }
 }
