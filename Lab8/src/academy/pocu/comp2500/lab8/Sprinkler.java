@@ -10,6 +10,7 @@ public class Sprinkler extends SmartDevice implements ISprayable {
     private int ticksSinceLastUpdate;
 
     public Sprinkler() {
+        eSmartDeviceType = ESmartDeviceType.SPRINKER;
         this.schedules = new ArrayList<Schedule>();
     }
 
