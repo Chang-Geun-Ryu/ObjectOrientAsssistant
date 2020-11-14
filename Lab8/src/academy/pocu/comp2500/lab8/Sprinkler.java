@@ -8,11 +8,7 @@ public class Sprinkler extends SmartDevice implements ISprayable {
     private final ArrayList<Schedule> schedules;
     private Schedule currentSchedule;
 
-    private int scheduleIndex;
-    private int ticksSinceLastUpdate;
     public Sprinkler() {
-        scheduleIndex = 0;
-        ticksSinceLastUpdate = 0;
         this.schedules = new ArrayList<>();
         this.eSmartDeviceType = ESmartDeviceType.SPRINKER;
     }
