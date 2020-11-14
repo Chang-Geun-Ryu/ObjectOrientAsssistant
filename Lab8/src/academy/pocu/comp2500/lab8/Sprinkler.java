@@ -8,11 +8,15 @@ public class Sprinkler extends SmartDevice implements ISprayable {
     private final ArrayList<Schedule> schedules;
     private Schedule currentSchedule;
 
+    private int scheduleIndex;
+    private int ticksSinceLastUpdate;
     public Sprinkler() {
+        scheduleIndex = 0;
+        ticksSinceLastUpdate = 0;
         this.schedules = new ArrayList<>();
         this.eSmartDeviceType = ESmartDeviceType.SPRINKER;
     }
-
+/*
     @Override
     public void onTick() {
         currentTick++;
@@ -54,10 +58,38 @@ public class Sprinkler extends SmartDevice implements ISprayable {
         }
 
     }
+*/
+@Override
+public void onTick() {
+    currentTick++;
+    while (this.scheduleIndex < this.schedules.size() && !isValidSchedule(schedules.get(this.scheduleIndex))) {
+        ++scheduleIndex;
+    }
+    if (this.scheduleIndex == this.schedules.size()) {
+        return;
+    }
+    Schedule schedule = this.schedules.get(this.scheduleIndex);
+
+    if (schedule.getTickOnNumber() == currentTick) {
+        isOn = isOn ? false : true;
+        ticksSinceLastUpdate = currentTick;
+    }
+
+    if (schedule.getTickOnNumber() == currentTick && super.isOn()) {
+        isOn = isOn ? false : true;
+        ticksSinceLastUpdate = currentTick;
+    }
+}
+
+
+    public boolean isValidSchedule(Schedule schedule) {
+        return schedule.getTickOnNumber() != 0 && schedule.getTickOffTick() >= currentTick;
+    }
 
     @Override
     public int getTicksSinceLastUpdate() {
-        return deviceStateChangedTick;
+//        return deviceStateChangedTick;
+        return this.currentTick - this.ticksSinceLastUpdate;
     }
 
     public void addSchedule(Schedule schedule) {

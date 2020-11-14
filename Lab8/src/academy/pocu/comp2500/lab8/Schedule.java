@@ -14,6 +14,6 @@ public class Schedule {
     }
 
     public int getTickOffTick() {
-        return tickOnNumber + tickOffCount - 1;
+        return tickOnNumber + tickOffCount;
     }
 }
