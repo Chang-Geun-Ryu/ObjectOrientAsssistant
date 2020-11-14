@@ -71,12 +71,20 @@ public void onTick() {
     Schedule schedule = this.schedules.get(this.scheduleIndex);
 
     if (schedule.getTickOnNumber() == currentTick) {
-        isOn = isOn ? false : true;
+        if (isOn) {
+            isOn = false;
+        } else {
+            isOn = true;
+        }
         ticksSinceLastUpdate = currentTick;
     }
 
     if (schedule.getTickOnNumber() == currentTick && super.isOn()) {
-        isOn = isOn ? false : true;
+        if (isOn) {
+            isOn = false;
+        } else {
+            isOn = true;
+        }
         ticksSinceLastUpdate = currentTick;
     }
 }
