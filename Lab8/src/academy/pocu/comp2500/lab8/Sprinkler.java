@@ -41,13 +41,19 @@ public class Sprinkler extends SmartDevice implements ISprayable {
         preDeviceState = isOn;
 
         //스프링클러 작동조건
-        if (currentSchedule != null) {
-            if (currentTick == currentSchedule.getTickOnNumber() && !isOn) {
-                isOn = true;
-            } else if (currentTick >= currentSchedule.getTickOffTick() && isOn) {
-                schedules.remove(currentSchedule);
-                isOn = false;
+        if (this.isOn) {
+            if (this.currentTick == this.currentSchedule.getTickOffTick()) {
+                this.isOn = false;
             }
+        } else {
+            if (this.currentSchedule != null && this.currentSchedule.getTickOnNumber() == this.currentTick) {
+                this.isOn = true;
+            }
+        }
+
+        // end 처리
+        if (this.currentSchedule != null && this.currentTick >= this.currentSchedule.getTickOffTick()) {
+            this.currentSchedule = null;
         }
 
         //갱신 되었는지 하여 LastUpdate Tick
