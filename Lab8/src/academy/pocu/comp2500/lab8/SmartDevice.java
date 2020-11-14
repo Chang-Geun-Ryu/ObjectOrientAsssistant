@@ -1,25 +1,21 @@
 package academy.pocu.comp2500.lab8;
 
 public abstract class SmartDevice {
-    protected int tick;
-    protected int ticksSinceLastUpdate;
-    private boolean on;
+    protected boolean isOn;
+    protected int currentTick;
+    protected int deviceStateChangedTick;
+    protected boolean preDeviceState;
+    protected ESmartDeviceType eSmartDeviceType;
 
-    public final boolean isOn() {
-        return on;
+    public boolean isOn() {
+        return isOn;
     }
 
     public abstract void onTick();
 
-    public final int getTicksSinceLastUpdate() {
-        return ticksSinceLastUpdate;
-    }
+    public abstract int getTicksSinceLastUpdate();
 
-    protected final void updateOn(boolean on) {
-        if (this.on != on) {
-            ticksSinceLastUpdate = 0;
-        }
-
-        this.on = on;
+    public ESmartDeviceType geteSmartDeviceType() {
+        return eSmartDeviceType;
     }
 }

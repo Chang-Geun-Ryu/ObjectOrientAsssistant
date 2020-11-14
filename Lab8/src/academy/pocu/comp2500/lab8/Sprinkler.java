@@ -3,66 +3,105 @@ package academy.pocu.comp2500.lab8;
 import java.util.ArrayList;
 
 public class Sprinkler extends SmartDevice implements ISprayable {
-    private static final int SPRAY_AMOUNT = 15;
-    private ArrayList<Schedule> schedules = new ArrayList<>();
+    private final static int SPRAY_AMOUNT_PER_TICK = 15;
+    private int scheduleIndex;
+    private final ArrayList<Schedule> schedules;
+    private Schedule currentSchedule;
+    private int ticksSinceLastUpdate;
 
     public Sprinkler() {
+        ticksSinceLastUpdate = 0;
+        scheduleIndex = 0;
+        this.schedules = new ArrayList<>();
+        this.eSmartDeviceType = ESmartDeviceType.SPRINKER;
+    }
+/*
+    @Override
+    public void onTick() {
+        currentTick++;
+        ArrayList<Schedule> tempSchedule = new ArrayList<>(schedules);
+        if (!isOn) {
+            currentSchedule = null;
+        }
+
+        //스케쥴 선택 조건 -> 이전의 스케쥴이 끝나야 다음 스케쥴을 찾을 수 있도록 수정해야됨
+        if (currentSchedule == null && !isOn) {
+            for (int i = 0; i < tempSchedule.size(); i++) {
+                Schedule schedule = tempSchedule.get(i);
+                if (schedule.getTickOnNumber() != 0 && schedule.getTickOnNumber() >= currentTick && schedule.getTickOffTick() >= currentTick) {
+                    currentSchedule = schedules.get(0);
+                    break;
+                } else {
+                    schedules.remove(schedule);
+                }
+            }
+        }
+
+        preDeviceState = isOn;
+
+        //스프링클러 작동조건
+        if (currentSchedule != null) {
+            if (currentTick == currentSchedule.getTickOnNumber() && !isOn) {
+                isOn = true;
+            } else if (currentTick > currentSchedule.getTickOffTick() && isOn) {
+                schedules.remove(currentSchedule);
+                isOn = false;
+            }
+        }
+
+        //갱신 되었는지 하여 LastUpdate Tick
+        if (isOn == preDeviceState) {
+            deviceStateChangedTick++;
+        } else {
+            deviceStateChangedTick = 0;
+        }
+
+    }
+*/
+    public void onTick() {
+        currentTick++;
+        while (this.scheduleIndex < this.schedules.size() && !isValidSchedule(schedules.get(this.scheduleIndex))) {
+            this.increaseScheduleIndex();
+        }
+        if (this.scheduleIndex == this.schedules.size()) {
+            return;
+        }
+        Schedule schedule = this.schedules.get(this.scheduleIndex);
+
+        if (schedule.getTickOnNumber() == super.currentTick) {
+            super.isOn = super.isOn ? false : true;
+            ticksSinceLastUpdate = super.currentTick;
+        }
+
+        if (schedule.getTickOnNumber() == super.currentTick && super.isOn()) {
+            super.isOn = super.isOn ? false : true;
+            ticksSinceLastUpdate = super.currentTick;
+        }
+    }
+
+    public boolean isValidSchedule(Schedule schedule) {
+        return schedule.getTickOnNumber() != 0 && schedule.getTickOffTick() >= super.currentTick;
+    }
+
+    public void increaseScheduleIndex() {
+        ++this.scheduleIndex;
+    }
+
+    @Override
+    public int getTicksSinceLastUpdate() {
+//        return deviceStateChangedTick;
+        return this.currentTick - this.ticksSinceLastUpdate;
     }
 
     public void addSchedule(Schedule schedule) {
-        // 유효하지 않은 스케줄
-        if (schedule.getStartTick() == 0) {
-            return;
-        }
-
-        // 첫 스케줄
-        if (schedules.isEmpty()) {
-            schedules.add(schedule);
-            return;
-        }
-
-        // 기존 스케줄과 겹치지 않는 경우에만 스케줄에 추가
-        Schedule lastSchedule = schedules.get(schedules.size() - 1);
-        int lastStopTick = lastSchedule.getStopTick();
-        int newStartTick = schedule.getStartTick();
-
-        if (newStartTick > lastStopTick) {
-            schedules.add(schedule);
-        }
+        this.schedules.add(schedule);
     }
 
     @Override
     public void spray(Planter planter) {
-        if (isOn()) {
-            planter.addWater(SPRAY_AMOUNT);
-        }
-    }
-
-    @Override
-    public void onTick() {
-        tick++;
-        ticksSinceLastUpdate++;
-
-        // 지난 스케줄 삭제
-        schedules.removeIf(schedule -> tick > schedule.getStopTick());
-
-        // 스케줄이 비어있는 경우
-        if (schedules.isEmpty()) {
-            updateOn(false);
-            return;
-        }
-
-        // on/off 여부
-        Schedule schedule = schedules.get(0);
-        int startTick = schedule.getStartTick();
-        int stopTick = schedule.getStopTick();
-
-        if (!isOn() && tick == startTick) {
-            // 꺼짐 -> 켜짐
-            updateOn(true);
-        } else if (isOn() && tick == stopTick) {
-            // 켜짐 -> 꺼짐
-            updateOn(false);
+        onTick();
+        if (isOn) {
+            planter.addWaterAmount(SPRAY_AMOUNT_PER_TICK);
         }
     }
 }

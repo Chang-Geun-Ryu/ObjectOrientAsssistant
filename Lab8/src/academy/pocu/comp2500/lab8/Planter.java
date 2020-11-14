@@ -3,60 +3,60 @@ package academy.pocu.comp2500.lab8;
 import java.util.ArrayList;
 
 public class Planter {
+    private static final int WATER_CONSUME_PER_TICK = 2;
     private int waterAmount;
-    private ArrayList<Sprinkler> sprinklers = new ArrayList<>();
-    private ArrayList<Drainer> drainers = new ArrayList<>();
-    private ArrayList<SmartDevice> devices = new ArrayList<>();
+    private final ArrayList<SmartDevice> smartDevices;
 
     public Planter(int waterAmount) {
         this.waterAmount = waterAmount;
+        smartDevices = new ArrayList<>();
     }
 
     public int getWaterAmount() {
         return waterAmount;
     }
 
-//    public void installSmartDevice(Sprinkler sprinkler) {
-//        sprinklers.add(sprinkler);
-//    }
-//
-//    public void installSmartDevice(Drainer drainer) {
-//        drainers.add(drainer);
-//    }
-    public void installSmartDevice(SmartDevice device) {
-        devices.add(device);
-    }
-
-    public void addWater(int amount) {
-        waterAmount += amount;
-
-        if (waterAmount < 0) {
-            waterAmount = 0;
-        }
+    public void installSmartDevice(SmartDevice smartDevice) {
+        this.smartDevices.add(smartDevice);
     }
 
     public void tick() {
-        // on off 상태 업데이트
-        for (Sprinkler sprinkler : sprinklers) {
-            sprinkler.onTick();
+
+        for (SmartDevice smartDevice : smartDevices) {
+            if (smartDevice.geteSmartDeviceType() == ESmartDeviceType.DRAINER) {
+                Drainer drainer = (Drainer) smartDevice;
+                drainer.detect(waterAmount);
+            }
         }
 
-        for (Drainer drainer : drainers) {
-            drainer.onTick();
-            drainer.detect(waterAmount);
+        for (SmartDevice smartDevice : smartDevices) {
+            switch (smartDevice.geteSmartDeviceType()) {
+                case DRAINER:
+                    Drainer drainer = (Drainer) smartDevice;
+                    drainer.drain(this);
+                    break;
+
+                case SPRINKER:
+                    Sprinkler sprinkler = (Sprinkler) smartDevice;
+                    sprinkler.spray(this);
+                    break;
+
+                default:
+                    assert false;
+                    break;
+            }
         }
 
-        // 급수
-        for (Sprinkler sprinkler : sprinklers) {
-            sprinkler.spray(this);
+        if (waterAmount > 0) {
+            waterAmount = Math.max(waterAmount - WATER_CONSUME_PER_TICK, 0);
         }
+    }
 
-        // 배수
-        for (Drainer drainer : drainers) {
-            drainer.drain(this);
-        }
+    public void addWaterAmount(int waterAmount) {
+        this.waterAmount += waterAmount;
+    }
 
-        // 화분이 쓰는 물
-        addWater(-2);
+    public void removeWaterAmount(int waterAmount) {
+        this.waterAmount = Math.max(this.waterAmount - waterAmount, 0);
     }
 }

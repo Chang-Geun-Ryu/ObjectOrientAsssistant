@@ -1,23 +1,19 @@
 package academy.pocu.comp2500.lab8;
 
 public class Schedule {
-    private int startTick;
-    private int repeat;
+    private int tickOnNumber;
+    private int tickOffCount;
 
-    public Schedule(int startTick, int repeat) {
-        this.startTick = startTick;
-        this.repeat = repeat;
+    public Schedule(int tickOnNumber, int tickOffCount) {
+        this.tickOnNumber = tickOnNumber;
+        this.tickOffCount = tickOffCount;
     }
 
-    public int getStartTick() {
-        return startTick;
+    public int getTickOnNumber() {
+        return tickOnNumber;
     }
 
-    public int getRepeat() {
-        return repeat;
-    }
-
-    public int getStopTick() {
-        return startTick + repeat;
+    public int getTickOffTick() {
+        return tickOnNumber + tickOffCount - 1;
     }
 }
