@@ -23,15 +23,19 @@ public class Sprinkler extends SmartDevice implements ISprayable {
 
         //스케쥴 선택 조건 -> 이전의 스케쥴이 끝나야 다음 스케쥴을 찾을 수 있도록 수정해야됨
         if (currentSchedule == null && !isOn) {
-            for (int i = 0; i < tempSchedule.size(); i++) {
-                Schedule schedule = tempSchedule.get(i);
-                if (schedule.getTickOnNumber() != 0 && schedule.getTickOnNumber() >= currentTick && schedule.getTickOffTick() >= currentTick) {
-                    currentSchedule = schedules.get(0);
-                    break;
-                } else {
-                    schedules.remove(schedule);
+                ArrayList<Schedule> removeItems = new ArrayList<>();
+
+                for (Schedule schedule : schedules) {
+                    removeItems.add(schedule);
+
+                    if (this.currentTick < schedule.getTickOffTick()) {
+                        currentSchedule = schedule;
+                        break;
+                    }
                 }
-            }
+
+            schedules.removeAll(removeItems);
+
         }
 
         preDeviceState = isOn;
