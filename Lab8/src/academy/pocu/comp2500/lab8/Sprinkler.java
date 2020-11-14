@@ -54,7 +54,7 @@ public class Sprinkler extends SmartDevice implements ISprayable {
 
     @Override
     public int getTicksSinceLastUpdate() {
-        return deviceStateChangedTick;
+        return ticksSinceLastUpdate;
     }
 
     public void addSchedule(Schedule schedule) {
