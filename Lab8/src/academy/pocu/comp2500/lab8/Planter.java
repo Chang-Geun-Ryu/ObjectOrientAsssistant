@@ -6,6 +6,7 @@ public class Planter {
     private int waterAmount;
     private ArrayList<Sprinkler> sprinklers = new ArrayList<>();
     private ArrayList<Drainer> drainers = new ArrayList<>();
+    private ArrayList<SmartDevice> devices = new ArrayList<>();
 
     public Planter(int waterAmount) {
         this.waterAmount = waterAmount;
@@ -15,12 +16,15 @@ public class Planter {
         return waterAmount;
     }
 
-    public void installSmartDevice(Sprinkler sprinkler) {
-        sprinklers.add(sprinkler);
-    }
-
-    public void installSmartDevice(Drainer drainer) {
-        drainers.add(drainer);
+//    public void installSmartDevice(Sprinkler sprinkler) {
+//        sprinklers.add(sprinkler);
+//    }
+//
+//    public void installSmartDevice(Drainer drainer) {
+//        drainers.add(drainer);
+//    }
+    public void installSmartDevice(SmartDevice device) {
+        devices.add(device);
     }
 
     public void addWater(int amount) {
