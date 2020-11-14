@@ -7,6 +7,7 @@ public class Sprinkler extends SmartDevice implements ISprayable {
     private ArrayList<Schedule> schedules = new ArrayList<>();
 
     public Sprinkler() {
+        super();
     }
 
     public void addSchedule(Schedule schedule) {

@@ -5,6 +5,7 @@ public class Drainer extends SmartDevice implements IDrainable, IWaterDetectable
     private int detectionAmount;
 
     public Drainer(int detectionAmount) {
+        super();
         this.detectionAmount = detectionAmount;
     }
 
