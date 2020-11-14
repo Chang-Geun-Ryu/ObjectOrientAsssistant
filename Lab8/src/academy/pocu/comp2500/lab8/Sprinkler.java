@@ -4,14 +4,11 @@ import java.util.ArrayList;
 
 public class Sprinkler extends SmartDevice implements ISprayable {
     private final static int SPRAY_AMOUNT_PER_TICK = 15;
-    private int scheduleIndex;
+
     private final ArrayList<Schedule> schedules;
     private Schedule currentSchedule;
-    private int ticksSinceLastUpdate;
 
     public Sprinkler() {
-        ticksSinceLastUpdate = 0;
-        scheduleIndex = 0;
         this.schedules = new ArrayList<>();
         this.eSmartDeviceType = ESmartDeviceType.SPRINKER;
     }
@@ -58,42 +55,14 @@ public class Sprinkler extends SmartDevice implements ISprayable {
 
     }
 
-    /*
-    public void onTick() {
-        currentTick++;
-        while (this.scheduleIndex < this.schedules.size() && !isValidSchedule(schedules.get(this.scheduleIndex))) {
-            ++this.scheduleIndex;
-        }
-        if (this.scheduleIndex == this.schedules.size()) {
-            return;
-        }
-        Schedule schedule = this.schedules.get(this.scheduleIndex);
-
-        if (schedule.getTickOnNumber() == super.currentTick) {
-            super.isOn = super.isOn ? false : true;
-            ticksSinceLastUpdate = super.currentTick;
-        }
-
-        if (schedule.getTickOnNumber() == super.currentTick && super.isOn()) {
-            super.isOn = super.isOn ? false : true;
-            ticksSinceLastUpdate = super.currentTick;
-        }
-    }*/
-
-    public boolean isValidSchedule(Schedule schedule) {
-        return schedule.getTickOnNumber() != 0 && schedule.getTickOffTick() >= super.currentTick;
-    }
-
-    public void increaseScheduleIndex() {
-        ++this.scheduleIndex;
-    }
-
     @Override
     public int getTicksSinceLastUpdate() {
         return deviceStateChangedTick;
-//        return this.currentTick - this.ticksSinceLastUpdate;
     }
 
+    public void addSchedule(Schedule schedule) {
+        this.schedules.add(schedule);
+    }
 
     @Override
     public void spray(Planter planter) {
