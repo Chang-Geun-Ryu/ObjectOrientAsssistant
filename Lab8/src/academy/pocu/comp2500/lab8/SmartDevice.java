@@ -5,6 +5,12 @@ public abstract class SmartDevice {
     protected int ticksSinceLastUpdate;
     private boolean on;
 
+    public SmartDevice() {
+        tick = 0;
+        ticksSinceLastUpdate = 0;
+        on = false;
+    }
+
     public final boolean isOn() {
         return on;
     }
