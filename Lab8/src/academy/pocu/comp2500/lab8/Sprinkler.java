@@ -40,7 +40,7 @@ public class Sprinkler extends SmartDevice implements ISprayable {
         if (currentSchedule != null) {
             if (currentTick == currentSchedule.getTickOnNumber() && !isOn) {
                 isOn = true;
-            } else if (currentTick > currentSchedule.getTickOffTick() && isOn) {
+            } else if (currentTick >= currentSchedule.getTickOffTick() && isOn) {
                 schedules.remove(currentSchedule);
                 isOn = false;
             }
