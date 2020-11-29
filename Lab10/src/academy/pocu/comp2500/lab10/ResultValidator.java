@@ -8,29 +8,69 @@ import academy.pocu.comp2500.lab10.pocuflix.Movie;
 
 
 public class ResultValidator {
-    private ResultBase base;
-
+    private ResultBase result;
     public ResultValidator(ResultBase result) {
-        this.base = result;
+        this.result = result;
     }
 
-    public boolean isValid(ResultCode code) {
-        return isInstance(code);
-    }
+    public boolean isValid(ResultCode resultCode) {
 
-    private boolean isInstance(ResultCode code) {
-        if (base instanceof OkResult && base.getCode() == ResultCode.OK) {
-            return code == ResultCode.OK;
-        } else if (base instanceof NotFoundResult && base.getCode() == ResultCode.NOT_FOUND) {
-            return code == ResultCode.NOT_FOUND;
-        } else if (base instanceof ServiceUnavailableResult && base.getCode() == ResultCode.SERVICE_UNAVAILABLE) {
-            return code == ResultCode.SERVICE_UNAVAILABLE;
-        } else if (base instanceof UnauthorizedResult && base.getCode() == ResultCode.UNAUTHORIZED) {
-            return code == ResultCode.UNAUTHORIZED;
-        } else if (base instanceof CachedResult && base.getCode() == ResultCode.NOT_MODIFIED) {
-            return code == ResultCode.NOT_MODIFIED;
-        } else {
+        if (result instanceof OkResult) {
+            OkResult okResult = (OkResult) result;
+
+//            if (okResult.getMovie() instanceof Movie) {
+                if (okResult.getCode() == resultCode) {
+                    return true;
+                } else {
+                    return false;
+                }
+//            } else {
+//                return false;
+//            }
+        }
+
+        if (result instanceof NotFoundResult) {
+            NotFoundResult notFoundResult = (NotFoundResult) result;
+
+            if (notFoundResult.getCode() == resultCode) {
+                return true;
+            }
+
             return false;
         }
+
+        if (result instanceof UnauthorizedResult) {
+            UnauthorizedResult unauthorizedResult = (UnauthorizedResult) result;
+
+            if (unauthorizedResult.getCode() == resultCode && unauthorizedResult.getErrorMessage().equals("Unauthorized access")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        if (result instanceof CachedResult) {
+            CachedResult cachedResult = (CachedResult) result;
+
+            if (cachedResult.getCode() == resultCode) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        if (result instanceof ServiceUnavailableResult) {
+            ServiceUnavailableResult serviceUnavailableResult = (ServiceUnavailableResult) result;
+
+            if (serviceUnavailableResult.getCode() == resultCode) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return false;
     }
+
+
 }
