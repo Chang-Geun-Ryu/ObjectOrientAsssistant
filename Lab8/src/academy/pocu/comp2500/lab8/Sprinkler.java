@@ -3,59 +3,61 @@ package academy.pocu.comp2500.lab8;
 import java.util.ArrayList;
 
 public class Sprinkler extends SmartDevice implements ISprayable {
-    private static final int AMOUNT_OF_WATER_SPRAYING_IN_LITRE = 15;
-    private int currentTicks;
-    private ArrayList<Schedule> schedules;
-    private int indexOfSchedules;
-    private int ticksSinceLastUpdate;
+    private final static int SPRAY_AMOUNT_PER_TICK = 15;
+
+    private final ArrayList<Schedule> schedules;
+    private Schedule currentSchedule;
 
     public Sprinkler() {
-        eSmartDeviceType = ESmartDeviceType.SPRINKER;
-        this.schedules = new ArrayList<Schedule>();
-    }
-
-    @Override
-    public boolean isOn() {
-        return super.isOn;
+        this.schedules = new ArrayList<>();
+        this.eSmartDeviceType = ESmartDeviceType.SPRINKER;
     }
 
     @Override
     public void onTick() {
-        ++this.currentTicks;
-        if (!super.isOn) {
-            for (int index = indexOfSchedules; index < this.schedules.size(); ++index) {
-                if (this.schedules.get(indexOfSchedules).getTicksWhenOn() + this.schedules.get(indexOfSchedules).getTicksWhenOff() < currentTicks
-                        || this.schedules.get(indexOfSchedules).getTicksWhenOn() == 0) {
-                    ++this.indexOfSchedules;
+        currentTick++;
+        ArrayList<Schedule> tempSchedule = new ArrayList<>(schedules);
+        if (!isOn) {
+            currentSchedule = null;
+        }
+
+        //스케쥴 선택 조건 -> 이전의 스케쥴이 끝나야 다음 스케쥴을 찾을 수 있도록 수정해야됨
+        if (currentSchedule == null && !isOn) {
+            for (int i = 0; i < tempSchedule.size(); i++) {
+                Schedule schedule = tempSchedule.get(i);
+                if (schedule.getTickOnNumber() != 0 && schedule.getTickOnNumber() >= currentTick && schedule.getTickOffTick() >= currentTick) {
+                    currentSchedule = schedules.get(0);
+                    break;
+                } else {
+                    schedules.remove(schedule);
                 }
             }
         }
 
-        if (this.indexOfSchedules >= this.schedules.size()) {
-            ++this.ticksSinceLastUpdate;
-            return;
+        preDeviceState = isOn;
+
+        //스프링클러 작동조건
+        if (currentSchedule != null) {
+            if (currentTick == currentSchedule.getTickOnNumber() && !isOn) {
+                isOn = true;
+            } else if (currentTick > currentSchedule.getTickOffTick() && isOn) {
+                schedules.remove(currentSchedule);
+                isOn = false;
+            }
         }
 
-        if (super.isOn) {
-            if (this.ticksSinceLastUpdate + 1 == this.schedules.get(indexOfSchedules).getTicksWhenOff()) {
-                super.isOn = false;
-                this.ticksSinceLastUpdate = 0;
-            } else {
-                ++this.ticksSinceLastUpdate;
-            }
+        //갱신 되었는지 하여 LastUpdate Tick
+        if (isOn == preDeviceState) {
+            deviceStateChangedTick++;
         } else {
-            if (currentTicks == this.schedules.get(this.indexOfSchedules).getTicksWhenOn()) {
-                super.isOn = true;
-                this.ticksSinceLastUpdate = 0;
-            } else {
-                ++this.ticksSinceLastUpdate;
-            }
+            deviceStateChangedTick = 0;
         }
+
     }
 
     @Override
     public int getTicksSinceLastUpdate() {
-        return ticksSinceLastUpdate;
+        return deviceStateChangedTick;
     }
 
     public void addSchedule(Schedule schedule) {
@@ -66,7 +68,7 @@ public class Sprinkler extends SmartDevice implements ISprayable {
     public void spray(Planter planter) {
         onTick();
         if (isOn) {
-            planter.addWaterAmount(AMOUNT_OF_WATER_SPRAYING_IN_LITRE);
+            planter.addWaterAmount(SPRAY_AMOUNT_PER_TICK);
         }
     }
 }
