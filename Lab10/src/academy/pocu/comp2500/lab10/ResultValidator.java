@@ -18,18 +18,16 @@ public class ResultValidator {
         if (result instanceof OkResult) {
             OkResult okResult = (OkResult) result;
 
-//            if (okResult.getMovie() instanceof Movie) {
+            if (okResult.getMovie() instanceof Movie) {
                 if (okResult.getCode() == resultCode) {
                     return true;
                 } else {
                     return false;
                 }
-//            } else {
-//                return false;
-//            }
-        }
-
-        if (result instanceof NotFoundResult) {
+            } else {
+                return false;
+            }
+        } else if (result instanceof NotFoundResult) {
             NotFoundResult notFoundResult = (NotFoundResult) result;
 
             if (notFoundResult.getCode() == resultCode) {
@@ -37,9 +35,7 @@ public class ResultValidator {
             }
 
             return false;
-        }
-
-        if (result instanceof UnauthorizedResult) {
+        } else if (result instanceof UnauthorizedResult) {
             UnauthorizedResult unauthorizedResult = (UnauthorizedResult) result;
 
             if (unauthorizedResult.getCode() == resultCode && unauthorizedResult.getErrorMessage().equals("Unauthorized access")) {
@@ -47,9 +43,7 @@ public class ResultValidator {
             } else {
                 return false;
             }
-        }
-
-        if (result instanceof CachedResult) {
+        } else if (result instanceof CachedResult) {
             CachedResult cachedResult = (CachedResult) result;
 
             if (cachedResult.getCode() == resultCode) {
@@ -57,9 +51,7 @@ public class ResultValidator {
             } else {
                 return false;
             }
-        }
-
-        if (result instanceof ServiceUnavailableResult) {
+        } else if (result instanceof ServiceUnavailableResult) {
             ServiceUnavailableResult serviceUnavailableResult = (ServiceUnavailableResult) result;
 
             if (serviceUnavailableResult.getCode() == resultCode) {
