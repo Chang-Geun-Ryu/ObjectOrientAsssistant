@@ -6,13 +6,16 @@ import academy.pocu.comp2500.lab10.pocuflix.ResultCode;
 public class CachedResult extends ResultBase {
     private int expiryCount;
 
-    public CachedResult(int exprireCount) {
+    public CachedResult(int expiryCount) {
         super(ResultCode.NOT_MODIFIED);
-        this.expiryCount = exprireCount;
+        this.expiryCount = expiryCount;
     }
 
     public int getExpiryCount() {
-        System.out.println(expiryCount);
         return this.expiryCount;
+    }
+
+    public void setExpiryCount(int expiryCount) {
+        this.expiryCount = expiryCount;
     }
 }
