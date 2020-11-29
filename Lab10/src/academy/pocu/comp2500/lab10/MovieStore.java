@@ -31,12 +31,22 @@ public class MovieStore implements IRequestHandler {
     }
 
     public ResultBase handle(Request request) {
-        for (int i = 0; i < this.movies.size(); ++i) {
-            if (request.getMovieName().equals(this.movies.get(i).getTitle())) {
-                return new OkResult(this.movies.get(i));
+        if (request == null || request.getTitle() == null) {
+            return new NotFoundResult();
+        }
+
+        Movie movie = null;
+        for (Movie m : this.movies) {
+            if (m.getTitle().equals(request.getTitle())) {
+                movie = m;
+                break;
             }
         }
 
-        return new NotFoundResult();
+        if (movie != null) {
+            return new OkResult(movie);
+        } else {
+            return new NotFoundResult();
+        }
     }
 }
