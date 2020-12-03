@@ -1,25 +1,18 @@
 package academy.pocu.comp2500.assignment4;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Objects;
 
 public class Canvas {
     private int width;
     private int height;
-
-    private HashMap<Integer, Pixel> pixels = new HashMap<>();
+    private ArrayList<ArrayList<Character>> page;
+    private int snapshotNum;
 
     public Canvas(int width, int height) {
         this.width = width;
         this.height = height;
-
-        for (int w = 0; w < width; ++w) {
-            for (int h = 0; h < height; ++h) {
-                this.pixels.put(Objects.hash(w, h), new Pixel());
-            }
-        }
+        this.initPage();
+        this.snapshotNum = 0;
     }
 
     public int getWidth() {
@@ -31,75 +24,108 @@ public class Canvas {
     }
 
     public void drawPixel(int x, int y, char character) {
-        this.pixels.get(Objects.hash(x, y)).setValue(character);
+        this.page.get(y).set(x, character);
     }
 
     public char getPixel(int x, int y) {
-        return this.pixels.get(Objects.hash(x, y)).getValue();
+        return this.page.get(y).get(x);
     }
 
     public boolean increasePixel(int x, int y) {
-        return this.pixels.get(Objects.hash(x, y)).increase();
+        char character = this.getPixel(x, y);
+        int ascii = character;
+        if (ascii > 125) {
+            return false;
+        }
+        char newCharacter = (char) (ascii + 1);
+        this.drawPixel(x, y, newCharacter);
+        return true;
     }
 
     public boolean decreasePixel(int x, int y) {
-        return this.pixels.get(Objects.hash(x, y)).decrease();
+        char character = this.getPixel(x, y);
+        int ascii = character;
+        if (ascii < 33) {
+            return false;
+        }
+        char newCharacter = (char) (ascii - 1);
+        this.drawPixel(x, y, newCharacter);
+        return true;
     }
 
     public void toUpper(int x, int y) {
-        this.pixels.get(Objects.hash(x, y)).toUpper();
-    }
-
-    public void toLower(int x, int y) {
-        this.pixels.get(Objects.hash(x, y)).toLower();
-    }
-
-    public void fillHorizontalLine(int y, char character) {
-        for (int x = 0; x < this.width; ++x) {
-            this.pixels.get(Objects.hash(x, y)).setValue(character);
+        char character = this.getPixel(x, y);
+        char newCharacter = Character.toUpperCase(character);
+        if (newCharacter != character) {
+            this.drawPixel(x, y, newCharacter);
         }
     }
 
+    public void toLower(int x, int y) {
+        char character = this.getPixel(x, y);
+        char newCharacter = Character.toLowerCase(character);
+        if (newCharacter != character) {
+            this.drawPixel(x, y, newCharacter);
+        }
+    }
+
+    public void fillHorizontalLine(int y, char character) {
+        ArrayList<Character> newLine = new ArrayList<>();
+        for (int i = 0; i < this.width; ++i) {
+            newLine.add(character);
+        }
+        this.page.set(y, newLine);
+    }
+
     public void fillVerticalLine(int x, char character) {
-        for (int y = 0; y < this.height; ++y) {
-            this.pixels.get(Objects.hash(x, y)).setValue(character);
+        for (int i = 0; i < this.height; ++i) {
+            this.drawPixel(x, i, character);
         }
     }
 
     public void clear() {
-        for (int w = 0; w < this.width; ++w) {
-            for (int h = 0; h < this.height; ++h) {
-                this.pixels.get(Objects.hash(w, h)).clear();
+        this.page = new ArrayList<>();
+        for (int i = 0; i < this.height; ++i) {
+            ArrayList<Character> line = new ArrayList<>();
+            char pixel = ' ';
+            for (int j = 0; j < this.width; ++j) {
+                line.add(pixel);
             }
+            this.page.add(line);
         }
     }
 
     public String getDrawing() {
-        StringBuffer sb = new StringBuffer();
-        horizontalDrawing(sb);
-
-        for (int y = 0; y < this.height; ++y) {
-            sb.append('|');
-
-            for (int x = 0; x < this.width; ++x) {
-                sb.append(this.pixels.get(Objects.hash(x, y)).getValue());
+        ArrayList<String> lines = new ArrayList<>();
+        lines.add(String.format("+%s+", "-".repeat(this.width)));
+        for (ArrayList<Character> pageLine : this.page) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("|");
+            for (char character : pageLine) {
+                sb.append(character);
             }
+            sb.append("|");
+            lines.add(sb.toString());
+        }
+        lines.add(String.format("+%s+", "-".repeat(this.width)));
 
-            sb.append('|');
-            sb.append(System.lineSeparator());
+        StringBuilder builder = new StringBuilder();
+        for (String line : lines) {
+            builder.append(line).append(System.lineSeparator());
         }
 
-        horizontalDrawing(sb);
-
-        return sb.toString();
+        return builder.toString();
     }
 
-    private void horizontalDrawing(StringBuffer sb) {
-        sb.append("+");
-        for (int i = 0; i < this.width; ++i) {
-            sb.append("-");
+    private void initPage() {
+        this.page = new ArrayList<>();
+        for (int i = 0; i < this.height; ++i) {
+            ArrayList<Character> line = new ArrayList<>();
+            char pixel = ' ';
+            for (int j = 0; j < this.width; ++j) {
+                line.add(pixel);
+            }
+            this.page.add(line);
         }
-        sb.append("+");
-        sb.append(System.lineSeparator());
     }
 }

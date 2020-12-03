@@ -1,54 +1,51 @@
 package academy.pocu.comp2500.assignment4;
 
-import java.util.Stack;
+import java.util.ArrayList;
 
 public class CommandHistoryManager {
-    private StatusCanvas status = new StatusCanvas();
     private Canvas canvas;
-    private Stack<ICommand> undoComments = new Stack<>();
-    private Stack<ICommand> redoComments = new Stack<>();
+    private ArrayList<ICommand> undoStack;
+    private ArrayList<ICommand> redoStack;
 
     public CommandHistoryManager(Canvas canvas) {
         this.canvas = canvas;
+        this.undoStack = new ArrayList<>();
+        this.redoStack = new ArrayList<>();
     }
 
-    public boolean execute(ICommand commend) {
-        boolean execute = commend.execute(this.canvas);
-
-        if (execute) {
-            undoComments.push(commend);
-            redoComments.clear();
+    public boolean execute(ICommand command) {
+        boolean result = command.execute(this.canvas);
+        if (result) {
+            this.undoStack.add(command);
         }
-
-        return execute;
+        return result;
     }
 
     public boolean canUndo() {
-        return undoComments.empty() == false;
+        return this.undoStack.size() > 0;
     }
 
     public boolean canRedo() {
-        return redoComments.empty() == false;
+        return this.redoStack.size() > 0;
     }
 
     public boolean undo() {
-        if (undoComments.size() > 0) {
-            ICommand commend = undoComments.pop();
-            commend.undo();
-            redoComments.push(commend);
-            return true;
+        if (!this.canUndo()) {
+            return false;
         }
-        return false;
+        ICommand command = this.undoStack.remove(undoStack.size() - 1);
+        command.undo();
+        this.redoStack.add(command);
+        return true;
     }
 
     public boolean redo() {
-        if (redoComments.size() > 0) {
-            ICommand redo = redoComments.pop();
-            redo.redo();
-            undoComments.push(redo);
-            return true;
+        if (!this.canRedo()) {
+            return false;
         }
-        return false;
+        ICommand command = this.redoStack.remove(redoStack.size() - 1);
+        command.redo();
+        this.undoStack.add(command);
+        return true;
     }
-
 }
