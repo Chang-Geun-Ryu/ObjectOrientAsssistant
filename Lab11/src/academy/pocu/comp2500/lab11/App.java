@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class App {
 
@@ -18,31 +19,39 @@ public class App {
         User user = new User();
 
         //요청 창고 받아오기
-        Warehouse warehouse;
+        Warehouse warehouse = null;
         WarehouseType[] warehouseTypes = WarehouseType.values();
         String input;
 
-        while (true) {
-            out.println("WAREHOUSE: Choose your warehouse!");
-            for (int i = 0; i < warehouseTypes.length; i++) {
-                out.printf("%d. %s%n", i + 1, warehouseTypes[i]);
-            }
+        do {
+            { // : 1
+                int index = 0;
+                String num;
+                HashMap<Integer, WarehouseType> types = new HashMap<>();
+                out.println("WAREHOUSE: Choose your warehouse!");
+                for (WarehouseType type : WarehouseType.values()) {
+                    out.printf("%d. %s%s", ++index, type, System.lineSeparator());
+                    types.put(index, type);
+                }
+                try {
+                    num = in.readLine();
+                } catch (IOException e) {
+                    return ;
+                }
+                if (num == "") {
+                    return;
+                }
 
-            try {
-                input = in.readLine();
-            } catch (IOException e) {
-                return ;
-            } catch (NumberFormatException e) {
-                return ;
-            }
-            if (!checkProcess(input, warehouseTypes)) {
-                continue;
-            }
+                if (types.containsKey(num)) {
+                    if (types.get(num) != null) {
+                        warehouse = new Warehouse(types.get(num));
+                    } else {
+                        continue;
+                    }
+                }
 
-            WarehouseType warehouseType = warehouseTypes[tryParseInt(input) - 1];
-            warehouse = new Warehouse(warehouseType);
-            break;
-        }
+            }
+        } while (warehouse == null);
 
         // 지갑 받아오기
         Wallet wallet;
