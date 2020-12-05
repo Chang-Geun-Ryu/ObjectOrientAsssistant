@@ -3,49 +3,84 @@ package academy.pocu.comp2500.assignment4;
 import java.util.ArrayList;
 
 public class CommandHistoryManager {
-    private Canvas canvas;
-    private ArrayList<ICommand> undoStack;
-    private ArrayList<ICommand> redoStack;
+    private final Canvas canvas;
+    private ArrayList<ICommand> appliedCommands;
+    private ArrayList<ICommand> undoidCommands;
+    private final ArrayList<ICommand> commands;
+    private final ArrayList<ICommand> undidCommands;
+
 
     public CommandHistoryManager(Canvas canvas) {
         this.canvas = canvas;
-        this.undoStack = new ArrayList<>();
-        this.redoStack = new ArrayList<>();
+        this.appliedCommands = new ArrayList<>();
+        this.undoidCommands = new ArrayList<>();
+
+        this.commands = new ArrayList<>();
+        this.undidCommands = new ArrayList<>();
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    private ICommand getRecentAppliedCommand() {
+        return this.appliedCommands.get(appliedCommands.size() - 1);
+    }
+
+    private ICommand getRecentUndidCommand() {
+        return this.undoidCommands.get(undoidCommands.size() - 1);
     }
 
     public boolean execute(ICommand command) {
-        boolean result = command.execute(this.canvas);
-        if (result) {
-            this.undoStack.add(command);
+        if (command.execute(this.canvas)) {
+            this.appliedCommands.add(command);
+            this.undoidCommands.clear();
+            return true;
         }
-        return result;
+        return false;
     }
 
     public boolean canUndo() {
-        return this.undoStack.size() > 0;
+        if (this.appliedCommands.size() == 0) {
+            return false;
+        }
+        Command command = (Command) this.getRecentAppliedCommand();
+        return command.isUndoable();
     }
 
     public boolean canRedo() {
-        return this.redoStack.size() > 0;
+        if (this.undoidCommands.size() == 0) {
+            return false;
+        }
+        Command command = (Command) this.getRecentAppliedCommand();
+        return command.isRedoable();
+    }
+
+    public void removeAppliedCommand(ICommand command) {
+        this.appliedCommands.remove(command);
+    }
+
+    public void removeUndioidCommand(ICommand command) {
+        this.undoidCommands.remove(command);
     }
 
     public boolean undo() {
-        if (!this.canUndo()) {
-            return false;
+        if (this.canUndo() && this.getRecentAppliedCommand().undo()) {
+            this.undoidCommands.add(this.getRecentAppliedCommand());
+            this.removeAppliedCommand(this.getRecentAppliedCommand());
+            return true;
         }
-        ICommand command = this.undoStack.remove(undoStack.size() - 1);
-        command.undo();
-        this.redoStack.add(command);
-        return true;
+        return false;
     }
 
     public boolean redo() {
-        if (!this.canRedo()) {
-            return false;
+        if (this.canRedo() && this.getRecentUndidCommand().redo()) {
+            this.appliedCommands.add(this.getRecentUndidCommand());
+            this.removeUndioidCommand(this.getRecentUndidCommand());
+            return true;
         }
-        ICommand command = this.redoStack.remove(redoStack.size() - 1);
-        command.redo();
-        this.undoStack.add(command);
-        return true;
+        return false;
     }
+
+
 }
