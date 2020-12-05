@@ -8,13 +8,17 @@ public class SafeWallet extends Wallet {
         super(user);
     }
 
-    public boolean deposit(final int amount) throws OverflowException {
-        int superAmount = super.getAmount();
-        if (amount > Integer.MAX_VALUE - superAmount) {
-            throw new OverflowException("Amount was overflowed");
-        } else {
-            return super.deposit(amount);
+    @Override
+    public boolean deposit(int amount) {
+        if (!super.deposit(amount)) {
+            return false;
         }
 
+        if (this.getAmount() < 0) {
+            super.deposit(amount * -1);
+            throw new OverflowException("통장에 돈이 너무너무 많아요");
+        }
+
+        return true;
     }
 }

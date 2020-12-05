@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 
 public class Program {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // write your code here
         App app = new App();
 
