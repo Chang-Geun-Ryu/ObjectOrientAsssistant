@@ -139,7 +139,11 @@ public class App {
                         try {
                             warehouse.removeProduct(productSelected.getId());
                         } catch (ProductNotFoundException e) {
-                            wallet.deposit(productSelected.getPrice());
+                            try {
+                                wallet.deposit(productSelected.getPrice());
+                            } catch (OverflowException over) {
+                                throw over;
+                            }
                         }
                     }
                 }
