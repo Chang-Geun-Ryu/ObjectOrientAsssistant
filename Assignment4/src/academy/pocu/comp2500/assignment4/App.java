@@ -4,15 +4,17 @@ import academy.pocu.comp2500.assignment4.registry.Registry;
 
 public class App {
     public App(Registry registry) {
-
-        registry.registerDrawPixelCommandCreator("DrawPixel");
-        registry.registerIncreasePixelCommandCreator("IncreasePixel");
-        registry.registerDecreasePixelCommandCreator("DecreasePixel");
-        registry.registerToUppercaseCommandCreator("ToUpper");
-        registry.registerToLowercaseCommandCreator("ToLower");
-        registry.registerFillHorizontalLineCommandCreator("FillHorizontalLine");
-        registry.registerFillVerticalLineCommandCreator("FillVerticalLine");
-        registry.registerClearCommandCreator("Clear");
-
+        // Register like this
+        // registry.registerDrawPixelCommandCreator("Foo");
+        // OR
+        // registry.registerDrawPixelCommandCreator("Foo", "bar");
+        registry.registerDrawPixelCommandCreator("DrawPixelCommand");
+        registry.registerIncreasePixelCommandCreator("IncreasePixelCommand");
+        registry.registerDecreasePixelCommandCreator("DecreasePixelCommand");
+        registry.registerToUppercaseCommandCreator("ToUpperCommand");
+        registry.registerToLowercaseCommandCreator("ToLowerCommand");
+        registry.registerFillHorizontalLineCommandCreator("FillHorizontalLineCommand");
+        registry.registerFillVerticalLineCommandCreator("FillVerticalLineCommand");
+        registry.registerClearCommandCreator("ClearCommand");
     }
 }

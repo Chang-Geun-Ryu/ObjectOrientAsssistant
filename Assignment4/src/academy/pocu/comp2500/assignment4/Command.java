@@ -1,65 +1,44 @@
 package academy.pocu.comp2500.assignment4;
 
 public abstract class Command implements ICommand {
-    private boolean isExecuted;
-    private boolean isUndoable;
-    private boolean isRedoable;
-
-    private Canvas canvas;
+    protected Canvas canvas;
+    protected boolean isExecutable;
+    protected boolean isRedoable;
+    protected boolean isUndoable;
 
     public Command() {
-        this.isExecuted = false;
-        this.isUndoable = false;
-        this.isRedoable = false;
-
-        this.canvas = null;
+        canvas = null;
+        isExecutable = true;
+        isRedoable = false;
+        isUndoable = false;
     }
 
-    protected Canvas getCanvas() {
-        return this.canvas;
-    }
-
-    protected boolean isExecuted() {
-        return this.isExecuted;
-    }
-
-    protected void markExecuting() {
-        this.isExecuted = true;
-    }
-
-    protected boolean isUndoable() {
-        return this.isUndoable;
-    }
-
-    protected void blockUndo() {
-        this.isUndoable = false;
-    }
-
-    protected void allowUndo() {
-        this.isUndoable = true;
-    }
-
-    protected boolean isRedoable() {
-        return this.isRedoable;
-    }
-
-    protected void blockRedo() {
-        this.isRedoable = false;
-    }
-
-    protected void allowRedo() {
-        this.isRedoable = true;
-    }
-
-    protected void setCanvas(Canvas canvas) {
-        this.canvas = canvas;
-    }
-
-    protected boolean isValidPoint(int x, int y) {
-        if (this.getCanvas() == null) {
+    protected boolean checkIfIsUndoable() {
+        if (isUndoable) {
+            isUndoable = false;
+            isRedoable = true;
+            return true;
+        } else {
             return false;
         }
-        return this.getCanvas().isValidPoint(x, y);
     }
 
+    protected boolean checkIfIsRedoable() {
+        if (isRedoable) {
+            isRedoable = false;
+            isUndoable = true;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    protected boolean checkIfIsExecutable() {
+        if (isExecutable) {
+            isExecutable = false;
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
