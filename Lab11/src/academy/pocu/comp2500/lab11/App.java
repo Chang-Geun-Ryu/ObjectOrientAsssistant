@@ -1,149 +1,147 @@
 package academy.pocu.comp2500.lab11;
 
-
-import academy.pocu.comp2500.lab11.pocu.PermanentlyClosedException;
+import academy.pocu.comp2500.lab11.pocu.WarehouseType;
+import academy.pocu.comp2500.lab11.pocu.Warehouse;
+import academy.pocu.comp2500.lab11.pocu.User;
+import academy.pocu.comp2500.lab11.pocu.Department;
 import academy.pocu.comp2500.lab11.pocu.Product;
 import academy.pocu.comp2500.lab11.pocu.ProductNotFoundException;
-import academy.pocu.comp2500.lab11.pocu.User;
-import academy.pocu.comp2500.lab11.pocu.Warehouse;
-import academy.pocu.comp2500.lab11.pocu.WarehouseType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
-
+import java.util.ArrayList;
 
 public class App {
-    private static final String LINE_SEPARATOR = System.lineSeparator();
-
     public void run(BufferedReader in, PrintStream out, PrintStream err) {
-        //
-        // 창고를 고르는 단계
-        //
-        // 다음으로 넘겨줄 유일한 정보 : 창고
-        Warehouse warehouse;
-        {
-            String input;
-            int index;
-            int warehouseNo;
-            while (true) {
-                //초기 인자 설정
-                index = 0;
-                warehouseNo = -1;
+        int warehouseTypeCount = WarehouseType.values().length;
+        ArrayList<WarehouseType> warehouseTypes = new ArrayList<WarehouseType>();
 
-                //창고를 선택하라는 문구 출력
+        WarehouseType warehouseTypeSelected = null;
+        int parsedInteger = -1;
+
+        while (true) {
+            try {
+                int counter = 1;
                 out.println("WAREHOUSE: Choose your warehouse!");
-                for (WarehouseType type : WarehouseType.values()) {
-                    index++;
-                    out.printf("%d. %s%s", index, type, LINE_SEPARATOR);
-                }
+                for (WarehouseType warehouseType : WarehouseType.values()) {
+                    out.print(counter);
+                    out.print(". ");
+                    out.println(warehouseType);
+                    warehouseTypes.add(warehouseType);
 
-                //문구 출력 후 사용자 입력을 받음
+                    counter += 1;
+                }
+                String choice = in.readLine();
+
                 try {
-                    input = in.readLine();
-                    if (input.equals("exit")) {
+                    if (choice.equals("exit")) {
                         return;
                     }
-                    warehouseNo = Integer.parseInt(input);
-                    warehouseNo--;
-                    if (warehouseNo < 0) {
-                        continue;
-                    }
-                } catch (IOException e) {
-                    err.println(e.getMessage());
-                    input = null;
-                    continue;
-                } catch (NumberFormatException e) {
-                    out.println("숫자를 입력하세요!");
-                    err.println(e.getMessage());
-                    continue;
-                }
 
-                //빼낸 정수에 따라 올바른 창고 생성
-                if (warehouseNo != -1
-                        && warehouseNo < index) {
-                    WarehouseType type = WarehouseType.values()[warehouseNo];
-                    warehouse = new Warehouse(type);
+                    parsedInteger = Integer.parseInt(choice);
+
+                    if (parsedInteger > 0 && parsedInteger <= warehouseTypeCount) {
+                        int index = parsedInteger - 1;
+                        warehouseTypeSelected = warehouseTypes.get(index);
+                        break;
+                    } else {
+                    }
+                } catch (NumberFormatException e) {
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        User user = new User();
+        Department department = user.getDepartment();
+
+        SafeWallet wallet = null;
+
+        try {
+            wallet = new SafeWallet(user);
+        } catch (IllegalAccessException e) {
+            err.println("AUTH_ERROR");
+            return;
+        }
+
+        int amount;
+
+//        if (wallet.getAmount() < 0) {
+//            throw new OverflowException("Overflow Error");
+//        }
+
+        amount = wallet.getAmount();
+
+        out.println("BALANCE: " + amount);
+
+        boolean isRepeat = false;
+
+        parsedInteger = -1;
+
+        Warehouse warehouse = new Warehouse(warehouseTypeSelected);
+        Product productSelected = null;
+
+        while (true) {
+            amount = wallet.getAmount();
+
+            ArrayList<Product> products = warehouse.getProducts();
+            String choice = null;
+
+            if (isRepeat) {
+                out.println("BALANCE: " + amount);
+            } else {
+                isRepeat = true;
+            }
+
+            int counter = 1;
+            int productsCount = products.size();
+            out.println("PRODUCT_LIST: Choose the product you want to buy!");
+            for (int i = 0; i < productsCount; ++i) {
+                out.print(counter);
+                out.print(". ");
+                out.println(String.format("%-16s", products.get(i).getName()) + String.format("%4d", products.get(i).getPrice()));
+
+                counter += 1;
+            }
+
+            try {
+                choice = in.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (choice.equals("exit")) {
+                return;
+            }
+
+            boolean isValidNum = true;
+
+            for (int i = 0; i < choice.length(); i++) {
+                if (!Character.isDigit(choice.charAt(i))) {
+                    isValidNum = false;
                     break;
                 }
-
             }
-        }
-        //
-        // 지갑을 생성하는 단계
-        //
-        //다음으로 넘겨줄 정보 : 지갑
-        SafeWallet wallet = null;
-        {
-            User user = new User();
-            try {
-                wallet = new SafeWallet(user);
-                out.println("BALANCE: " + wallet.getAmount());
-            } catch (IllegalArgumentException e) {
-                err.println("IllegalArgumentException");
-                return;
-            } catch (PermanentlyClosedException e) {
-                err.println("PermanentlyClosedException");
-                return;
-            } catch (IllegalAccessException e) {
-                err.println("AUTH_ERROR");
-                return;
-            }
-        }
-        //
-        //창고와 지갑이 구해졌으니 구매함
-        //
-        {
-            String input;
-            int index;
-            int warehouseNo;
-            while (true) {
-                //초기 설정
-                index = 0;
-                warehouseNo = -1;
 
-                //제품을 선택하라는 문구 출력
-                out.println("PRODUCT_LIST: Choose the product you want to buy!");
-                for (Product product : warehouse.getProducts()) {
-                    index++;
-                    out.printf("%d. %s\t\t%d%s", index, product.getName(), product.getPrice(), LINE_SEPARATOR);
-                }
+            System.out.println(isValidNum);
 
-                //문구 출력 후 사용자 입력을 받음
-                try {
-                    input = in.readLine();
-                    if (input.equals("exit")) {
-                        return;
+            if (isValidNum) {
+                parsedInteger = Integer.parseInt(choice);
+                if (parsedInteger > 0 && parsedInteger <= productsCount) {
+                    int index = parsedInteger - 1;
+                    productSelected = products.get(index);
+
+
+                    if (wallet.getAmount() >= productSelected.getPrice()) {
+                        wallet.withdraw(productSelected.getPrice());
+                        try {
+                            warehouse.removeProduct(productSelected.getId());
+                        } catch (ProductNotFoundException e) {
+                            wallet.deposit(productSelected.getPrice());
+                        }
                     }
-                    warehouseNo = Integer.parseInt(input);
-                    warehouseNo--;
-                    if (warehouseNo < 0) {
-                        continue;
-                    }
-                } catch (IOException e) {
-                    err.println("다시 입력하세요. ( 번호, exit )");
-                    input = null;
-                    continue;
-                } catch (NumberFormatException e) {
-                    out.println("숫자를 입력하세요!");
-                    err.println(e.getMessage());
-                    continue;
-                }
-
-                //빼낸 정수에 따라 제품 삭제 후 지갑 갱신
-                //제품이 사라진 것에 대한 예외처리
-                try {
-                    if (warehouseNo != -1
-                            && warehouseNo < index) {
-                        Product product = warehouse.getProducts().get(warehouseNo);
-
-                        warehouse.removeProduct(product.getId());
-
-                        wallet.withdraw(product.getPrice());
-                        out.println("BALANCE: " + wallet.getAmount());
-                    }
-                } catch (ProductNotFoundException e) {
-                    err.println(e.getMessage());
                 }
             }
         }
