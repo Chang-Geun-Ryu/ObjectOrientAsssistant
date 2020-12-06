@@ -3,137 +3,195 @@ package academy.pocu.comp2500.assignment4;
 public class Canvas {
     private int width;
     private int height;
-    private char[][] drawingPaper;
+    private char[][] letters;
 
     public Canvas(int width, int height) {
         this.width = width;
         this.height = height;
-        drawingPaper = new char[height][width];
-        fillEmptyPaper(drawingPaper, width, height);
+        this.letters = new char[height][width];
+
+        for (int i = 0; i < height; ++i) {
+            for (int j = 0; j < width; ++j) {
+                this.letters[i][j] = ' ';
+            }
+        }
     }
 
-    public void drawPixel(int x, int y, char character) {
-        if (x > width || y > height || (int) character < 32 || (int) character > 126) {
+    public void drawPixel(int x, int y, char letter) {
+//        test if char is 32 ~ 126
+        if (x < 0 || x > width - 1) {
             return;
         }
-        drawingPaper[y][x] = character;
+
+        if (y < 0 || y > height - 1) {
+            return;
+        }
+
+        if (letter < 32 || letter > 126) {
+            return;
+        }
+
+        letters[y][x] = letter;
     }
 
     public char getPixel(int x, int y) {
-        return drawingPaper[y][x];
+        return this.letters[y][x];
     }
 
     public boolean increasePixel(int x, int y) {
-        if (!isInbound(x, y)) {
-            return false;
-        }
-        int numberOfAsciiIncreased = (int) drawingPaper[y][x] + 1;
-        if (numberOfAsciiIncreased > 126) {
+        if (x < 0 || x > width - 1) {
             return false;
         }
 
-        drawingPaper[y][x] += 1;
-        return true;
+        if (y < 0 || y > height - 1) {
+            return false;
+        }
+
+        int nextValue = (char) (this.letters[y][x] + 1);
+        if (nextValue > 31 && nextValue < 127) {
+            this.letters[y][x] = (char) nextValue;
+            return true;
+        }
+
+        return false;
     }
 
     public boolean decreasePixel(int x, int y) {
-        if (!isInbound(x, y)) {
+        if (x < 0 || x > width - 1) {
             return false;
         }
-        int numberOfAsciiDecreased = (int) drawingPaper[y][x] - 1;
-        if (numberOfAsciiDecreased < 32) {
+
+        if (y < 0 || y > height - 1) {
             return false;
         }
-        drawingPaper[y][x] -= 1;
-        return true;
+
+        int nextValue = this.letters[y][x] - 1;
+        if (nextValue > 31 && nextValue < 127) {
+            this.letters[y][x] = (char) nextValue;
+            return true;
+        }
+
+        return false;
     }
 
     public void toUpper(int x, int y) {
-        if (!isInbound(x, y)) {
+        if (x < 0 || x > width - 1) {
             return;
         }
-        int numberOfAscii = (int) drawingPaper[y][x];
-        if (97 <= numberOfAscii && numberOfAscii <= 122) {
-            drawingPaper[y][x] -= 32;
+
+        if (y < 0 || y > height - 1) {
+            return;
+        }
+
+        int currentValue = this.letters[y][x];
+
+        if (currentValue > 96 && currentValue < 123) {
+            this.letters[y][x] = (char) (currentValue - 32);
         }
     }
 
     public void toLower(int x, int y) {
-        if (!isInbound(x, y)) {
+        if (x < 0 || x > width - 1) {
             return;
         }
-        int numberOfAscii = (int) drawingPaper[y][x];
-        if (65 <= numberOfAscii && numberOfAscii <= 90) {
-            drawingPaper[y][x] += 32;
+
+        if (y < 0 || y > height - 1) {
+            return;
+        }
+
+        int currentValue = this.letters[y][x];
+
+        if (currentValue > 64 && currentValue < 91) {
+            this.letters[y][x] = (char) (currentValue + 32);
         }
     }
 
-    public void fillHorizontalLine(int y, char shape) {
-        if (height < y) {
+    public void fillHorizontalLine(int y, char character) {
+        if (y < 0 || y > height - 1) {
             return;
         }
-        for (int i = 0; i < width; ++i) {
-            drawingPaper[y][i] = shape;
+
+        if (character < 32 || character > 126) {
+            return;
+        }
+
+        for (int j = 0; j < this.width; ++j) {
+            this.letters[y][j] = character;
         }
     }
 
-    public void fillVerticalLine(int x, char shape) {
-        if (width < x) {
+    public void fillVerticalLine(int x, char character) {
+        if (x < 0 || x > width - 1) {
             return;
         }
-        for (int i = 0; i < height; ++i) {
-            drawingPaper[i][x] = shape;
+
+        if (character < 32 || character > 126) {
+            return;
+        }
+
+        for (int i = 0; i < this.height; ++i) {
+            this.letters[i][x] = character;
         }
     }
 
     public void clear() {
-        fillEmptyPaper(drawingPaper, width, height);
+        for (int i = 0; i < height; ++i) {
+            for (int j = 0; j < width; ++j) {
+                this.letters[i][j] = ' ';
+            }
+        }
     }
 
     public String getDrawing() {
-        int widthOfDrawingWithFrame = width + 2;
-        int heightOfDrawingWithFrame = height + 2;
-        StringBuilder stringBuilder = new StringBuilder(4096);
-        for (int i = 0; i < heightOfDrawingWithFrame; ++i) {
-            for (int j = 0; j < widthOfDrawingWithFrame; ++j) {
-                if (i == 0 || i == heightOfDrawingWithFrame - 1) {
-                    if (j == 0 || j == widthOfDrawingWithFrame - 1) {
-                        stringBuilder.append('+');
-                    } else {
-                        stringBuilder.append('-');
-                    }
-                } else if (j == 0 || j == widthOfDrawingWithFrame - 1) {
-                    stringBuilder.append('|');
-                } else {
-                    stringBuilder.append(drawingPaper[i - 1][j - 1]);
-                }
-            }
-            stringBuilder.append(System.lineSeparator());
+        String startAndEndLine = "+";
+
+        for (int i = 0; i < width; ++i) {
+            startAndEndLine += '-';
         }
-        return stringBuilder.toString();
+
+        startAndEndLine += '+';
+
+        String drawing = startAndEndLine + System.lineSeparator();
+
+        for (int i = 0; i < height; ++i) {
+            drawing += '|';
+            for (int j = 0; j < width; ++j) {
+                drawing += this.letters[i][j];
+            }
+            drawing += '|';
+            drawing += System.lineSeparator();
+        }
+        drawing += startAndEndLine;
+        drawing += System.lineSeparator();
+
+        return drawing;
     }
 
     public int getWidth() {
-        return width;
+        return this.width;
     }
 
     public int getHeight() {
-        return height;
+        return this.height;
     }
 
-    private void fillEmptyPaper(char[][] drawingPaper, int width, int height) {
-        for (int x = 0; x < width; ++x) {
-            for (int y = 0; y < height; ++y) {
-                drawingPaper[y][x] = ' ';
-            }
-        }
-    }
-
-    private boolean isInbound(int x, int y) {
-        if (x < width && y < height) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    public char[] getWidth(int y) {
+//        char[] characters = new char[this.width];
+//
+//        for (int j = 0; j < this.width; ++j) {
+//            characters[j] = this.letters[y][j];
+//        }
+//
+//        return characters;
+//    }
+//
+//    public char[] getHeight(int x) {
+//        char[] characters = new char[this.height];
+//
+//        for (int i = 0; i < this.height; ++i) {
+//            characters[i] = this.letters[i][x];
+//        }
+//
+//        return characters;
+//    }
 }
