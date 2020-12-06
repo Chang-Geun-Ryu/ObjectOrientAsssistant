@@ -84,46 +84,46 @@ public class Program {
 
 
 //
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.execute(new DrawPixel(4,4,'a'));
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.execute(new ToLower(0,0));
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.execute(new DrawPixel(2,4,'n'));
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.redo();
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.execute(new Clear());
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.execute(new DecreasePixel(4, 3));
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.execute(new ToUpper(3, 0));
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.execute(new IncreasePixel(3, 0));
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.redo();
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.execute(new Clear());
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.execute(new FillVerticalLine(0, 'g')); // 1
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.execute(new FillVerticalLine(3, 'A'));
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.execute(new DecreasePixel(2,0));
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.execute(new ToLower(1, 2));
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.execute(new Clear()); // 2
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.redo();
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.execute(new FillHorizontalLine(1, 'J'));
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.execute(new ToLower(4, 1));
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.execute(new ToUpper(0, 2));
-        System.out.println(canvas.getOverdrawCount(0, 0));
-        manager.undo();
-        System.out.println(canvas.getOverdrawCount(0, 0));
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.execute(new DrawPixel(4,4,'a'));
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.execute(new ToLower(0,0));
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.execute(new DrawPixel(2,4,'n'));
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.redo();
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.execute(new Clear());
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.execute(new DecreasePixel(4, 3));
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.execute(new ToUpper(3, 0));
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.execute(new IncreasePixel(3, 0));
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.redo();
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.execute(new Clear());
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.execute(new FillVerticalLine(0, 'g')); // 1
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.execute(new FillVerticalLine(3, 'A'));
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.execute(new DecreasePixel(2,0));
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.execute(new ToLower(1, 2));
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.execute(new Clear()); // 2
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.redo();
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.execute(new FillHorizontalLine(1, 'J'));
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.execute(new ToLower(4, 1));
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.execute(new ToUpper(0, 2));
+//        System.out.println(canvas.getOverdrawCount(0, 0));
+//        manager.undo();
+//        System.out.println(canvas.getOverdrawCount(0, 0));
     }
 }
