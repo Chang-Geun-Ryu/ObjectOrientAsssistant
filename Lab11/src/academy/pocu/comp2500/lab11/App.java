@@ -64,8 +64,10 @@ public class App {
         } catch (IllegalAccessException e) {
             err.println("AUTH_ERROR");
             return;
+        } catch (IllegalArgumentException e) {
+            err.println("AUTH_ERROR");
+            return;
         }
-
         int amount;
 
 //        if (wallet.getAmount() < 0) {

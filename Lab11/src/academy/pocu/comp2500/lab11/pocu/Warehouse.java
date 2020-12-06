@@ -57,7 +57,7 @@ public class Warehouse {
     private ArrayList<Product> retrieveProductsMock() {
         ArrayList<Product> products = new ArrayList<>();
 
-        products.add(new Product(UUID.randomUUID(), "Lotion", 10));
+        products.add(new Product(UUID.randomUUID(), "Lotion", 110));
         products.add(new Product(UUID.randomUUID(), "Pencil", 5));
         products.add(new Product(UUID.randomUUID(), "Notebook", 15));
         products.add(new Product(UUID.randomUUID(), "Eraser", 7));
