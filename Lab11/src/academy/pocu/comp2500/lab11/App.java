@@ -11,6 +11,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class App {
     public void run(BufferedReader in, PrintStream out, PrintStream err) {
@@ -85,71 +87,90 @@ public class App {
         Warehouse warehouse = new Warehouse(warehouseTypeSelected);
         Product productSelected = null;
 
-        while (true) {
-            amount = wallet.getAmount();
-
-            ArrayList<Product> products = warehouse.getProducts();
-            String choice = null;
-
-            if (isRepeat) {
-                out.println("BALANCE: " + amount);
-            } else {
-                isRepeat = true;
-            }
-
-            int counter = 1;
-            int productsCount = products.size();
+        do {
+            out.println(String.format("BALANCE: %d", wallet.getAmount()));
             out.println("PRODUCT_LIST: Choose the product you want to buy!");
-            for (int i = 0; i < productsCount; ++i) {
-                out.print(counter);
-                out.print(". ");
-                out.println(String.format("%-16s", products.get(i).getName()) + String.format("%4d", products.get(i).getPrice()));
-
-                counter += 1;
+            int num = 0;
+            int index = 0;
+            HashMap<Integer, Product> products = new HashMap<>();
+            for (Product p : warehouse.getProducts()) {
+                out.printf("%d. %-19.19s%10s%s", ++index, p.getName(), String.format("%d", p.getPrice()), System.lineSeparator());
+                products.put(index, p);
             }
 
-            try {
-                choice = in.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            num = getProductIndex(warehouse, in, out, err);
 
-            if (choice.equals("exit")) {
+            if (num == -1) {
                 return;
             }
 
-            boolean isValidNum = true;
+            if (products.containsKey(num)) {
+                Product p = products.get(num);
+                int price = p.getPrice();
+                UUID id = p.getId();
 
-            for (int i = 0; i < choice.length(); i++) {
-                if (!Character.isDigit(choice.charAt(i))) {
-                    isValidNum = false;
-                    break;
-                }
-            }
-
-            System.out.println(isValidNum);
-
-            if (isValidNum) {
-                parsedInteger = Integer.parseInt(choice);
-                if (parsedInteger > 0 && parsedInteger <= productsCount) {
-                    int index = parsedInteger - 1;
-                    productSelected = products.get(index);
-
-
-                    if (wallet.getAmount() >= productSelected.getPrice()) {
-                        wallet.withdraw(productSelected.getPrice());
+                if (wallet.withdraw(price)) {
+                    try {
+                        warehouse.removeProduct(id);
+                    } catch (ProductNotFoundException e) {
                         try {
-                            warehouse.removeProduct(productSelected.getId());
-                        } catch (ProductNotFoundException e) {
-                            try {
-                                wallet.deposit(productSelected.getPrice());
-                            } catch (OverflowException over) {
-                                throw over;
-                            }
+                            wallet.deposit(price);
+                        } catch (OverflowException over) {
+                            throw over;
                         }
+//                                continue;
+//                        err.println(e.getLocalizedMessage());
+                        continue;
                     }
+                } else {
+                    continue;
                 }
             }
+        } while (true);
+    }
+
+
+    private int getProductIndex(Warehouse warehouse, BufferedReader in, PrintStream out, PrintStream err) {
+        try {
+            int num = 0;
+            String s = in.readLine();
+            if (s == null) {
+                return 0;
+            }
+
+            if (s.length() == 4 && s.equals("exit")) {// || warehouse.getProducts().size() == 0) {  // exit
+                return -1;
+            }
+
+            String length = String.format("%d", warehouse.getProducts().size());
+            if (length.length() > s.length()) {
+                return 0;
+            }
+
+            boolean isDigit = true;
+            for (int i = 0; i < length.length(); ++i) {
+                if (Character.isDigit(s.charAt(i)) == false) {
+                    isDigit = false;
+                }
+            }
+            if (isDigit) {
+                num = Integer.parseInt(s);
+            } else {
+                return 0;
+            }
+
+            if (s.equals(String.format("%d", num)) == false) {
+                return 0;
+            }
+
+            if (num < 1 || num > warehouse.getProducts().size()) {
+                return 0;
+            }
+            return num;
+        } catch (IOException e) {
+            return 0;
+        } catch (NumberFormatException e) {
+            return 0;
         }
     }
 }
