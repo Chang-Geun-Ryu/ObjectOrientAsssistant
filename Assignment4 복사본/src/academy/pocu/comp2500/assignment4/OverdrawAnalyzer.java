@@ -1,171 +1,134 @@
 package academy.pocu.comp2500.assignment4;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Objects;
 
 public class OverdrawAnalyzer extends Canvas {
-    private HashMap<Integer, LinkedList<Character>> history = new HashMap<>();
-    private HashMap<Integer, Integer> overdrawCount = new HashMap<>();
-    private HashMap<Integer, Integer> overdrawCountTest = new HashMap<>();
+
+    private ArrayList<ArrayList<LinkedList<Character>>> pixelHistories;
+    private ArrayList<ArrayList<Integer>> overdrawCount;
 
     public OverdrawAnalyzer(int width, int height) {
         super(width, height);
-
-        for (int w = 0; w < width; ++w) {
-            for (int h = 0; h < height; ++h) {
-                LinkedList<Character> linked = new LinkedList<>();
-                linked.add(getPixel(w, h));
-                this.history.put(Objects.hash(w, h), linked);
-                this.overdrawCount.put(Objects.hash(w, h), 0);
-                overdrawCountTest.put(Objects.hash(w, h), 0);
+        pixelHistories = new ArrayList<>();
+        overdrawCount = new ArrayList<>();
+        for (int i = 0; i < height; i++) {
+            pixelHistories.add(new ArrayList<>());
+            overdrawCount.add(new ArrayList<>());
+            for (int j = 0; j < width; j++) {
+                pixelHistories.get(i).add(new LinkedList<>());
             }
         }
     }
 
     public LinkedList<Character> getPixelHistory(int x, int y) {
-        LinkedList<Character> history = new LinkedList<>();
-        for (int i = 1; i < this.history.get(Objects.hash(x, y)).size(); ++i) {
-
-            history.add(this.history.get(Objects.hash(x, y)).get(i));
-        }
-        return history;
-    }
-
-    public int getOverdrawCount(int x, int y) {
-        return getPixelHistory(x, y).size();
-//        return overdrawCountTest.get(Objects.hash(x, y));
-    }
-
-    private int getSingle(int x, int y) {
-
-        return getPixelHistory(x, y).size();
+        return this.pixelHistories.get(y).get(x);
     }
 
     public int getOverdrawCount() {
-        int total = 0;
-        for (int y = 0; y < getHeight(); ++y) {
-            for (int x = 0; x < getWidth(); ++x) {
-                total += getSingle(x, y);
+        int count = 0;
+        for (int i = 0; i < super.getHeight(); i++) {
+            for (int j = 0; j < super.getWidth(); j++) {
+                count += this.getPixelHistory(j, i).size();
             }
         }
-        return total;
+        return count;
     }
 
-    private LinkedList<Character> getPixelList(int x, int y) {
-        return this.history.get(Objects.hash(x, y));
+    public int getOverdrawCount(int x, int y) {
+        return this.getPixelHistory(x, y).size();
     }
 
-    private void addOne(int x, int y) {
-        int num = overdrawCountTest.get(Objects.hash(x, y));
-        overdrawCountTest.replace(Objects.hash(x, y), num + 1);
-    }
 
-    // Override
     @Override
     public void drawPixel(int x, int y, char character) {
+        char oldCharacter = super.getPixel(x, y);
         super.drawPixel(x, y, character);
-
-        if (getPixelList(x, y).getLast() != getPixel(x, y)) {
-            getPixelList(x, y).add(getPixel(x, y));
-            this.overdrawCount.replace(Objects.hash(x, y), this.overdrawCount.get(Objects.hash(x, y)) + 1);
+        if (oldCharacter == super.getPixel(x, y)) {
+            return;
         }
-        addOne(x, y);
-    }
-
-    @Override
-    public boolean increasePixel(int x, int y) {
-        if (super.increasePixel(x, y)) {
-            if (getPixelList(x, y).getLast() != getPixel(x, y)) {
-                getPixelList(x, y).add(getPixel(x, y));
-                this.overdrawCount.replace(Objects.hash(x, y), this.overdrawCount.get(Objects.hash(x, y)) + 1);
-            }
-
-            addOne(x, y);
-            return true;
-        } else {
-            return false;
-        }
+        this.getPixelHistory(x, y).add(super.getPixel(x, y));
     }
 
     @Override
     public boolean decreasePixel(int x, int y) {
         if (super.decreasePixel(x, y)) {
-            if (getPixelList(x, y).getLast() != getPixel(x, y)) {
-                getPixelList(x, y).add(getPixel(x, y));
-                this.overdrawCount.replace(Objects.hash(x, y), this.overdrawCount.get(Objects.hash(x, y)) + 1);
-            }
-
-            addOne(x, y);
+            this.getPixelHistory(x, y).add(super.getPixel(x, y));
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     @Override
-    public void toUpper(int x, int y) {
-        super.toUpper(x, y);
-
-        if (getPixelList(x, y).getLast() != getPixel(x, y)) {
-            getPixelList(x, y).add(getPixel(x, y));
-            this.overdrawCount.replace(Objects.hash(x, y), this.overdrawCount.get(Objects.hash(x, y)) + 1);
+    public boolean increasePixel(int x, int y) {
+        if (super.increasePixel(x, y)) {
+            this.getPixelHistory(x, y).add(super.getPixel(x, y));
+            return true;
         }
-
-        addOne(x, y);
-    }
-
-    @Override
-    public void toLower(int x, int y) {
-        super.toLower(x, y);
-
-        if (getPixelList(x, y).getLast() != getPixel(x, y)) {
-            getPixelList(x, y).add(getPixel(x, y));
-            this.overdrawCount.replace(Objects.hash(x, y), this.overdrawCount.get(Objects.hash(x, y)) + 1);
-        }
-
-        addOne(x, y);
+        return false;
     }
 
     @Override
     public void fillHorizontalLine(int y, char character) {
+        ArrayList<Character> line = new ArrayList<>();
+        for (int i = 0; i < super.getWidth(); i++) {
+            line.add(super.getPixel(i, y));
+        }
         super.fillHorizontalLine(y, character);
-
-        for (int x = 0; x < getWidth(); ++x) {
-            if (getPixelList(x, y).getLast() != getPixel(x, y)) {
-                getPixelList(x, y).add(getPixel(x, y));
-                this.overdrawCount.replace(Objects.hash(x, y), this.overdrawCount.get(Objects.hash(x, y)) + 1);
+        for (int i = 0; i < super.getWidth(); i++) {
+            if (line.get(i) != super.getPixel(i, y)) {
+                this.getPixelHistory(i, y).add(super.getPixel(i, y));
             }
-
-            addOne(x, y);
         }
     }
 
     @Override
     public void fillVerticalLine(int x, char character) {
+        ArrayList<Character> line = new ArrayList<>();
+        for (int i = 0; i < super.getHeight(); i++) {
+            line.add(super.getPixel(x, i));
+        }
         super.fillVerticalLine(x, character);
-
-        for (int y = 0; y < getHeight(); ++y) {
-            if (getPixelList(x, y).getLast() != getPixel(x, y)) {
-                getPixelList(x, y).add(getPixel(x, y));
-                this.overdrawCount.replace(Objects.hash(x, y), this.overdrawCount.get(Objects.hash(x, y)) + 1);
+        for (int i = 0; i < super.getHeight(); i++) {
+            if (line.get(i) != super.getPixel(x, i)) {
+                this.getPixelHistory(x, i).add(super.getPixel(x, i));
             }
+        }
+    }
 
-            addOne(x, y);
+    @Override
+    public void toLower(int x, int y) {
+        char oldChar = this.getPixel(x, y);
+        super.toLower(x, y);
+        if (oldChar != super.getPixel(x, y)) {
+            this.getPixelHistory(x, y).add(super.getPixel(x, y));
+        }
+    }
+
+    @Override
+    public void toUpper(int x, int y) {
+        char oldChar = this.getPixel(x, y);
+        super.toUpper(x, y);
+        if (oldChar != super.getPixel(x, y)) {
+            this.getPixelHistory(x, y).add(super.getPixel(x, y));
         }
     }
 
     @Override
     public void clear() {
+        ArrayList<ArrayList<Character>> oldCanvas = new ArrayList<>();
+        for (int y = 0; y < super.getHeight(); y++) {
+            oldCanvas.add(new ArrayList<>());
+            for (int x = 0; x < super.getWidth(); x++) {
+                oldCanvas.get(y).add(super.getPixel(x, y));
+            }
+        }
         super.clear();
-        for (int y = 0; y < getHeight(); ++y) {
-            for (int x = 0; x < getWidth(); ++x) {
-                if (getPixelList(x, y).getLast() != getPixel(x, y)) {
-                    getPixelList(x, y).add(getPixel(x, y));
-                    this.overdrawCount.replace(Objects.hash(x, y), this.overdrawCount.get(Objects.hash(x, y)) + 1);
+        for (int y = 0; y < super.getHeight(); y++) {
+            for (int x = 0; x < super.getWidth(); x++) {
+                if (super.getPixel(x, y) != oldCanvas.get(y).get(x)) {
+                    this.getPixelHistory(x, y).add(super.getPixel(x, y));
                 }
-                addOne(x, y);
             }
         }
     }

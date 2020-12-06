@@ -1,105 +1,141 @@
 package academy.pocu.comp2500.assignment4;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Objects;
+
 
 public class Canvas {
-    private int width;
-    private int height;
+    private final int WIDTH;
+    private final int HEIGHT;
 
-    private HashMap<Integer, Pixel> pixels = new HashMap<>();
+    private ArrayList<ArrayList<Character>> pixels;
 
     public Canvas(int width, int height) {
-        this.width = width;
-        this.height = height;
-
-        for (int w = 0; w < width; ++w) {
-            for (int h = 0; h < height; ++h) {
-                this.pixels.put(Objects.hash(w, h), new Pixel());
+        this.WIDTH = width;
+        this.HEIGHT = height;
+        pixels = new ArrayList<>();
+        for (int y = 0; y < this.HEIGHT; y++) {
+            pixels.add(new ArrayList<>());
+            for (int x = 0; x < this.WIDTH; x++) {
+                pixels.get(y).add(' ');
             }
         }
     }
 
     public int getWidth() {
-        return this.width;
+        return this.WIDTH;
     }
 
     public int getHeight() {
-        return this.height;
+        return this.HEIGHT;
     }
 
+
     public void drawPixel(int x, int y, char character) {
-        this.pixels.get(Objects.hash(x, y)).setValue(character);
+        if (character < 32 || character > 126) {
+            return;
+        }
+        if (this.isValidPoint(x, y)) {
+            this.pixels.get(y).set(x, character);
+        }
     }
 
     public char getPixel(int x, int y) {
-        return this.pixels.get(Objects.hash(x, y)).getValue();
+        return this.pixels.get(y).get(x);
     }
 
     public boolean increasePixel(int x, int y) {
-        return this.pixels.get(Objects.hash(x, y)).increase();
+        if (this.getPixel(x, y) == 126) {
+            return false;
+        }
+        this.pixels.get(y).set(x, (char) ((int) this.pixels.get(y).get(x) + 1));
+        return true;
     }
 
     public boolean decreasePixel(int x, int y) {
-        return this.pixels.get(Objects.hash(x, y)).decrease();
+        if (this.getPixel(x, y) == 32) {
+            return false;
+        }
+        this.pixels.get(y).set(x, (char) ((int) this.pixels.get(y).get(x) - 1));
+        return true;
     }
 
     public void toUpper(int x, int y) {
-        this.pixels.get(Objects.hash(x, y)).toUpper();
+        if (this.getPixel(x, y) > 96 && this.getPixel(x, y) < 123) {
+            this.pixels.get(y).set(x, (char) ((int) this.pixels.get(y).get(x) - 32));
+        }
     }
 
+
     public void toLower(int x, int y) {
-        this.pixels.get(Objects.hash(x, y)).toLower();
+        if (this.getPixel(x, y) > 64 && this.getPixel(x, y) < 91) {
+            this.pixels.get(y).set(x, (char) ((int) this.pixels.get(y).get(x) + 32));
+        }
     }
 
     public void fillHorizontalLine(int y, char character) {
-        for (int x = 0; x < this.width; ++x) {
-            this.pixels.get(Objects.hash(x, y)).setValue(character);
+
+        if (y < 0 || y >= this.getHeight()) {
+            return;
+        }
+        if (character < 32 || character > 126) {
+            return;
+        }
+
+        for (int i = 0; i < this.getWidth(); i++) {
+            this.pixels.get(y).set(i, character);
         }
     }
 
     public void fillVerticalLine(int x, char character) {
-        for (int y = 0; y < this.height; ++y) {
-            this.pixels.get(Objects.hash(x, y)).setValue(character);
+        if (x < 0 || x >= this.getWidth()) {
+            return;
+        }
+        if (character < 32 || character > 126) {
+            return;
+        }
+
+        for (int i = 0; i < this.getHeight(); i++) {
+            this.pixels.get(i).set(x, character);
         }
     }
 
     public void clear() {
-        for (int w = 0; w < this.width; ++w) {
-            for (int h = 0; h < this.height; ++h) {
-                this.pixels.get(Objects.hash(w, h)).clear();
+        for (int i = 0; i < this.getHeight(); i++) {
+            for (int j = 0; j < this.getWidth(); j++) {
+                this.drawPixel(i, j, ' ');
             }
         }
     }
 
     public String getDrawing() {
-        StringBuffer sb = new StringBuffer();
-        horizontalDrawing(sb);
+        StringBuilder sb = new StringBuilder();
 
-        for (int y = 0; y < this.height; ++y) {
+        addHorizontalBorder(sb);
+        for (int y = 0; y < this.getHeight(); y++) {
             sb.append('|');
-
-            for (int x = 0; x < this.width; ++x) {
-                sb.append(this.pixels.get(Objects.hash(x, y)).getValue());
+            for (int x = 0; x < this.getWidth(); x++) {
+                sb.append(this.getPixel(x, y));
             }
-
             sb.append('|');
             sb.append(System.lineSeparator());
         }
-
-        horizontalDrawing(sb);
+        addHorizontalBorder(sb);
 
         return sb.toString();
     }
 
-    private void horizontalDrawing(StringBuffer sb) {
-        sb.append("+");
-        for (int i = 0; i < this.width; ++i) {
-            sb.append("-");
+    private void addHorizontalBorder(StringBuilder sb) {
+        sb.append('+');
+        for (int i = 0; i < this.getWidth(); i++) {
+            sb.append('-');
         }
-        sb.append("+");
+        sb.append('+');
         sb.append(System.lineSeparator());
     }
+
+    private boolean isValidPoint(int x, int y) {
+        return 0 <= x && 0 <= y && x < this.WIDTH && y < this.HEIGHT;
+    }
+
+
 }

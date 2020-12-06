@@ -2,21 +2,21 @@ package academy.pocu.comp2500.assignment4;
 
 import java.util.ArrayList;
 
-public class FillHorizontalLine extends Command {
+public class FillVerticalLine extends Command {
 
-    private final int Y;
+    private final int X;
     private final char fillingCharacter;
     private final ArrayList<Character> oldLine;
 
-    public FillHorizontalLine(int y, char character) {
+    public FillVerticalLine(int x, char character) {
         super();
-        this.Y = y;
+        this.X = x;
         this.fillingCharacter = character;
         this.oldLine = new ArrayList<>();
     }
 
-    public int getY() {
-        return this.Y;
+    public int getX() {
+        return this.X;
     }
 
     public char getFillingCharacter() {
@@ -33,17 +33,17 @@ public class FillHorizontalLine extends Command {
             return false;
         }
         super.setCanvas(canvas);
-        if (!super.isValidPoint(0, this.getY())) {
+        if (!super.isValidPoint(this.getX(), 0)) {
             return false;
         }
         super.markExecuting();
 
 
-        for (int x = 0; x < canvas.getWidth(); x++) {
-            this.getOldLine().add(canvas.getPixel(x, this.getY()));
+        for (int y = 0; y < canvas.getHeight(); y++) {
+            this.getOldLine().add(canvas.getPixel(this.getX(), y));
         }
 
-        super.getCanvas().fillHorizontalLine(this.getY(), this.getFillingCharacter());
+        super.getCanvas().fillVerticalLine(this.getX(), this.getFillingCharacter());
 
         super.allowUndo();
         return true;
@@ -54,15 +54,15 @@ public class FillHorizontalLine extends Command {
         if (!super.isUndoable()) {
             return false;
         }
-        for (int x = 0; x < super.getCanvas().getWidth(); x++) {
-            if (this.getFillingCharacter() != super.getCanvas().getPixel(x, this.getY())) {
+        for (int y = 0; y < super.getCanvas().getHeight(); y++) {
+            if (this.getFillingCharacter() != super.getCanvas().getPixel(this.getX(), y)) {
                 return false;
             }
         }
         super.blockUndo();
         super.allowRedo();
-        for (int i = 0; i < super.getCanvas().getWidth(); i++) {
-            super.getCanvas().drawPixel(i, this.getY(), this.getOldLine().get(i));
+        for (int j = 0; j < super.getCanvas().getHeight(); j++) {
+            super.getCanvas().drawPixel(this.getX(), j, this.getOldLine().get(j));
         }
         return true;
     }
@@ -72,14 +72,14 @@ public class FillHorizontalLine extends Command {
         if (!super.isRedoable()) {
             return false;
         }
-        for (int x = 0; x < super.getCanvas().getWidth(); x++) {
-            if (this.getOldLine().get(x) != super.getCanvas().getPixel(x, this.getY())) {
+        for (int y = 0; y < super.getCanvas().getHeight(); y++) {
+            if (this.getOldLine().get(y) != super.getCanvas().getPixel(this.getX(), y)) {
                 return false;
             }
         }
         super.blockRedo();
         super.allowUndo();
-        super.getCanvas().fillHorizontalLine(this.getY(), this.getFillingCharacter());
+        super.getCanvas().fillVerticalLine(this.getX(), this.getFillingCharacter());
         return true;
     }
 

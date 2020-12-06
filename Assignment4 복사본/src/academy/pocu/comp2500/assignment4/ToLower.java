@@ -1,61 +1,75 @@
 package academy.pocu.comp2500.assignment4;
 
-public class ToLower implements ICommand {
-    private int x;
-    private int y;
-    private char beforeValue;
-    private char afterValue;
-    private Canvas canvas;
-    private int status;
+public class ToLower extends Command {
+    private final int X;
+    private final int Y;
+    private char oldCharacter;
+    private char newCharacter;
 
     public ToLower(int x, int y) {
-        this.x = x;
-        this.y = y;
-        this.status = 0;
+        super();
+        this.X = x;
+        this.Y = y;
+    }
+
+
+    public int getX() {
+        return this.X;
+    }
+
+    public int getY() {
+        return this.Y;
+    }
+
+    public char getOldCharacter() {
+        return this.oldCharacter;
     }
 
     @Override
     public boolean execute(Canvas canvas) {
-        if (this.status != 0) {
+        if (super.isExecuted()) {
             return false;
         }
-
-        this.beforeValue = canvas.getPixel(x, y);
-        canvas.toLower(x, y);
-        this.afterValue = canvas.getPixel(x, y);
-
-        this.canvas = canvas;
-        this.status = 1;
+        super.setCanvas(canvas);
+        if (!super.isValidPoint(this.getX(), this.getY())) {
+            return false;
+        }
+        super.markExecuting();
+        this.oldCharacter = super.getCanvas().getPixel(this.getX(), this.getY());
+        super.allowUndo();
+        super.getCanvas().toLower(this.getX(), this.getY());
+        this.newCharacter = super.getCanvas().getPixel(this.getX(), this.getY());
         return true;
     }
 
     @Override
     public boolean undo() {
-        if (this.status != 1) {
+        if (!super.isUndoable()) {
             return false;
         }
-
-        if (canvas.getPixel(x, y) != afterValue) {
+        if (super.getCanvas().getPixel(this.getX(), this.getY()) != this.newCharacter) {
             return false;
         }
+        super.blockUndo();
+        super.allowRedo();
+        super.getCanvas().drawPixel(this.getX(), this.getY(), this.getOldCharacter());
 
-        this.canvas.drawPixel(x, y, beforeValue);
-        this.status = 2;
         return true;
     }
 
     @Override
     public boolean redo() {
-        if (this.status != 2) {
+        if (!super.isRedoable()) {
             return false;
         }
-
-        if (canvas.getPixel(x, y) != beforeValue) {
+        if (super.getCanvas().getPixel(this.getX(), this.getY()) != this.oldCharacter) {
             return false;
         }
+        super.blockRedo();
+        super.allowUndo();
 
-        this.canvas.drawPixel(x, y, afterValue);
-        this.status = 1;
+        this.oldCharacter = super.getCanvas().getPixel(this.getX(), this.getY());
+        super.getCanvas().toLower(this.getX(), this.getY());
         return true;
     }
 }

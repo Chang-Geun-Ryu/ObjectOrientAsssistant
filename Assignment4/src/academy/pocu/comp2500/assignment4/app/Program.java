@@ -14,7 +14,7 @@ public class Program {
 
             Canvas canvasaa = new Canvas(10, 10);
             System.out.println(canvasaa.getDrawing());
-            canvasaa.fillVerticalLine(0, 'g');
+//            canvasaa.fillVerticalLine(0, 'g');
             System.out.println(canvasaa.getDrawing());
 
         OverdrawAnalyzer canvas = new OverdrawAnalyzer(5, 5);

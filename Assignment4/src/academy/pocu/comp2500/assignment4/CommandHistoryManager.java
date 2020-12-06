@@ -1,79 +1,59 @@
 package academy.pocu.comp2500.assignment4;
 
 import java.util.ArrayList;
-import java.util.Stack;
+import java.util.List;
 
 public class CommandHistoryManager {
-    private Canvas canvas;
-    private ArrayList<ICommand> commands;
-    private int commandIndex;
+    private final List<ICommand> undo = new ArrayList<ICommand>();
+    private final List<ICommand> redo = new ArrayList<ICommand>();
+    private final Canvas canvas;
 
     public CommandHistoryManager(Canvas canvas) {
         this.canvas = canvas;
-        this.commands = new ArrayList<ICommand>();
-        commandIndex = -1;
     }
 
     public boolean execute(ICommand command) {
-        if (command.execute(canvas)) {
-            commandIndex += 1;
-
-            commands.subList(commandIndex, commands.size()).clear();
-            commands.add(command);
-            return true;
-        } else {
+        try {
+            redo.clear();
+            if (!undo.contains(command)) {
+                undo.add(command);
+                return command.execute(this.canvas);
+            }
+            return false;
+        } catch (Exception e) {
             return false;
         }
     }
 
     public boolean canUndo() {
-        if (commandIndex < 0) {
-            return false;
-        }
-
-        return true;
+        return undo.size() > 0;
     }
 
     public boolean canRedo() {
-        if (this.commands.size() == 0) {
-            return false;
-        }
-
-        if (commandIndex == this.commands.size() - 1) {
-            return false;
-        }
-
-        return false;
+        return redo.size() > 0;
     }
 
     public boolean undo() {
-        if (commandIndex < 0) {
+        try {
+            ICommand command = undo.get(undo.size() - 1);
+            command.undo();
+            undo.remove(command);
+            redo.add(command);
+            return true;
+        } catch (Exception e) {
             return false;
         }
-
-        if (this.commands.get(this.commandIndex).undo()) {
-            this.commandIndex -= 1;
-
-        }
-        return true;
     }
 
     public boolean redo() {
-        if (this.commands.size() == 0) {
+        try {
+            ICommand command = redo.get(redo.size() - 1);
+            command.redo();
+            redo.remove(command);
+            undo.add(command);
+            return true;
+        } catch (Exception e) {
             return false;
         }
-
-        if (commandIndex == this.commands.size() - 1) {
-            return false;
-        }
-
-        this.commandIndex += 1;
-
-        if (this.commands.get(this.commandIndex).redo()) {
-
-        } else {
-            this.commandIndex -= 1;
-        }
-        return true;
     }
 }
